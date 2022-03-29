@@ -4,16 +4,10 @@ module.exports = {
     plugins: ["@typescript-eslint", "import"],
     extends: [
         "eslint:recommended",
-        "plugin:react/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier",
     ],
-    settings: {
-        react: {
-            version: "latest",
-        },
-    },
     rules: {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-empty-interface": [
@@ -22,7 +16,6 @@ module.exports = {
                 allowSingleExtends: true,
             },
         ],
-        "@typescript-eslint/interface-name-prefix": ["error", { prefixWithI: "never" }],
         "import/order": "error",
         "sort-imports": [
             "error",
@@ -69,7 +62,6 @@ module.exports = {
         "no-fallthrough": "off",
         "no-unexpected-multiline": "off",
         "@typescript-eslint/no-unused-vars": ["warn", { args: "none" }],
-        "react/no-children-prop": "off",
         "@typescript-eslint/no-explicit-any": "off",
     },
 };
