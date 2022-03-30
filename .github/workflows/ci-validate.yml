@@ -41,6 +41,9 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
 
+    - name: Install Playwright
+      run: npx playwright install
+
     - name: Install Dependencies
       run: npm ci
 
