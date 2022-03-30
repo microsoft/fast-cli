@@ -1,11 +1,12 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "chai";
+import { describe, it } from "mocha";
 import { foo } from "./";
 
-test.describe("1", () => {
+describe("1", () => {
     const total = 10000;
     for (let i = 0; i < total; i++) {
-        test(`1.${i}`, () => {
-            expect(foo(1, i)).toEqual(1 + i);
+        it(`1.${i}`, () => {
+            expect(foo(1, i)).to.equal(1 + i);
         });
     }
 });
