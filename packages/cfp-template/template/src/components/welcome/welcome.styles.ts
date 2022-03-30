@@ -5,31 +5,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * @public
  */
 export const welcomeStyles: ElementStyles = css`
-    :host {
-        --accent-color: #da1a5f;
-        --fill-color: #424242;
-        --font-color: #e5e5e5;
-        --background: #181818;
-        --links-font-color: #ffffff;
-        --neutral-fill-rest: #2b2b2b;
-        --body-font: aktiv-grotesk, "Segoe UI", Arial, Helvetica, sans-serif;
-        --type-ramp-plus-6-font-size: 60px;
-        --type-ramp-plus-6-line-height: 72px;
-        --type-ramp-plus-5-font-size: 46px;
-        --type-ramp-plus-5-line-height: 56px;
-        --type-ramp-plus-4-font-size: 34px;
-        --type-ramp-plus-4-line-height: 44px;
-        --type-ramp-plus-3-font-size: 28px;
-        --type-ramp-plus-3-line-height: 36px;
-        --type-ramp-plus-2-font-size: 20px;
-        --type-ramp-plus-2-line-height: 28px;
-        --type-ramp-plus-1-font-size: 16px;
-        --type-ramp-plus-1-line-height: 24px;
-        --type-ramp-base-font-size: 14px;
-        --type-ramp-base-line-height: 20px;
-        --control-corner-radius: 4;
-    }
-
     :host > div {
         width: 100%;
         display: flex;
@@ -37,12 +12,12 @@ export const welcomeStyles: ElementStyles = css`
         justify-content: center;
         row-gap: 48px;
         text-align: center;
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-family: aktiv-grotesk, "Segoe UI", Arial, Helvetica, sans-serif;;
+        font-size: 14px;
+        line-height: 20px;
         min-height: 100vh;
-        color: var(--font-color);
-        background: var(--background);
+        color: #e5e5e5;
+        background: #181818;
     }
 
     h1 {
@@ -50,8 +25,8 @@ export const welcomeStyles: ElementStyles = css`
         column-gap: 18px;
         flex-wrap: wrap;
         justify-content: center;
-        font-size: var(--type-ramp-plus-6-font-size);
-        line-height: var(--type-ramp-plus-6-line-height);
+        font-size: 60px;
+        line-height: 72px;
         margin: 70px 0;
     }
 
@@ -61,18 +36,18 @@ export const welcomeStyles: ElementStyles = css`
     }
 
     h2 {
-        font-size: var(--type-ramp-plus-4-font-size);
-        line-height: var(--type-ramp-plus-4-line-height);
+        font-size: 34px;
+        line-height: 44px;
     }
 
     h3 {
-        font-size: var(--type-ramp-plus-2-font-size);
-        line-height: var(--type-ramp-plus-2-line-height);
+        font-size: 20px;
+        line-height: 28px;
     }
 
     h4 {
-        font-size: var(--type-ramp-plus-1-font-size);
-        line-height: var(--type-ramp-plus-1-line-height);
+        font-size: 16px;
+        line-height: 24px;
     }
 
     header,
@@ -89,8 +64,8 @@ export const welcomeStyles: ElementStyles = css`
     header p {
         max-width: 900px;
         align-self: center;
-        font-size: var(--type-ramp-plus-2-font-size);
-        line-height: var(--type-ramp-plus-2-line-height);
+        font-size: 20px;
+        line-height: 28px;
     }
 
     header svg {
@@ -103,7 +78,7 @@ export const welcomeStyles: ElementStyles = css`
 
     header .icon-brand-fast,
     .card svg {
-        fill: var(--font-color);
+        fill: #e5e5e5;
     }
 
     .card-container {
@@ -116,8 +91,8 @@ export const welcomeStyles: ElementStyles = css`
 
     .card {
         width: 320px;
-        border-radius: calc(var(--control-corner-radius) * 1px);
-        background: var(--fill-color);
+        border-radius: 4px;
+        background: #424242;
         text-align: left;
         overflow: hidden;
         display: flex;
@@ -126,7 +101,7 @@ export const welcomeStyles: ElementStyles = css`
     }
 
     .card .image {
-        background: var(--neutral-fill-rest);
+        background: #2b2b2b;
         padding: 44px 0;
     }
 
@@ -160,8 +135,8 @@ export const welcomeStyles: ElementStyles = css`
 
     .card a {
         display: inline-block;
-        background: var(--accent-color);
-        border-radius: calc(var(--control-corner-radius) * 1px);
+        background: #da1a5f;
+        border-radius: 4px;
         text-decoration: none;
         padding: 10px;
         color: #ffffff;
@@ -172,6 +147,6 @@ export const welcomeStyles: ElementStyles = css`
     }
 
     a {
-        color: var(--links-font-color);
+        color: #ffffff;
     }
 `;
