@@ -6,7 +6,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  */
 export const welcomeStyles: ElementStyles = css`
     :host > div {
-        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -27,7 +26,6 @@ export const welcomeStyles: ElementStyles = css`
         justify-content: center;
         font-size: 60px;
         line-height: 72px;
-        margin: 70px 0;
     }
 
     h1 span {
@@ -42,12 +40,10 @@ export const welcomeStyles: ElementStyles = css`
 
     h3 {
         font-size: 20px;
-        line-height: 28px;
     }
 
     h4 {
         font-size: 16px;
-        line-height: 24px;
     }
 
     header,
@@ -94,10 +90,8 @@ export const welcomeStyles: ElementStyles = css`
         border-radius: 4px;
         background: #424242;
         text-align: left;
-        overflow: hidden;
         display: flex;
         flex-direction: column;
-        justify-content: stretch;
     }
 
     .card .image {
@@ -140,10 +134,6 @@ export const welcomeStyles: ElementStyles = css`
         text-decoration: none;
         padding: 10px;
         color: #ffffff;
-    }
-
-    footer {
-        padding: 20px;
     }
 
     a {
