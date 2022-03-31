@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "test": "npm run test:unit",
-    "test:unit": "npm run build && mocha"
+    "test:unit": "npm run build && npx playwright test"
   },
   "author": "",
   "license": "ISC",
