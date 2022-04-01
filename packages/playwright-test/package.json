@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "test": "npm run build && wtr dist/**/*.spec.js --node-resolve --playwright"
+    "test": "npm run build && wtr dist/**/*.spec.js --node-resolve --playwright --browsers chromium"
   },
   "author": "",
   "license": "ISC",
