@@ -9,7 +9,14 @@ const tempDirName = "temp";
 const tempDir = path.resolve(dirname, tempDirName);
 const templateDir = path.resolve(dirname, "../cfp-template/template");
 
-describe("CLI", () => {
+/**
+ * TODO: update these tests when the npm CLI has been updated and added it to
+ * the github validation workflow.
+ * 
+ * Due to issues with npm versions these test should only be run locally
+ * https://github.com/npm/cli/issues/3847 for details. Use npm version 7.18.1.
+ */
+xdescribe("CLI", () => {
     before(() => {
         fs.ensureDirSync(tempDir);
         execSync(`cd ${tempDirName} && npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`);
