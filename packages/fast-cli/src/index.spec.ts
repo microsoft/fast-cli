@@ -17,7 +17,9 @@ describe("CLI", async () => {
                 throw err;
             }
         });
-        execSync("cd temp && npx ../ init -d -t ../../cfp-template");
+        execSync("npx ../ init -d -t ../../cfp-template", {
+            cwd: tempDir
+        });
     });
     after(() => {
         fs.removeSync(tempDir);
