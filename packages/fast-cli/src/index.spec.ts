@@ -4,10 +4,10 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import fs from "fs-extra";
 
-const __dirname = path.resolve(process.cwd());
+const dirname = path.resolve(process.cwd());
 const tempDirName = "temp";
-const tempDir = path.resolve(__dirname, tempDirName);
-const templateDir = path.resolve(__dirname, "../cfp-template/template");
+const tempDir = path.resolve(dirname, tempDirName);
+const templateDir = path.resolve(dirname, "../cfp-template/template");
 
 describe("CLI", async () => {
     before(async () => {
