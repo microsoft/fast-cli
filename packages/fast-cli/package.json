@@ -29,7 +29,7 @@
     },
     "homepage": "https://github.com/Microsoft/fast#readme",
     "dependencies": {
-        "@microsoft/cfp-template": "file:../cfp-template",
+        "@microsoft/cfp-template": "file:packages/cfp-template",
         "commander": "^9.0.0",
         "cross-spawn": "^7.0.3",
         "fs-extra": "^10.0.1",

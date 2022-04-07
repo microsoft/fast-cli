@@ -34,7 +34,7 @@ describe("CLI", async () => {
     after(() => {
         fs.removeSync(tempDir);
     });
-    it("should create a package.json file with default contents", async () => {
+    it("should create a package.json file with default contents", () => {
         const packageJsonFile = JSON.parse(
             fs.readFileSync(path.resolve(tempDir, "package.json"), {
                 encoding: "utf8",
@@ -50,7 +50,7 @@ describe("CLI", async () => {
             expect(packageJsonFile[key].toString()).to.equal((value as any).toString());
         }
     });
-    it("should copy the template folder contents", async () =>{
+    it("should copy the template folder contents", () =>{
         const templateDirContents = fs.readdirSync(templateDir);
         const tempDirContents = fs.readdirSync(tempDir);
 
