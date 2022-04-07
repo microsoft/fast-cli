@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import fs from "fs-extra";
 
-const __dirname = path.resolve(path.dirname(""));
+const __dirname = path.resolve(process.cwd());
 const tempDirName = "temp";
 const tempDir = path.resolve(__dirname, tempDirName);
 const templateDir = path.resolve(__dirname, "../cfp-template/template");
