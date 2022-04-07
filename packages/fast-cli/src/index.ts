@@ -265,8 +265,8 @@ async function init(options: InitOptions): Promise<void> {
         .description("Initialize a new project")
         .option("-d, --defaults", "Use defaults")
         .option("-t, --template <template>", "Path to project template")
-        .action((options): void => {
-            init(options).catch((reason) => {
+        .action(async (options): Promise<void> => {
+            await init(options).catch((reason) => {
                 throw reason;
             });
         });
