@@ -1,6 +1,7 @@
 {
   "name": "@microsoft/cfp-template",
   "description": "The default FAST project template",
+  "type": "module",
   "version": "0.1.0",
   "author": {
     "name": "Microsoft",

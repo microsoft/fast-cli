@@ -1,3 +1,6 @@
+# Never lint webpack files
+webpack.*.js
+
 # Never lint test files
 *.spec.ts
 

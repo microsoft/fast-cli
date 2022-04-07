@@ -1,1 +1,1 @@
-import "./components/index.js";
+import "./components/welcome/welcome.js";
