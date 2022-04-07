@@ -10,14 +10,9 @@ const tempDir = path.resolve(dirname, tempDirName);
 const templateDir = path.resolve(dirname, "../cfp-template/template");
 
 describe("CLI", async () => {
-    before(async () => {
-        await fs.ensureDir(tempDir, async (err: Error) => {
-            if (err) {
-                console.error(err);
-                throw err;
-            }
-        });
-        execSync(`npx ../ init -d -t ${path.resolve(dirname, "../cfp-template")}`, {
+    before(() => {
+        fs.ensureDirSync(tempDir);
+        execSync(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, {
             cwd: tempDir
         });
     });
