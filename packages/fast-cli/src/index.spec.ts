@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { execSync } from "child_process";
 import path from "path";
 import { expect } from "chai";
 import { describe, it } from "mocha";
@@ -17,24 +17,7 @@ describe("CLI", async () => {
                 throw err;
             }
         });
-        await new Promise<void>((resolve, reject) => {
-            exec("cd temp && npx ../ init -d -t ../../cfp-template", function(err: Error) {
-                if (err) {
-                    console.error(err);
-                    reject();
-                }
-
-                resolve();
-            });
-        }).catch((reason) => {
-            console.error(reason);
-            throw reason;
-        });
-        await new Promise<void>((resolve, reject) => {
-            setTimeout(() => {
-                resolve();
-            }, 10000)
-        })
+        execSync("cd temp && npx ../ init -d -t ../../cfp-template");
     });
     after(() => {
         fs.removeSync(tempDir);
