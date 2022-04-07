@@ -16,3 +16,14 @@
 >
 > Note that this is not a recommended practice, as this could cause issues if you have multiple projects which may need different versions of webpack.
  No newline at end of file
+
+## Usage
+
+`npx @microsoft/fast-cli`
+
+## Options
+
+Argument | Shorthand | Description
+---------|-----------|------------
+`--defaults` | `-d` | Use defaults
+`--template <path/to/template>` | `-t <path/to/template>` | Use a local template
