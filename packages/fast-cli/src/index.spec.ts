@@ -12,6 +12,9 @@ const templateDir = path.resolve(dirname, "../cfp-template/template");
 describe("CLI", async () => {
     before(() => {
         fs.ensureDirSync(tempDir);
+        // This is a hack to get around a permissions issue which can occur, by reinstalling
+        // via the execSync function this appears to resolve the "ownership" of the installed
+        // node modules.
         execSync(`cd ${path.resolve(dirname, "../../")} && npm install`);
         execSync(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, {
             cwd: tempDir
