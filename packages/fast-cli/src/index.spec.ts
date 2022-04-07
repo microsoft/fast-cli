@@ -12,6 +12,7 @@ const templateDir = path.resolve(dirname, "../cfp-template/template");
 describe("CLI", async () => {
     before(() => {
         fs.ensureDirSync(tempDir);
+        execSync(`chmod +x ${path.resolve(dirname, "../../node_modules/.bin/fast")}`)
         execSync(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, {
             cwd: tempDir
         });
