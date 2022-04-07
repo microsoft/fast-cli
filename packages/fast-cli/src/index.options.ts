@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-const folderMatches = process.cwd().match(/[^(\\)]+(?=$)/);
+/* eslint-disable no-useless-escape */
+const folderMatches = process.cwd().match(/[^(\\|\/)]+(?=$)/);
 const projectName: string = folderMatches !== null ? folderMatches[0] : "new-project";
 
 /**

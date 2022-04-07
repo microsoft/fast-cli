@@ -26,9 +26,11 @@ describe("CLI", async () => {
 
                 resolve();
             });
+        }).catch((reason) => {
+            console.error(reason);
         });
     });
-    after(async () => {
+    after(() => {
         fs.removeSync(tempDir);
     });
     it("should create a package.json file with default contents", async () => {
