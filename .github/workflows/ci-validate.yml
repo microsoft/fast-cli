@@ -37,12 +37,9 @@ jobs:
           ${{ runner.os }}-
 
     - name: Use Node.js ${{ matrix.node }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node }}
-
-    - name: Use pinned NPM version
-      run: npm install npm@7.18.1 -g
 
     - name: Install Playwright
       run: npx playwright install
