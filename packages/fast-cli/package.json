@@ -13,7 +13,7 @@
         "dev": "tsc -p ./tsconfig.json -w",
         "eslint": "eslint . --ext .ts",
         "eslint:fix": "eslint . --ext .ts --fix",
-        "test": "npm run eslint && npm run build && mocha"
+        "test": "npm run build && npm run eslint && mocha"
     },
     "repository": {
         "type": "git",
