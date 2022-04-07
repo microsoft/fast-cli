@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
+import { exec } from "child_process";
+import path from "path";
 import * as commander from "commander";
 import prompts from "prompts";
-import { exec } from "child_process";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import path from "path";
 import { defaultPackageJsonConfig, PackageJsonConfig } from "./index.options.js";
 
 const __dirname = path.resolve(path.dirname(""));
@@ -66,7 +66,7 @@ function copyTemplateToProject(
     packageJson: PackageJsonConfig,
     pathToTemplatePackage: string
 ): Promise<void> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const templateDir = path.resolve(
             __dirname,
             "node_modules",
@@ -95,7 +95,7 @@ function copyTemplateToProject(
                 encoding: "utf8",
             })
         ).packageJson;
-        let packageJsonFileContents: { [key: string]: any } = packageJson;
+        const packageJsonFileContents: { [key: string]: any } = packageJson;
         packageJsonFileContents["repository"] = {
             type: "git",
             url: packageJson["repository"],
@@ -181,7 +181,7 @@ function installTemplate(pathToTemplate: string): Promise<void> {
 /**
  * Initialize a FAST project
  */
-async function init(options: InitOptions) {
+async function init(options: InitOptions): Promise<void> {
     if (await checkNpmRegistryIsAvailable()) {
         let packageJson = defaultPackageJsonConfig;
         
@@ -244,7 +244,7 @@ async function init(options: InitOptions) {
     }
 }
 
-(function () {
+(function (): void {
     program
         .command("init")
         .description("Initialize a new project")

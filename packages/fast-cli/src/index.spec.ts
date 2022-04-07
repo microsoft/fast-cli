@@ -1,7 +1,7 @@
-import { expect } from "chai";
-import { describe, it } from "mocha";
 import { exec } from "child_process";
 import path from "path";
+import { expect } from "chai";
+import { describe, it } from "mocha";
 import fs from "fs-extra";
 
 const __dirname = path.resolve(path.dirname(""));
@@ -11,14 +11,14 @@ const templateDir = path.resolve(__dirname, "../cfp-template/template");
 
 describe("CLI", async () => {
     before(async () => {
-        await fs.ensureDir(tempDir, async (err) => {
+        await fs.ensureDir(tempDir, async (err: Error) => {
             if (err) {
                 console.error(err);
                 throw err;
             }
         });
         await new Promise<void>((resolve, reject)=> {
-            exec("cd temp && npx ../ init -d -t ../../cfp-template", function(err) {
+            exec("cd temp && npx ../ init -d -t ../../cfp-template", function(err: Error) {
                 if (err) {
                     console.error(err);
                     reject();
