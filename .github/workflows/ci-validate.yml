@@ -41,6 +41,9 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
 
+    - name: Use pinned NPM version
+      run: npm install npm@7.18.1 -g
+
     - name: Install Playwright
       run: npx playwright install
 
