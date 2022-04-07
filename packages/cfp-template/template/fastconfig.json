@@ -1,19 +1,19 @@
 {
     "packageJson": {
         "scripts": {
-            "build": "webpack --config=./webpack.prod.js",
+            "build": "webpack --config=./webpack.prod.cjs",
             "eslint": "eslint . --ext .ts",
             "eslint:fix": "eslint . --ext .ts --fix",
-            "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
+            "start": "webpack-dev-server --config=./webpack.dev.cjs --history-api-fallback --progress",
             "test": "npm run eslint && npm run test:e2e",
-            "test:serve": "node ./test-server.js",
+            "test:serve": "node ./test-server.cjs",
             "test:e2e": "npm run build && npx playwright test"
         },
         "dependencies": {
             "@microsoft/fast-element": "^1.7.0"
         },
         "devDependencies": {
-            "@playwright/test": "^1.20.0",
+            "@playwright/test": "1.20.0",
             "@types/node": "^17.0.21",
             "express": "^4.17.3",
             "html-webpack-plugin": "^3.2.0",
