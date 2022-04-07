@@ -28,6 +28,7 @@ describe("CLI", async () => {
             });
         }).catch((reason) => {
             console.error(reason);
+            throw reason;
         });
     });
     after(() => {
