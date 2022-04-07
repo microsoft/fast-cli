@@ -18,7 +18,7 @@ describe("CLI", async () => {
             }
         });
         await new Promise<void>((resolve, reject) => {
-            exec(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, function(err: Error) {
+            exec(`cd ${tempDirName} && npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, function(err: Error) {
                 if (err) {
                     console.error(err);
                     reject();
