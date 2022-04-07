@@ -240,7 +240,7 @@ async function init(options: InitOptions): Promise<void> {
         await installDependencies();
         await installPlaywrightBrowsers();
     } else {
-        console.error("The npm registry cannot be reached.");
+        throw "The npm registry cannot be reached.";
     }
 }
 
