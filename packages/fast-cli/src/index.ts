@@ -47,15 +47,19 @@ program.name("fast").description(ascii);
 /**
  * Check to see if we can reach the npm repository within a timeout
  */
-function checkNpmRegistryIsAvailable(): Promise<boolean> {
+function checkNpmRegistryIsAvailable(): Promise<boolean | unknown> {
     return new Promise(resolve => {
         resolve(
             new Promise(resolve => {
                 exec("npm ping", { timeout: 1000 }, error => {
                     resolve(error === null);
                 });
+            }).catch((reason) => {
+                throw reason;
             })
         );
+    }).catch((reason) => {
+        throw reason;
     });
 }
 
@@ -65,7 +69,7 @@ function checkNpmRegistryIsAvailable(): Promise<boolean> {
 function copyTemplateToProject(
     packageJson: PackageJsonConfig,
     pathToTemplatePackage: string
-): Promise<void> {
+): Promise<unknown> {
     return new Promise((resolve, reject) => {
         const templateDir = path.resolve(
             __dirname,
@@ -114,14 +118,16 @@ function copyTemplateToProject(
             spaces: 2,
         });
 
-        resolve();
+        resolve(void 0);
+    }).catch((reason) => {
+        throw reason;
     });
 }
 
 /**
  * Install package dependencies for the template
  */
-function installDependencies(): Promise<void> {
+function installDependencies(): Promise<unknown> {
     return new Promise((resolve, reject) => {
         const args = ["install"];
         const child = spawn("npm", args, { stdio: "inherit" });
@@ -132,15 +138,17 @@ function installDependencies(): Promise<void> {
                 });
                 return;
             }
-            resolve();
+            resolve(void 0);
         });
+    }).catch((reason) => {
+        throw reason;
     });
 }
 
 /**
  * Install playwright browsers
  */
-function installPlaywrightBrowsers(): Promise<void> {
+function installPlaywrightBrowsers(): Promise<unknown> {
     return new Promise((resolve, reject) => {
         const args = ["playwright", "install"];
         const child = spawn("npx", args, { stdio: "inherit" });
@@ -151,15 +159,17 @@ function installPlaywrightBrowsers(): Promise<void> {
                 });
                 return;
             }
-            resolve();
+            resolve(void 0);
         });
+    }).catch((reason) => {
+        throw reason;
     });
 }
 
 /**
  * Install a package holding a template from npm
  */
-function installTemplate(pathToTemplate: string): Promise<void> {
+function installTemplate(pathToTemplate: string): Promise<unknown> {
     return new Promise((resolve, reject) => {
         const args = [
             "install",
@@ -173,8 +183,10 @@ function installTemplate(pathToTemplate: string): Promise<void> {
                 });
                 return;
             }
-            resolve();
+            resolve(void 0);
         });
+    }).catch((reason) => {
+        throw reason;
     });
 }
 
