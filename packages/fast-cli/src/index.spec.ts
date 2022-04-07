@@ -1,4 +1,4 @@
-import { execSync } from "child_process";
+import { exec } from "child_process";
 import path from "path";
 import { expect } from "chai";
 import { describe, it } from "mocha";
@@ -10,13 +10,26 @@ const tempDir = path.resolve(dirname, tempDirName);
 const templateDir = path.resolve(dirname, "../cfp-template/template");
 
 describe("CLI", async () => {
-    before(() => {
-        fs.ensureDirSync(tempDir);
-        const output = execSync(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, {
-            cwd: tempDir,
-            encoding: "utf8"
+    before(async () => {
+        fs.ensureDir(tempDir, async (err: Error) => {
+            if (err) {
+                console.error(err);
+                throw err;
+            }
         });
-        console.log("OUTPUT FROM EXECSYNC", output);
+        await new Promise<void>((resolve, reject) => {
+            exec(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, function(err: Error) {
+                if (err) {
+                    console.error(err);
+                    reject();
+                }
+
+                resolve();
+            });
+        }).catch((reason) => {
+            console.error(reason);
+            throw reason;
+        });
     });
     after(() => {
         fs.removeSync(tempDir);
