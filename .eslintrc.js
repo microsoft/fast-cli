@@ -25,7 +25,9 @@ module.exports = {
             },
         ],
         "import/extensions": ["error", "always", {
-            "options": "never"
+            "options": "never",
+            "template": "never",
+            "styles": "never",
         }],
         "comma-dangle": "off",
         "@typescript-eslint/typedef": [
