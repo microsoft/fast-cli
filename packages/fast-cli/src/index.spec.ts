@@ -16,9 +16,11 @@ describe("CLI", async () => {
         // via the execSync function this appears to resolve the "ownership" of the installed
         // node modules.
         execSync(`cd ${path.resolve(dirname, "../../")} && npm install`);
-        execSync(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, {
-            cwd: tempDir
+        const output = execSync(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, {
+            cwd: tempDir,
+            encoding: "utf8"
         });
+        console.log("OUTPUT FROM EXECSYNC", output);
     });
     after(() => {
         fs.removeSync(tempDir);
