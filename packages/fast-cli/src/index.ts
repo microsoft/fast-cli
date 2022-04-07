@@ -191,6 +191,30 @@ function installTemplate(pathToTemplate: string): Promise<unknown> {
 }
 
 /**
+ * Uninstall a package holding a template
+ */
+function uninstallTemplate(pathToTemplate: string): Promise<unknown> {
+    return new Promise((resolve, reject) => {
+        const args = [
+            "uninstall",
+            pathToTemplate,
+        ];
+        const child = spawn("npm", args, { stdio: "inherit" });
+        child.on("close", code => {
+            if (code !== 0) {
+                reject({
+                    command: "npm uninstall",
+                });
+                return;
+            }
+            resolve(void 0);
+        });
+    }).catch((reason) => {
+        throw reason;
+    });
+}
+
+/**
  * Initialize a FAST project
  */
 async function init(options: InitOptions): Promise<void> {
@@ -257,6 +281,7 @@ async function init(options: InitOptions): Promise<void> {
     await copyTemplateToProject(packageJson, pathToTemplatePackage);
     await installDependencies();
     await installPlaywrightBrowsers();
+    await uninstallTemplate(pathToTemplatePackage);
 }
 
 (function (): void {
