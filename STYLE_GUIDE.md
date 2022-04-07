@@ -22,14 +22,14 @@ Example:
 ```text
 my-component/
 └─ my-component.ts
-└─ my-component.styles.ts
-└─ my-component.template.ts
-└─ my-component.spec.ts
+└─ my-component_styles.ts
+└─ my-component_template.ts
+└─ my-component_spec.ts
 ```
 
 ### Scripts
 
-As seen in the above example, script files should be all lowercase and dash separated. If there is need for additional context, marking a test file in the example above, this should be included separating the additional context with a period at the end of the file name.
+As seen in the above example, script files should be all lowercase and dash separated. If there is need for additional context, marking a test file in the example above, this should be included separating the additional context with an underscore at the end of the file name.
 
 ### Markdown
 

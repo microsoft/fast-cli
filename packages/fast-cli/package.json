@@ -3,9 +3,9 @@
     "type": "module",
     "version": "0.1.0",
     "description": "A FAST command line interface for improving process when working with FAST projects",
-    "main": "./dist/esm/index.js",
+    "main": "./dist/esm/cli.js",
     "bin": {
-        "fast": "./dist/esm/index.js"
+        "fast": "./dist/esm/cli.js"
     },
     "scripts": {
         "build": "npm run build:tsc",
@@ -29,6 +29,7 @@
     },
     "homepage": "https://github.com/Microsoft/fast#readme",
     "dependencies": {
+        "@microsoft/cfp-template": "file:../cfp-template",
         "commander": "^9.0.0",
         "cross-spawn": "^7.0.3",
         "fs-extra": "^10.0.1",

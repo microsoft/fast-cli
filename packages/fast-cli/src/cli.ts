@@ -6,7 +6,7 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import { defaultPackageJsonConfig, PackageJsonConfig } from "./index.options.js";
+import { defaultPackageJsonConfig, PackageJsonConfig } from "./cli_options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
@@ -284,17 +284,15 @@ async function init(options: InitOptions): Promise<void> {
     await uninstallTemplate(packageJson);
 }
 
-(function (): void {
-    program
-        .command("init")
-        .description("Initialize a new project")
-        .option("-d, --defaults", "Use defaults")
-        .option("-t, --template <template>", "Path to project template")
-        .action(async (options): Promise<void> => {
-            await init(options).catch((reason) => {
-                throw reason;
-            });
+program
+    .command("init")
+    .description("Initialize a new project")
+    .option("-d, --defaults", "Use defaults")
+    .option("-t, --template <template>", "Path to project template")
+    .action(async (options): Promise<void> => {
+        await init(options).catch((reason) => {
+            throw reason;
         });
+    });
 
-    program.parse(process.argv);
-})();
+program.parse(process.argv);

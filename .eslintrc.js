@@ -24,11 +24,7 @@ module.exports = {
                 ignoreDeclarationSort: true,
             },
         ],
-        "import/extensions": ["error", "always", {
-            "options": "never",
-            "template": "never",
-            "styles": "never",
-        }],
+        "import/extensions": ["error", "always"],
         "comma-dangle": "off",
         "@typescript-eslint/typedef": [
             "error",

@@ -15,6 +15,9 @@ const templateDir = path.resolve(dirname, "../cfp-template/template");
  * 
  * Due to issues with npm versions these test should only be run locally
  * https://github.com/npm/cli/issues/3847 for details. Use npm version 7.18.1.
+ * 
+ * When switching between npm versions if you recieve a permissions error, try
+ * npx clear-npx-cache
  */
 xdescribe("CLI", () => {
     before(() => {
