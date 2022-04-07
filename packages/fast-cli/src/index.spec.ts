@@ -17,7 +17,7 @@ describe("CLI", async () => {
                 throw err;
             }
         });
-        await new Promise<void>((resolve, reject)=> {
+        await new Promise<void>((resolve, reject) => {
             exec("cd temp && npx ../ init -d -t ../../cfp-template", function(err: Error) {
                 if (err) {
                     console.error(err);
@@ -30,6 +30,11 @@ describe("CLI", async () => {
             console.error(reason);
             throw reason;
         });
+        await new Promise<void>((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 10000)
+        })
     });
     after(() => {
         fs.removeSync(tempDir);
