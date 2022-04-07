@@ -240,7 +240,7 @@ async function init(options: InitOptions): Promise<void> {
         await installDependencies();
         await installPlaywrightBrowsers();
     } else {
-        throw "The npm registry cannot be reached.";
+        throw new Error("The npm registry cannot be reached.");
     }
 }
 
@@ -251,7 +251,9 @@ async function init(options: InitOptions): Promise<void> {
         .option("-d, --defaults", "Use defaults")
         .option("-t, --template <template>", "Path to project template")
         .action((options): void => {
-            init(options);
+            init(options).catch((reason) => {
+                throw reason;
+            });
         });
 
     program.parse(process.argv);
