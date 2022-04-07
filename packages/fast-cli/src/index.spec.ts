@@ -12,6 +12,7 @@ const templateDir = path.resolve(dirname, "../cfp-template/template");
 describe("CLI", async () => {
     before(() => {
         fs.ensureDirSync(tempDir);
+        execSync(`cd ${path.resolve(dirname, "../../")} && npm install`);
         execSync(`npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`, {
             cwd: tempDir
         });
