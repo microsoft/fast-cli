@@ -182,66 +182,69 @@ function installTemplate(pathToTemplate: string): Promise<void> {
  * Initialize a FAST project
  */
 async function init(options: InitOptions): Promise<void> {
-    if (await checkNpmRegistryIsAvailable()) {
-        let packageJson = defaultPackageJsonConfig;
-        
-        const pathToTemplatePackage = options.template
-            ? path.resolve(__dirname, options.template)
-            : defaultTemplatePath;
+    let packageJson = defaultPackageJsonConfig;
+    let pathToTemplatePackage;
 
-        if (!options.defaults) {
-            /**
-             * Collect information for the package.json file
-             */
-            packageJson = await prompts([
-                {
-                    type: "text",
-                    name: "name",
-                    initial: defaultPackageJsonConfig.name,
-                    message: "project name",
-                },
-                {
-                    type: "text",
-                    name: "version",
-                    initial: defaultPackageJsonConfig.version,
-                    message: "version",
-                },
-                {
-                    type: "text",
-                    name: "description",
-                    message: "description",
-                },
-                {
-                    type: "text",
-                    name: "repository",
-                    message: "git repository",
-                },
-                {
-                    type: "text",
-                    name: "keywords",
-                    message: "keywords",
-                },
-                {
-                    type: "text",
-                    name: "author",
-                    message: "author",
-                },
-                {
-                    type: "text",
-                    name: "license",
-                    initial: defaultPackageJsonConfig.license,
-                    message: "license",
-                },
-            ]);
-        }
-
-        await installTemplate(pathToTemplatePackage);
-        await copyTemplateToProject(packageJson, pathToTemplatePackage);
-        await installDependencies();
-        await installPlaywrightBrowsers();
+    if (options.template) {
+        pathToTemplatePackage = path.resolve(__dirname, options.template);
     } else {
-        throw new Error("The npm registry cannot be reached.");
+        if (await checkNpmRegistryIsAvailable()) {
+            pathToTemplatePackage = defaultTemplatePath;
+        } else {
+            throw new Error("The npm registry cannot be reached.");
+        }
     }
+
+    if (!options.defaults) {
+        /**
+         * Collect information for the package.json file
+         */
+        packageJson = await prompts([
+            {
+                type: "text",
+                name: "name",
+                initial: defaultPackageJsonConfig.name,
+                message: "project name",
+            },
+            {
+                type: "text",
+                name: "version",
+                initial: defaultPackageJsonConfig.version,
+                message: "version",
+            },
+            {
+                type: "text",
+                name: "description",
+                message: "description",
+            },
+            {
+                type: "text",
+                name: "repository",
+                message: "git repository",
+            },
+            {
+                type: "text",
+                name: "keywords",
+                message: "keywords",
+            },
+            {
+                type: "text",
+                name: "author",
+                message: "author",
+            },
+            {
+                type: "text",
+                name: "license",
+                initial: defaultPackageJsonConfig.license,
+                message: "license",
+            },
+        ]);
+    }
+
+    await installTemplate(pathToTemplatePackage);
+    await copyTemplateToProject(packageJson, pathToTemplatePackage);
+    await installDependencies();
+    await installPlaywrightBrowsers();
 }
 
 (function (): void {
