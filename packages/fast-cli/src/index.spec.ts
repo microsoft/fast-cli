@@ -17,6 +17,10 @@ describe("CLI", async () => {
                 throw err;
             }
         });
+        console.log("===============");
+        console.log(tempDir);
+        console.log(dirname);
+        console.log("===============");
         execSync("npx ../ init -d -t ../../cfp-template", {
             cwd: tempDir
         });
