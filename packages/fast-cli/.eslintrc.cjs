@@ -65,4 +65,11 @@ module.exports = {
         "@typescript-eslint/no-unused-vars": ["warn", { args: "none" }],
         "@typescript-eslint/no-explicit-any": "off",
     },
+    settings: {
+        "import/resolver": {
+            node: {
+                extensions: [".js", ".ts"]
+            }
+        }
+    },
 };

@@ -6,7 +6,7 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import { defaultPackageJsonConfig, PackageJsonConfig } from "./cli_options.js";
+import { defaultPackageJsonConfig, PackageJsonConfig } from "./cli.options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
