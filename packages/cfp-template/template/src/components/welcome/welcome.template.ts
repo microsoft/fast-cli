@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { Welcome } from "./welcome";
+import type { Welcome } from "./welcome.js";
 
 /**
  * @public

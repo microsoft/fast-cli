@@ -1,3 +1,6 @@
+# Never lint playwright config
+playwright.*.ts
+
 # Never lint test files
 *.spec.ts
 

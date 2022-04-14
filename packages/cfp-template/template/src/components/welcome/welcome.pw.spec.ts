@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from "@playwright/test";
 
 test.describe("fast-welcome", () => {
     test.beforeEach(async ({ page }) => {
