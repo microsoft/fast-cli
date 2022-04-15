@@ -1,0 +1,7 @@
+{
+    "@microsoft/fast-cli": {
+        "versions": [
+            "0.x"
+        ]
+    }
+}
