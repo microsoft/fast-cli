@@ -5,9 +5,8 @@
             "eslint": "eslint . --ext .ts",
             "eslint:fix": "eslint . --ext .ts --fix",
             "start": "webpack-dev-server --config=./webpack.dev.cjs --history-api-fallback --progress",
-            "test": "npm run eslint && npm run test:e2e",
-            "test:serve": "node ./test-server.cjs",
-            "test:e2e": "npm run build && npx playwright test"
+            "test": "npm run eslint && npx playwright test",
+            "test:serve": "node ./test-server.cjs"
         },
         "dependencies": {
             "@microsoft/fast-element": "^1.7.0"
