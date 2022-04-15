@@ -1,12 +1,11 @@
+import { expect, test } from "@playwright/test";
 import { execSync } from "child_process";
 import path from "path";
-import { expect } from "chai";
-import { describe, it } from "mocha";
 import fs from "fs-extra";
 
 const dirname = path.resolve(process.cwd());
-const tempDirName = "temp";
-const tempDir = path.resolve(dirname, tempDirName);
+const tempDirRelativeLocation = "../temp";
+const tempDir = path.resolve(dirname, tempDirRelativeLocation);
 const templateDir = path.resolve(dirname, "../cfp-template/template");
 
 /**
@@ -19,46 +18,62 @@ const templateDir = path.resolve(dirname, "../cfp-template/template");
  * When switching between npm versions if you recieve a permissions error, try
  * npx clear-npx-cache
  */
-xdescribe("CLI", () => {
-    before(() => {
-        fs.ensureDirSync(tempDir);
-        execSync(`cd ${tempDirName} && npx ${dirname} init -d -t ${path.resolve(dirname, "../cfp-template")}`);
-    });
-    after(() => {
-        fs.removeSync(tempDir);
-    });
-    it("should create a package.json file with default contents", () => {
-        const packageJsonFile = JSON.parse(
-            fs.readFileSync(path.resolve(tempDir, "package.json"), {
-                encoding: "utf8",
-            })
-        );
-        const configFilePackageJson = JSON.parse(
-            fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
-                encoding: "utf8",
-            })
-        ).packageJson;
-
-        for (const [key, value] of Object.entries(configFilePackageJson)) {
-            expect(packageJsonFile[key].toString()).to.equal((value as any).toString());
-        }
-    });
-    it("should copy the template folder contents", () =>{
-        const templateDirContents = fs.readdirSync(templateDir);
-        const tempDirContents = fs.readdirSync(tempDir);
-
-        for (const templateDirItem of templateDirContents) {
-            expect(
-                tempDirContents.includes(templateDirItem)
-            ).to.equal(true);
-        }
-    });
-    it("should install the dependencies for the default template", async () => {
-        let hasNodeModules: boolean = false;
-        await fs.pathExists(path.resolve(tempDir, "node_modules")).then((exists) => {
-            hasNodeModules = exists;
+test.describe("CLI", () => {
+    test.describe("init", () => {
+        test.beforeAll(() => {
+            fs.ensureDirSync(tempDir);
+    
+            // Create a temp project
+            execSync(`cd ${tempDir} && npm init -y`);
+    
+            // Install the FAST CLI
+            execSync(`cd ${tempDir} && npm install --save-dev ${dirname}`);
+    
+            // Update the scripts for testable CLI commands
+            const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
+            const packageJson = JSON.parse(packageJsonString);
+            packageJson.scripts = {
+                fastinit: `fast init -d -t ${path.resolve(dirname, "../cfp-template")}`
+            }
+            fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
+            execSync(`cd ${tempDir} && npm run fastinit`);
         });
-
-        expect(hasNodeModules).to.equal(true);
+        test.afterAll(() => {
+            fs.removeSync(tempDir);
+        });
+        test("should create a package.json file with default contents", () => {
+            const packageJsonFile = JSON.parse(
+                fs.readFileSync(path.resolve(tempDir, "package.json"), {
+                    encoding: "utf8",
+                })
+            );
+            const configFilePackageJson = JSON.parse(
+                fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
+                    encoding: "utf8",
+                })
+            ).packageJson;
+    
+            for (const [key, value] of Object.entries(configFilePackageJson)) {
+                expect(packageJsonFile[key].toString()).toEqual((value as any).toString());
+            }
+        });
+        test("should copy the template folder contents", () =>{
+            const templateDirContents = fs.readdirSync(templateDir);
+            const tempDirContents = fs.readdirSync(tempDir);
+    
+            for (const templateDirItem of templateDirContents) {
+                expect(
+                    tempDirContents.includes(templateDirItem)
+                ).toEqual(true);
+            }
+        });
+        test("should install the dependencies for the default template", async () => {
+            let hasNodeModules: boolean = false;
+            await fs.pathExists(path.resolve(tempDir, "node_modules")).then((exists) => {
+                hasNodeModules = exists;
+            });
+    
+            expect(hasNodeModules).toEqual(true);
+        });
     });
 });
