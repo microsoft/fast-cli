@@ -17,7 +17,6 @@
   },
   "main": "index.js",
   "scripts": {
-    "postinstall": "npx install playwright",
     "build": "webpack --config=./template/webpack.prod.cjs",
     "eslint": "eslint . --ext .ts --config ./template/.eslintrc.cjs",
     "eslint:fix": "eslint . --ext .ts --config ./template/.eslintrc.cjs --fix",
