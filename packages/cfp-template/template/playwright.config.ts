@@ -1,4 +1,6 @@
-const config = {
+import type { PlaywrightTestConfig } from "@playwright/test";
+
+const config: PlaywrightTestConfig = {
     projects: [
         {
             name: "Desktop Chromium",
@@ -14,4 +16,4 @@ const config = {
     },
 };
 
-module.exports = config;
+export default config;
