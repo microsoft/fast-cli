@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.21.0",
     "beachball": "^2.21.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
