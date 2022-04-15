@@ -18,7 +18,7 @@ const templateDir = path.resolve(dirname, "../cfp-template/template");
  * When switching between npm versions if you recieve a permissions error, try
  * npx clear-npx-cache
  */
-test.describe("CLI", () => {
+test.describe.skip("CLI", () => {
     test.describe("init", () => {
         test.beforeAll(() => {
             fs.ensureDirSync(tempDir);
