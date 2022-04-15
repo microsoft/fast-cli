@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Fix high severity package errors, update testing to use playwright",
+  "packageName": "@microsoft/cfp-template",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
