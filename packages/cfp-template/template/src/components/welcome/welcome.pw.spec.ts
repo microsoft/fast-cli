@@ -5,7 +5,7 @@ test.describe("fast-welcome", () => {
         await page.goto("/");
     });
 
-    test("should add a dark class", async ({ page }) => {
+    test("should contain a div element", async ({ page }) => {
         const element = page.locator("fast-welcome > div");
 
         await expect(element).not.toBeNull();
