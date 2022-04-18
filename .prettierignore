@@ -1,8 +1,0 @@
-*.spec.ts
-**/__test-images__
-**/__tests__
-**/.tmp
-**/bootstrap
-**/coverage
-**/dist
-**/temp
