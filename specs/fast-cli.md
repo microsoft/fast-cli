@@ -81,7 +81,7 @@ Argument | Shorthand | Description | Required | Default |
 }
 ```
 
-> Important: The paths of components and design system must be relative to each other, therefore only the path to the component folder is required as the design system file path is assumed.
+> Important: The paths of components and design system must be relative to each other, therefore only the path to the component folder is required as the design system file path is assumed. In an app the path may be `"./src/components"` as shown above, or in the case of a component library the path may be `"./src"`.
 
 ## Add a design system
 
@@ -94,7 +94,7 @@ $ fast add-design-system
 Argument | Shorthand | Description | Required | Default | Options
 ---------|-----------|-------------|----------|---------|--------
 `--prefix <prefix>` | `-p <prefix>` | The web component prefix | No | `<project-name>` |
-`--shadow-root-mode <mode>` | `-s <mode>` | Determine what the shadowroot mode is | No | "closed" | "closed", "open"
+`--shadow-root-mode <mode>` | `-s <mode>` | Determine what the shadowroot mode is | No | "open" | "closed", "open"
 
 If the component path is not available, create it. If the design system is not available in the path specified, create the file with the contents, assuming "example" is the name property of the `package.json`:
 
