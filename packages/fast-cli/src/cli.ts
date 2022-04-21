@@ -6,12 +6,14 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import { defaultPackageJsonConfig, PackageJsonConfig } from "./cli.options.js";
+import type { FastConfig, FastInit, PackageJson } from "./cli.options";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
 const defaultTemplatePath = path.resolve(__dirname, "@microsoft/cfp-template");
 const defaultTemplateFolderName = "template";
+/* eslint-disable no-useless-escape */
+const folderMatches = process.cwd().match(/[^(\\|\/)]+(?=$)/);
 const ascii = `
 
   ███████╗ █████╗ ███████╗████████╗     ██████╗██╗     ██╗
@@ -64,13 +66,37 @@ function checkNpmRegistryIsAvailable(): Promise<boolean | unknown> {
 }
 
 /**
+ * Get the fastinit.json file
+ */
+function getFastInitFile(
+    pathToTemplatePackage: string
+): Promise<FastInit> {
+    return new Promise<FastInit>((resolve, reject) => {
+        const templateDir = path.resolve(
+            __dirname,
+            "node_modules",
+            pathToTemplatePackage,
+            defaultTemplateFolderName
+        );
+
+        resolve(JSON.parse(
+            fs.readFileSync(path.resolve(templateDir, "fastinit.json"), {
+                encoding: "utf8",
+            })
+        ) as FastInit);
+    }).catch((reason) => {
+        throw reason;
+    });
+}
+
+/**
  * Copy the template to the project
  */
 function copyTemplateToProject(
-    packageJson: PackageJsonConfig,
-    pathToTemplatePackage: string
-): Promise<unknown> {
-    return new Promise((resolve, reject) => {
+    pathToTemplatePackage: string,
+    packageJson: PackageJson,
+): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
         const templateDir = path.resolve(
             __dirname,
             "node_modules",
@@ -93,32 +119,15 @@ function copyTemplateToProject(
             }
         );
 
-        // Update the package.json with the user response
-        const templateConfigPackageJsonFileContents = JSON.parse(
-            fs.readFileSync(path.resolve(templateDir, "fastconfig.json"), {
-                encoding: "utf8",
-            })
-        ).packageJson;
-        const packageJsonFileContents: { [key: string]: any } = packageJson;
-        packageJsonFileContents["repository"] = {
-            type: "git",
-            url: packageJson["repository"],
-        };
-        [
-            "dependencies",
-            "devDependencies",
-            "peerDependencies",
-            "scripts",
-            "main",
-        ].forEach(property => {
-            packageJsonFileContents[property] = templateConfigPackageJsonFileContents[property];
-        });
-
-        fs.writeJsonSync(path.resolve(destDir, "package.json"), packageJsonFileContents, {
+        const packageName = folderMatches !== null ? folderMatches[0] : packageJson.name;
+        fs.writeJsonSync(path.resolve(destDir, "package.json"), {
+            ...packageJson,
+            name: packageName
+        }, {
             spaces: 2,
         });
 
-        resolve(void 0);
+        resolve(packageName);
     }).catch((reason) => {
         throw reason;
     });
@@ -190,14 +199,30 @@ function installTemplate(pathToTemplate: string): Promise<unknown> {
     });
 }
 
+function createConfigFile(
+    fastConfig: FastConfig,
+): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        fs.writeJsonSync(path.resolve(process.cwd(), "fastconfig.json"), {
+            ...fastConfig
+        }, {
+            spaces: 2,
+        });
+
+        resolve();
+    }).catch((reason) => {
+        throw reason;
+    });
+}
+
 /**
  * Uninstall a package holding a template
  */
-function uninstallTemplate(packageJson: PackageJsonConfig,): Promise<unknown> {
+function uninstallTemplate(packageName: string): Promise<unknown> {
     return new Promise((resolve, reject) => {
         const args = [
             "uninstall",
-            packageJson.name,
+            packageName,
         ];
         const child = spawn("npm", args, { stdio: "inherit" });
         child.on("close", code => {
@@ -218,8 +243,7 @@ function uninstallTemplate(packageJson: PackageJsonConfig,): Promise<unknown> {
  * Initialize a FAST project
  */
 async function init(options: InitOptions): Promise<void> {
-    let packageJson = defaultPackageJsonConfig;
-    let pathToTemplatePackage;
+    let pathToTemplatePackage = options.template;
 
     if (options.template) {
         pathToTemplatePackage = path.resolve(__dirname, options.template);
@@ -231,63 +255,32 @@ async function init(options: InitOptions): Promise<void> {
         }
     }
 
-    if (!options.defaults) {
+    if (!options.template) {
         /**
          * Collect information for the package.json file
          */
-        packageJson = await prompts([
+         pathToTemplatePackage = await prompts([
             {
                 type: "text",
-                name: "name",
-                initial: defaultPackageJsonConfig.name,
-                message: "project name",
-            },
-            {
-                type: "text",
-                name: "version",
-                initial: defaultPackageJsonConfig.version,
-                message: "version",
-            },
-            {
-                type: "text",
-                name: "description",
-                message: "description",
-            },
-            {
-                type: "text",
-                name: "repository",
-                message: "git repository",
-            },
-            {
-                type: "text",
-                name: "keywords",
-                message: "keywords",
-            },
-            {
-                type: "text",
-                name: "author",
-                message: "author",
-            },
-            {
-                type: "text",
-                name: "license",
-                initial: defaultPackageJsonConfig.license,
-                message: "license",
-            },
-        ]);
+                name: "template",
+                initial: defaultTemplatePath,
+                message: "Template path or package name",
+            }
+        ]).template;
     }
 
+    const initFile: FastInit = await getFastInitFile(pathToTemplatePackage);
     await installTemplate(pathToTemplatePackage);
-    await copyTemplateToProject(packageJson, pathToTemplatePackage);
+    await createConfigFile(initFile.fastConfig);
+    const packageName: string = await copyTemplateToProject(pathToTemplatePackage, initFile.packageJson);
     await installDependencies();
     await installPlaywrightBrowsers();
-    await uninstallTemplate(packageJson);
+    await uninstallTemplate(packageName);
 }
 
 program
     .command("init")
     .description("Initialize a new project")
-    .option("-d, --defaults", "Use defaults")
     .option("-t, --template <template>", "Path to project template")
     .action(async (options): Promise<void> => {
         await init(options).catch((reason) => {

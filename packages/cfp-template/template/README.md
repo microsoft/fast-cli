@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to the default starter template provided by the FAST CLI.
+Welcome to the default starter template provided by the [FAST CLI](https://microsoft.github.io/fast-cli).
 
 This template can be used as a starting point for your project.
 

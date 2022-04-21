@@ -14,12 +14,4 @@
 
 ## Usage
 
-### Init
-
-local/global install - `fast init`
-npx - `npx @microsoft/fast-cli init`
-
-Argument | Shorthand | Description | Required
----------|-----------|-------------|---------
-`--defaults` | `-d` | Use defaults | No
-`--template <path/to/template>` | `-t <path/to/template>` | Use a local template | No
+Check out our documentation for details at https://microsoft.github.io/fast-cli/.
