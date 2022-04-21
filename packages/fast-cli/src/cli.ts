@@ -70,23 +70,19 @@ function checkNpmRegistryIsAvailable(): Promise<boolean | unknown> {
  */
 function getFastInitFile(
     pathToTemplatePackage: string
-): Promise<FastInit> {
-    return new Promise<FastInit>((resolve, reject) => {
-        const templateDir = path.resolve(
-            __dirname,
-            "node_modules",
-            pathToTemplatePackage,
-            defaultTemplateFolderName
-        );
+): FastInit {
+    const templateDir = path.resolve(
+        __dirname,
+        "node_modules",
+        pathToTemplatePackage,
+        defaultTemplateFolderName
+    );
 
-        resolve(JSON.parse(
-            fs.readFileSync(path.resolve(templateDir, "fastinit.json"), {
-                encoding: "utf8",
-            })
-        ) as FastInit);
-    }).catch((reason) => {
-        throw reason;
-    });
+    return JSON.parse(
+        fs.readFileSync(path.resolve(templateDir, "fastinit.json"), {
+            encoding: "utf8",
+        })
+    );
 }
 
 /**
@@ -95,42 +91,38 @@ function getFastInitFile(
 function copyTemplateToProject(
     pathToTemplatePackage: string,
     packageJson: PackageJson,
-): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-        const templateDir = path.resolve(
-            __dirname,
-            "node_modules",
-            pathToTemplatePackage,
-            defaultTemplateFolderName
-        );
-        const destDir = path.resolve(__dirname);
+): string {
+    const templateDir = path.resolve(
+        __dirname,
+        "node_modules",
+        pathToTemplatePackage,
+        defaultTemplateFolderName
+    );
+    const destDir = path.resolve(__dirname);
 
-        // Copy all files in the template folder
-        fs.copySync(
-            templateDir,
-            destDir,
-            {
-                overwrite: true,
-            },
-            (error: string) => {
-                if (error) {
-                    throw new Error(error);
-                }
+    // Copy all files in the template folder
+    fs.copySync(
+        templateDir,
+        destDir,
+        {
+            overwrite: true,
+        },
+        (error: string) => {
+            if (error) {
+                throw new Error(error);
             }
-        );
+        }
+    );
 
-        const packageName = folderMatches !== null ? folderMatches[0] : packageJson.name;
-        fs.writeJsonSync(path.resolve(destDir, "package.json"), {
-            ...packageJson,
-            name: packageName
-        }, {
-            spaces: 2,
-        });
-
-        resolve(packageName);
-    }).catch((reason) => {
-        throw reason;
+    const packageName = folderMatches !== null ? folderMatches[0] : packageJson.name;
+    fs.writeJsonSync(path.resolve(destDir, "package.json"), {
+        ...packageJson,
+        name: packageName
+    }, {
+        spaces: 2,
     });
+
+    return packageName;
 }
 
 /**
@@ -201,17 +193,11 @@ function installTemplate(pathToTemplate: string): Promise<unknown> {
 
 function createConfigFile(
     fastConfig: FastConfig,
-): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        fs.writeJsonSync(path.resolve(process.cwd(), "fastconfig.json"), {
-            ...fastConfig
-        }, {
-            spaces: 2,
-        });
-
-        resolve();
-    }).catch((reason) => {
-        throw reason;
+): void {
+    fs.writeJsonSync(path.resolve(process.cwd(), "fastconfig.json"), {
+        ...fastConfig
+    }, {
+        spaces: 2,
     });
 }
 
@@ -269,10 +255,10 @@ async function init(options: InitOptions): Promise<void> {
         ]).template;
     }
 
-    const initFile: FastInit = await getFastInitFile(pathToTemplatePackage);
+    const initFile: FastInit = getFastInitFile(pathToTemplatePackage);
     await installTemplate(pathToTemplatePackage);
-    await createConfigFile(initFile.fastConfig);
-    const packageName: string = await copyTemplateToProject(pathToTemplatePackage, initFile.packageJson);
+    createConfigFile(initFile.fastConfig);
+    const packageName: string = copyTemplateToProject(pathToTemplatePackage, initFile.packageJson);
     await installDependencies();
     await installPlaywrightBrowsers();
     await uninstallTemplate(packageName);
