@@ -37,5 +37,10 @@ export default {
             label: "Initialize",
             path: "initialize",
         },
+        {
+            type: "doc",
+            label: "Configure",
+            path: "configure"
+        }
     ],
 };

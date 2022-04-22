@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { exec } from "child_process";
 import path from "path";
 import * as commander from "commander";
 import prompts from "prompts";
@@ -42,28 +41,19 @@ interface InitOptions {
 }
 
 /**
+ * Config command options
+ */
+interface ConfigOptions {
+    /**
+     * The component path
+     */
+    componentPath: string;
+}
+
+/**
  * Setup the CLI
  */
 program.name("fast").description(ascii);
-
-/**
- * Check to see if we can reach the npm repository within a timeout
- */
-function checkNpmRegistryIsAvailable(): Promise<boolean | unknown> {
-    return new Promise(resolve => {
-        resolve(
-            new Promise(resolve => {
-                exec("npm ping", { timeout: 1000 }, error => {
-                    resolve(error === null);
-                });
-            }).catch((reason) => {
-                throw reason;
-            })
-        );
-    }).catch((reason) => {
-        throw reason;
-    });
-}
 
 /**
  * Get the fastinit.json file
@@ -226,20 +216,41 @@ function uninstallTemplate(packageName: string): Promise<unknown> {
 }
 
 /**
+ * Configure a FAST project
+ */
+async function config(options: ConfigOptions): Promise<void> {
+    const config: ConfigOptions = options;
+
+    if (!options.componentPath) {
+        /**
+         * Collect information for the fastconfig.json file
+         */
+        config.componentPath = await prompts([
+            {
+                type: "text",
+                name: "componentPath",
+
+            }
+        ]).componentPath;
+    }
+
+    createConfigFile(config);
+}
+
+/**
+ * Determine if the template is local or remote
+ */
+async function isTemplateRemotePackage(pathToTemplatePackage: string): Promise<boolean> {
+    const localPath = path.resolve(__dirname, pathToTemplatePackage);
+
+    return await fs.pathExists(localPath)
+}
+
+/**
  * Initialize a FAST project
  */
 async function init(options: InitOptions): Promise<void> {
     let pathToTemplatePackage = options.template;
-
-    if (options.template) {
-        pathToTemplatePackage = path.resolve(__dirname, options.template);
-    } else {
-        if (await checkNpmRegistryIsAvailable()) {
-            pathToTemplatePackage = defaultTemplatePath;
-        } else {
-            throw new Error("The npm registry cannot be reached.");
-        }
-    }
 
     if (!options.template) {
         /**
@@ -253,6 +264,10 @@ async function init(options: InitOptions): Promise<void> {
                 message: "Template path or package name",
             }
         ]).template;
+    }
+
+    if (!await isTemplateRemotePackage(pathToTemplatePackage)) {
+        pathToTemplatePackage = path.resolve(__dirname, options.template);
     }
 
     const initFile: FastInit = getFastInitFile(pathToTemplatePackage);
@@ -270,6 +285,15 @@ program
     .option("-t, --template <template>", "Path to project template")
     .action(async (options): Promise<void> => {
         await init(options).catch((reason) => {
+            throw reason;
+        });
+    });
+
+program.command("config")
+    .description("Configure a project")
+    .option("-p, --component-path <path/to/components>", "Path to component folder")
+    .action(async (options): Promise<void> => {
+        await config(options).catch((reason) => {
             throw reason;
         });
     });

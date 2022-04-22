@@ -13,14 +13,3 @@ Welcome to FAST CLI, a creation and workflow tool for your FAST project.
 > Tip
 >
 > Note that this is not a recommended practice, as this could cause issues if you have multiple projects which may need different versions. Instead use the local installation above and alias the commands into your project's `package.json` scripts.
-
-## Usage
-
-### Init
-
-local/global install - `fast init`
-npx - `npx @microsoft/fast-cli init`
-
-Argument | Shorthand | Description | Required
----------|-----------|-------------|---------
-`--template <path/to/template>` | `-t <path/to/template>` | Use a local template | No
