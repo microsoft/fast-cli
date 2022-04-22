@@ -33,7 +33,7 @@ test.describe.skip("CLI", () => {
             const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
             const packageJson = JSON.parse(packageJsonString);
             packageJson.scripts = {
-                fastinit: `fast init -d -t ${path.resolve(dirname, "../cfp-template")}`
+                fastinit: `fast init -t ${path.resolve(dirname, "../cfp-template")}`
             }
             fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
             execSync(`cd ${tempDir} && npm run fastinit`);
@@ -41,20 +41,40 @@ test.describe.skip("CLI", () => {
         test.afterAll(() => {
             fs.removeSync(tempDir);
         });
-        test("should create a package.json file with default contents", () => {
+        test("should create a package.json file with contents from the fast init", () => {
             const packageJsonFile = JSON.parse(
                 fs.readFileSync(path.resolve(tempDir, "package.json"), {
                     encoding: "utf8",
                 })
             );
             const configFilePackageJson = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
+                fs.readFileSync(path.resolve(tempDir, "fastinit.json"), {
                     encoding: "utf8",
                 })
             ).packageJson;
     
             for (const [key, value] of Object.entries(configFilePackageJson)) {
-                expect(packageJsonFile[key].toString()).toEqual((value as any).toString());
+                if (key !== "name") {
+                    expect(packageJsonFile[key].toString()).toEqual((value as any).toString());
+                } else {
+                    expect(packageJsonFile[key].toString()).toEqual("temp");
+                }
+            }
+        });
+        test("should create a fastconfig file with contents from the fast init", () => {
+            const fastConfigFile = JSON.parse(
+                fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
+                    encoding: "utf8",
+                })
+            );
+            const configFilePackageJson = JSON.parse(
+                fs.readFileSync(path.resolve(tempDir, "fastinit.json"), {
+                    encoding: "utf8",
+                })
+            ).fastConfig;
+    
+            for (const [key, value] of Object.entries(configFilePackageJson)) {
+                expect(fastConfigFile[key].toString()).toEqual((value as any).toString());
             }
         });
         test("should copy the template folder contents", () =>{

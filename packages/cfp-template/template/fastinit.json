@@ -1,5 +1,16 @@
 {
+    "fastConfig": {
+        "componentPath": "./src/components"
+    },
     "packageJson": {
+        "name": "fast-project",
+        "description": "A FAST project",
+        "private": true,
+        "type": "module",
+        "version": "0.1.0",
+        "author": "",
+        "license": "ISC",
+        "repository": "",
         "scripts": {
             "build": "webpack --config=./webpack.prod.cjs",
             "eslint": "eslint . --ext .ts",

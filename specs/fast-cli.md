@@ -77,7 +77,7 @@ Argument | Shorthand | Description | Required | Default |
 
 ```json
 {
-    "component-path": "./src/components"
+    "componentPath": "./src/components"
 }
 ```
 
@@ -105,7 +105,7 @@ export const designSystem = {
 };
 ```
 
-> Important: A fastconfig.json must exist with the "component-path" property set. If it does not, the user should be prompted to run the `fast config` command.
+> Important: A fastconfig.json must exist with the "componentPath" property set. If it does not, the user should be prompted to run the `fast config` command.
 
 ## Add a component
 
@@ -128,6 +128,8 @@ Should no template or foundation component be selected, a blank component will b
 TBD list available foundation components.
 
 > Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
+
+> Important: During implementation the `define.ts` which will be part of a components template may require a `package.json` update to include a list of `sideEffects`.
 
 ## Templates
 
