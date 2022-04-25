@@ -5,7 +5,7 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import type { FastConfig, FastInit, PackageJson } from "./cli.options";
+import type { AddDesignSystemOptionMessages, AddDesignSystemOptions, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJson } from "./cli.options";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
@@ -215,10 +215,74 @@ function uninstallTemplate(packageName: string): Promise<unknown> {
     });
 }
 
+async function createDesignSystemFile(
+    designSystemOptions: AddDesignSystemOptions,
+): Promise<void> {
+    const fastConfigPath = path.resolve(process.cwd(), "fastconfig.json");
+
+    if (!await fs.pathExists(fastConfigPath)) {
+        throw new Error("fastconfig.json file does not exist, run the config command to generate this file.");
+    }
+
+    const fastConfig = JSON.parse(fs.readFileSync(fastConfigPath, { encoding: "utf8" }));
+
+    if (typeof fastConfig.componentPath !== "string") {
+        throw new Error("fastconfig.json file does not contain a component path, add a component path to generate a design system file.");
+    }
+
+    fs.ensureDirSync(path.resolve(fastConfig.componentPath, "../"));
+    fs.writeFileSync(path.resolve(fastConfig.componentPath, "../design-system.ts"),
+        `export const designSystem = {` +
+        `    prefix: "${designSystemOptions.prefix}",` +
+        `    shadowRootMode: "${designSystemOptions.shadowRootMode}",` +
+        `}`
+    );
+}
+
+/**
+ * Add a design system
+ */
+async function addDesignSystem(
+    options: AddDesignSystemOptions,
+    messages: AddDesignSystemOptionMessages
+): Promise<void> {
+    const config: AddDesignSystemOptions = options;
+
+    if (!options.prefix) {
+        config.prefix = await prompts([
+            {
+                type: "text",
+                name: "prefix",
+                message: messages.prefix,
+                validate: (input): boolean => {
+                    return input !== "";
+                }
+            }
+        ]).prefix;
+    }
+
+    if (!options.shadowRootMode) {
+        config.shadowRootMode = await prompts([
+            {
+                type: "toggle",
+                name: "shadowRootMode",
+                message: messages.shadowRootMode,
+                initial: true,
+                active: "open",
+                inactive: "closed",
+            }
+        ]).shadowRootMode;
+    }
+
+    await createDesignSystemFile(config).catch((reason) => {
+        throw reason;
+    });
+}
+
 /**
  * Configure a FAST project
  */
-async function config(options: ConfigOptions): Promise<void> {
+async function config(options: ConfigOptions, messages: FastConfigOptionMessages): Promise<void> {
     const config: ConfigOptions = options;
 
     if (!options.componentPath) {
@@ -229,6 +293,7 @@ async function config(options: ConfigOptions): Promise<void> {
             {
                 type: "text",
                 name: "componentPath",
+                message: messages.componentPath
 
             }
         ]).componentPath;
@@ -249,19 +314,19 @@ async function isTemplateRemotePackage(pathToTemplatePackage: string): Promise<b
 /**
  * Initialize a FAST project
  */
-async function init(options: InitOptions): Promise<void> {
+async function init(options: InitOptions, messages: FastInitOptionMessages): Promise<void> {
     let pathToTemplatePackage = options.template;
 
     if (!options.template) {
         /**
          * Collect information for the package.json file
          */
-         pathToTemplatePackage = await prompts([
+        pathToTemplatePackage = await prompts([
             {
                 type: "text",
                 name: "template",
                 initial: defaultTemplatePath,
-                message: "Template path or package name",
+                message: messages.template,
             }
         ]).template;
     }
@@ -279,21 +344,45 @@ async function init(options: InitOptions): Promise<void> {
     await uninstallTemplate(packageName);
 }
 
+const initTemplateMessage: string = "Project template";
+
 program
     .command("init")
     .description("Initialize a new project")
-    .option("-t, --template <template>", "Path to project template")
+    .option("-t, --template <template>", initTemplateMessage)
     .action(async (options): Promise<void> => {
-        await init(options).catch((reason) => {
+        await init(options, {
+            template: initTemplateMessage
+        }).catch((reason) => {
             throw reason;
         });
     });
 
+const configComponentPathMessage: string = "Path to component folder";
+
 program.command("config")
     .description("Configure a project")
-    .option("-p, --component-path <path/to/components>", "Path to component folder")
+    .option("-p, --component-path <path/to/components>", configComponentPathMessage)
     .action(async (options): Promise<void> => {
-        await config(options).catch((reason) => {
+        await config(options, {
+            componentPath: configComponentPathMessage
+        }).catch((reason) => {
+            throw reason;
+        });
+    });
+
+const addDesignSystemPrefixMessage: string = "The web component prefix";
+const addDesignSystemShadowRootModeMessage: string = "The shadowroot mode";
+
+program.command("add-design-system")
+    .description("Add a design system")
+    .option("-p, --prefix <prefix>", addDesignSystemPrefixMessage)
+    .option("-s, --shadow-root-mode <mode>", addDesignSystemShadowRootModeMessage)
+    .action(async (options): Promise<void> => {
+        await addDesignSystem(options, {
+            prefix: addDesignSystemPrefixMessage,
+            shadowRootMode: addDesignSystemShadowRootModeMessage,
+        }).catch((reason) => {
             throw reason;
         });
     });
