@@ -14,7 +14,14 @@ Creating a new FAST project can be done easily, either using the `@microsoft/fas
 
 ## Creating a project using the CLI
 
+Install the `@microsoft/fast-cli` locally or globally.
+
 ```bash
-npm install -g @microsoft/fast-cli
-fast init
+$ fast init
 ```
+
+### Arguments
+
+Argument | Shorthand | Description | Required
+---------|-----------|-------------|---------
+`--template <path/to/template>` | `-t <path/to/template>` | Use a local template | No

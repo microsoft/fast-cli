@@ -19,16 +19,20 @@ const templateDir = path.resolve(dirname, "../cfp-template/template");
  * npx clear-npx-cache
  */
 test.describe.skip("CLI", () => {
+    test.beforeAll(() => {
+        fs.ensureDirSync(tempDir);
+
+        // Create a temp project
+        execSync(`cd ${tempDir} && npm init -y`);
+    
+        // Install the FAST CLI
+        execSync(`cd ${tempDir} && npm install --save-dev ${dirname}`);
+    });
+    test.afterAll(() => {
+        fs.removeSync(tempDir);
+    });
     test.describe("init", () => {
         test.beforeAll(() => {
-            fs.ensureDirSync(tempDir);
-    
-            // Create a temp project
-            execSync(`cd ${tempDir} && npm init -y`);
-    
-            // Install the FAST CLI
-            execSync(`cd ${tempDir} && npm install --save-dev ${dirname}`);
-    
             // Update the scripts for testable CLI commands
             const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
             const packageJson = JSON.parse(packageJsonString);
@@ -37,9 +41,6 @@ test.describe.skip("CLI", () => {
             }
             fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
             execSync(`cd ${tempDir} && npm run fastinit`);
-        });
-        test.afterAll(() => {
-            fs.removeSync(tempDir);
         });
         test("should create a package.json file with contents from the fast init", () => {
             const packageJsonFile = JSON.parse(
@@ -94,6 +95,36 @@ test.describe.skip("CLI", () => {
             });
     
             expect(hasNodeModules).toEqual(true);
+        });
+    });
+    test.describe("config", () => {
+        test.beforeAll(() => {
+            // Update the scripts for testable CLI commands
+            const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
+            const packageJson = JSON.parse(packageJsonString);
+            packageJson.scripts = {
+                fastconfig: `fast config -p ./src/components`
+            }
+            fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
+            execSync(`cd ${tempDir} && npm run fastconfig`);
+        });
+        test("should create a fastconfig.json file", () => {
+            expect(() => {
+                JSON.parse(
+                    fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
+                        encoding: "utf8",
+                    })
+                )
+            }).not.toThrow();
+        });
+        test("should contain a custom component path", () => {
+            const config = JSON.parse(
+                fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
+                    encoding: "utf8",
+                })
+            );
+
+            expect(config.componentPath).toEqual("./src/components");
         });
     });
 });

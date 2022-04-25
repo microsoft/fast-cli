@@ -71,7 +71,7 @@ $ fast config
 
 Argument | Shorthand | Description | Required | Default |
 ---------|-----------|-------------|----------|---------|
-`--component-path` | `-p` | The relative path of the FAST components folder | Yes | |
+`--component-path <path/to/components>` | `-p <path/to/components>` | The relative path of the FAST components folder | Yes | |
 
 ### Example fastconfig.json file
 
