@@ -440,7 +440,7 @@
             
             <li>
                 <a
-                    class="active"
+                    class=""
                     href="https://microsoft.github.io/fast-cli/docs/introduction"
                 >
                     Introduction
@@ -460,7 +460,7 @@
             
             <li>
                 <a
-                    class=""
+                    class="active"
                     href="https://microsoft.github.io/fast-cli/docs/configure"
                 >
                     Configure
@@ -482,15 +482,36 @@
 
 
                 <div class="content">
-                     <h1 id="introduction">Introduction</h1>
-<p>Welcome to FAST CLI, a creation and workflow tool for your FAST project.</p>
-<h2 id="local-installation">Local Installation</h2>
-<p><code>npm install --save-dev @microsoft/fast-cli</code></p>
-<h2 id="global-installation">Global Installation</h2>
-<p><code>npm install -g @microsoft/fast-cli</code></p>
+                     <h1 id="configure">Configure</h1>
+<p>Running the <code>config</code> command will create a <code>fastconfig.json</code> file. This should be useful in existing projects which could take advantage of the CLI once it has been initialized.</p>
+<pre><code class="language-bash">$ fast config
+</code></pre>
+<h3 id="arguments">Arguments</h3>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Shorthand</th>
+<th>Description</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--component-path &lt;path/to/components&gt;</code></td>
+<td><code>-p &lt;path/to/components&gt;</code></td>
+<td>The relative path of the FAST components folder</td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="example-fastconfigjson-file">Example fastconfig.json file</h3>
+<pre><code class="language-json">{
+    &quot;componentPath&quot;: &quot;./src/components&quot;
+}
+</code></pre>
 <blockquote>
-<p>Tip</p>
-<p>Note that this is not a recommended practice, as this could cause issues if you have multiple projects which may need different versions. Instead use the local installation above and alias the commands into your project&#39;s <code>package.json</code> scripts.</p>
+<p>Important: The paths of components and design system must be relative to each other, therefore only the path to the component folder is required as the design system file path is assumed. In an app the path may be <code>&quot;./src/components&quot;</code> as shown above, or in the case of a component library the path may be <code>&quot;./src&quot;</code>.</p>
 </blockquote>
 
                 </div>
