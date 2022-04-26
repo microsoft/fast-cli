@@ -1,6 +1,6 @@
 # Add a design system
 
-Before a user can add components, they must add a design system. The design system **must** appear at the root of the component folder. The design system will dictate web component configuration options.
+Before adding your own components, a design system file must be available. The design system will dictate web component configuration options.
 
 ```bash
 $ fast add-design-system
@@ -18,5 +18,3 @@ export const designSystem = {
   shadowRootMode: "closed"
 };
 ```
-
-> Important: A fastconfig.json must exist with the `componentPath` property set. If it does not, the user should be prompted to run the `fast config` command.
