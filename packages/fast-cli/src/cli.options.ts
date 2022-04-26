@@ -2,6 +2,10 @@ export interface FastConfig {
     componentPath: string;
 }
 
+export interface FastConfigOptionMessages {
+    componentPath: string;
+}
+
 export interface PackageJson {
     name: string;
     version: string;
@@ -15,4 +19,18 @@ export interface PackageJson {
 export interface FastInit {
     fastConfig: FastConfig,
     packageJson: PackageJson
+}
+
+export interface FastInitOptionMessages {
+    template: string;
+}
+
+export interface AddDesignSystemOptions {
+    prefix?: string;
+    shadowRootMode?: "open" | "closed";
+}
+
+export interface AddDesignSystemOptionMessages {
+    prefix: string;
+    shadowRootMode: string;
 }

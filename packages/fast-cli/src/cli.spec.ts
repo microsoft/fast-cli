@@ -8,6 +8,30 @@ const tempDirRelativeLocation = "../temp";
 const tempDir = path.resolve(dirname, tempDirRelativeLocation);
 const templateDir = path.resolve(dirname, "../cfp-template/template");
 
+function setup() {
+    fs.ensureDirSync(tempDir);
+
+    // Create a temp project
+    execSync(`cd ${tempDir} && npm init -y`);
+
+    // Install the FAST CLI
+    execSync(`cd ${tempDir} && npm install --save-dev ${dirname}`);
+
+    // Update the scripts for testable CLI commands
+    const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
+    const packageJson = JSON.parse(packageJsonString);
+    packageJson.scripts = {
+        "fast:init": `fast init -t ${path.resolve(dirname, "../cfp-template")}`,
+        "fast:config": `fast config -p ./src/components`,
+        "fast:add-design-system": `fast add-design-system -p test -s open`,
+    };
+    fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
+}
+
+function teardown() {
+    fs.removeSync(tempDir);
+}
+
 /**
  * TODO: update these tests when the npm CLI has been updated and added it to
  * the github validation workflow.
@@ -19,29 +43,14 @@ const templateDir = path.resolve(dirname, "../cfp-template/template");
  * npx clear-npx-cache
  */
 test.describe.skip("CLI", () => {
-    test.beforeAll(() => {
-        fs.ensureDirSync(tempDir);
-
-        // Create a temp project
-        execSync(`cd ${tempDir} && npm init -y`);
-    
-        // Install the FAST CLI
-        execSync(`cd ${tempDir} && npm install --save-dev ${dirname}`);
-    });
-    test.afterAll(() => {
-        fs.removeSync(tempDir);
-    });
     test.describe("init", () => {
         test.beforeAll(() => {
-            // Update the scripts for testable CLI commands
-            const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
-            const packageJson = JSON.parse(packageJsonString);
-            packageJson.scripts = {
-                fastinit: `fast init -t ${path.resolve(dirname, "../cfp-template")}`
-            }
-            fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
-            execSync(`cd ${tempDir} && npm run fastinit`);
+            setup();
+            execSync(`cd ${tempDir} && npm run fast:init`);
         });
+        test.afterAll(() => {
+            teardown();
+        })
         test("should create a package.json file with contents from the fast init", () => {
             const packageJsonFile = JSON.parse(
                 fs.readFileSync(path.resolve(tempDir, "package.json"), {
@@ -99,14 +108,11 @@ test.describe.skip("CLI", () => {
     });
     test.describe("config", () => {
         test.beforeAll(() => {
-            // Update the scripts for testable CLI commands
-            const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
-            const packageJson = JSON.parse(packageJsonString);
-            packageJson.scripts = {
-                fastconfig: `fast config -p ./src/components`
-            }
-            fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
-            execSync(`cd ${tempDir} && npm run fastconfig`);
+            setup();
+            execSync(`cd ${tempDir} && npm run fast:config`);
+        });
+        test.afterAll(() => {
+            teardown();
         });
         test("should create a fastconfig.json file", () => {
             expect(() => {
@@ -125,6 +131,39 @@ test.describe.skip("CLI", () => {
             );
 
             expect(config.componentPath).toEqual("./src/components");
+        });
+    });
+    test.describe("add-design-system", () => {
+        test.beforeAll(() => {
+            setup();
+        });
+        test.afterAll(() => {
+            teardown();
+        });
+        test("should throw if there is no fastconfig.json file", () => {
+            expect(() => {
+                execSync(`cd ${tempDir} && npm run fast:add-design-system`);
+            }).toThrow();
+        });
+        test("should throw if the fastconfig.json file does not contain a component path", () => {
+            execSync(`cd ${tempDir} && npm run fast:config`);
+
+            fs.writeFileSync(path.resolve(tempDir, "fastconfig.json"), "{}");
+
+            expect(() => {
+                execSync(`cd ${tempDir} && npm run fast:add-design-system`);
+            }).toThrow();
+        });
+        test("should create a design-system.ts file relative to a component path", async () => {
+            execSync(`cd ${tempDir} && npm run fast:config && npm run fast:add-design-system`);
+
+            expect(await fs.pathExists(path.resolve(tempDir, "src"))).toBeTruthy();
+        });
+        test("should contain a design system export with the provided options", async () => {
+            const { designSystem: designSystem } = await import(path.resolve(tempDir, "./src/design-system.ts"));
+
+            expect(designSystem.prefix).toEqual("test");
+            expect(designSystem.shadowRootMode).toEqual("open");
         });
     });
 });

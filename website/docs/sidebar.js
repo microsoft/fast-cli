@@ -41,6 +41,11 @@ export default {
             type: "doc",
             label: "Configure",
             path: "configure"
+        },
+        {
+            type: "doc",
+            label: "Add a design system",
+            path: "add-a-design-system",
         }
     ],
 };
