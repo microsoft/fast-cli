@@ -450,7 +450,7 @@
             
             <li>
                 <a
-                    class="active"
+                    class=""
                     href="https://microsoft.github.io/fast-cli/docs/initialize"
                 >
                     Initialize
@@ -470,7 +470,7 @@
             
             <li>
                 <a
-                    class=""
+                    class="active"
                     href="https://microsoft.github.io/fast-cli/docs/add-a-design-system"
                 >
                     Add a design system
@@ -492,18 +492,10 @@
 
 
                 <div class="content">
-                     <h1 id="initialize">Initialize</h1>
-<p>Creating a new FAST project can be done easily, either using the <code>@microsoft/fast-cli</code> or by leveraging our initalizer.</p>
-<h2 id="creating-a-project-using-the-initializer">Creating a project using the initializer</h2>
-<h3 id="npx">npx</h3>
-<p><code>npx create-fast-project</code></p>
-<h3 id="npm">npm</h3>
-<p><code>npm init fast-project</code></p>
-<h2 id="creating-a-project-using-the-cli">Creating a project using the CLI</h2>
-<p>Install the <code>@microsoft/fast-cli</code> locally or globally.</p>
-<pre><code class="language-bash">$ fast init
+                     <h1 id="add-a-design-system">Add a design system</h1>
+<p>Before adding your own components, a design system file must be available. The design system will dictate web component configuration options.</p>
+<pre><code class="language-bash">$ fast add-design-system
 </code></pre>
-<h3 id="arguments">Arguments</h3>
 <table>
 <thead>
 <tr>
@@ -511,15 +503,33 @@
 <th>Shorthand</th>
 <th>Description</th>
 <th>Required</th>
+<th>Default</th>
+<th>Options</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>--template &lt;path/to/template&gt;</code></td>
-<td><code>-t &lt;path/to/template&gt;</code></td>
-<td>Use a local template</td>
+<td><code>--prefix &lt;prefix&gt;</code></td>
+<td><code>-p &lt;prefix&gt;</code></td>
+<td>The web component prefix</td>
 <td>No</td>
+<td><code>&lt;project-name&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>--shadow-root-mode &lt;mode&gt;</code></td>
+<td><code>-s &lt;mode&gt;</code></td>
+<td>Determine what the shadowroot mode is</td>
+<td>No</td>
+<td>&quot;open&quot;</td>
+<td>&quot;closed&quot;, &quot;open&quot;</td>
 </tr>
 </tbody></table>
+<p>Example design-system.ts contents:</p>
+<pre><code class="language-ts">export const designSystem = {
+  prefix: &quot;example&quot;,
+  shadowRootMode: &quot;closed&quot;
+};
+</code></pre>
 
                 </div>
             </main>
