@@ -4,13 +4,14 @@ These templates will be used in the `add-component` command. Create your own and
 
 ## Required folder and files
 
-component-template/
+template/
+└─ fixture.ts
 └─ component.ts
 └─ component.template.ts
-└─ component.style.ts
+└─ component.styles.ts
 └─ component.definition.ts
-└─ component.spec.ts
+└─ component.pw.spec.ts
 └─ component.stories.ts
-└─ component.fixture.html
 └─ define.ts
-└─ README.md
+└─ fast.add-component.json
+└─ README.ts
