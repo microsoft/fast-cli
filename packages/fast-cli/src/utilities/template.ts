@@ -1,6 +1,6 @@
 export interface ComponentTemplateConfig {
     /**
-     * The components tag
+     * The component's HTML tag name. 
      * e.g. my-component
      */
     tagName: string;
