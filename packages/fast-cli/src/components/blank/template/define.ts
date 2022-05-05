@@ -1,0 +1,1 @@
+export default (): string => `import "./component.js";`;

@@ -57,6 +57,10 @@ module.exports = {
                 format: null, // disable for variable names because of our foo__expanded convention for JSS
                 // TODO: I think we can come up with a regex that ignores variables with __ in them
             },
+            {
+                selector: "objectLiteralMethod",
+                format: null, // disable for file names
+            }
         ],
         "@typescript-eslint/no-inferrable-types": "off",
         "no-prototype-builtins": "off",
