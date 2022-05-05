@@ -5,7 +5,7 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { XOR } from "./cli.types.js";
@@ -316,7 +316,7 @@ async function checkTemplateForFiles(pathToTemplatePackage: string): Promise<voi
     }
 
     // Run through available template files and make sure all required files are accounted for
-    for (const [templateFile, fileName] of Object.entries(requiredComponentTemplateFiles)) {
+    for (const [templateFile, ] of Object.entries(requiredComponentTemplateFiles)) {
         if (!directoryContents.includes(templateFile)) {
             throw new Error(`${componentTemplateFileNotFoundMessage}: ${templateFile}`);
         }

@@ -79,7 +79,7 @@ function teardown() {
  * When switching between npm versions if you recieve a permissions error, try
  * npx clear-npx-cache
  */
-test.describe("CLI", () => {
+test.describe.skip("CLI", () => {
     test.describe("init", () => {
         test.beforeAll(() => {
             setup();
