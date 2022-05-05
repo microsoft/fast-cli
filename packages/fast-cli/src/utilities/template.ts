@@ -6,7 +6,7 @@ export interface ComponentTemplateConfig {
     tagName: string;
 
     /**
-     * The components class
+     * The component's JavaScript class name.
      * e.g. MyComponent
      */
     className: string;
