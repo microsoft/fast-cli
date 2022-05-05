@@ -5,8 +5,13 @@ module.exports = {
         postcss: false,
     },
     stories: ["../src/**/*.stories.ts"],
+    core: {
+        builder: "webpack5"
+    },
     webpackFinal: async config => {
-        config.resolve.plugins.push(new ResolveTypescriptPlugin());
+        Array.isArray(config.resolve.plugins)
+            ? config.resolve.plugins.push(new ResolveTypescriptPlugin())
+            : [new ResolveTypescriptPlugin()];
         config.module.rules.push({
             test: /\.ts$/,
             sideEffects: true,

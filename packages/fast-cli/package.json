@@ -10,11 +10,11 @@
     "scripts": {
         "build": "npm run build:tsc",
         "build:tsc": "tsc -p ./tsconfig.json",
-        "build:storybook": "NODE_OPTIONS='--openssl-legacy-provider' build-storybook",
+        "build:storybook": "build-storybook",
         "dev": "tsc -p ./tsconfig.json -w",
         "eslint": "eslint . --ext .ts",
         "eslint:fix": "eslint . --ext .ts --fix",
-        "start:storybook": "NODE_OPTIONS='--openssl-legacy-provider' start-storybook -p 3000 -h localhost",
+        "start:storybook": "start-storybook -p 3000 -h localhost",
         "test": "npm run build && npm run eslint && npx playwright test"
     },
     "repository": {
@@ -39,7 +39,9 @@
     },
     "devDependencies": {
         "@playwright/test": "^1.21.1",
+        "@storybook/builder-webpack5": "^6.4.22",
         "@storybook/html": "^6.4.22",
+        "@storybook/manager-webpack5": "^6.4.22",
         "@typescript-eslint/eslint-plugin": "^5.17.0",
         "@typescript-eslint/parser": "^5.17.0",
         "eslint": "^8.12.0",
