@@ -1,4 +1,4 @@
-import type { ComponentTemplateConfig } from "@microsoft/fast-cli";
+import type { ComponentTemplateConfig } from "../../../utilities/template";
 
 export default (config: ComponentTemplateConfig): string => `
 import { customElement, FASTElement } from "@microsoft/fast-element";
