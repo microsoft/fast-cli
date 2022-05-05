@@ -5,11 +5,17 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import type { AddDesignSystemOptionMessages, AddDesignSystemOptions, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJson } from "./cli.options";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit } from "./cli.options.js";
+import { requiredComponentTemplateFiles } from "./components/files.js";
+import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
+import type { XOR } from "./cli.types.js";
+import type { ComponentTemplateConfig } from "./utilities/template.js";
+import { availableTemplates } from "./components/options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
 const defaultTemplatePath = path.resolve(__dirname, "@microsoft/cfp-template");
+const cliPath = path.resolve(__dirname, "node_modules", "@microsoft/fast-cli");
 const defaultTemplateFolderName = "template";
 /* eslint-disable no-useless-escape */
 const folderMatches = process.cwd().match(/[^(\\|\/)]+(?=$)/);
@@ -75,12 +81,23 @@ function getFastInitFile(
     );
 }
 
+function getPackageName(packageJson: XOR<PackageJsonInit, PackageJsonAddComponent>): string {
+    const packageName = folderMatches !== null
+        ? folderMatches[0]
+        : typeof packageJson.name === "string"
+        ? packageJson.name
+        : "";
+
+    return packageName;
+}
+
 /**
  * Copy the template to the project
  */
 function copyTemplateToProject(
     pathToTemplatePackage: string,
-    packageJson: PackageJson,
+    packageJson: XOR<PackageJsonInit, PackageJsonAddComponent>,
+    destDir: string
 ): string {
     const templateDir = path.resolve(
         __dirname,
@@ -88,7 +105,6 @@ function copyTemplateToProject(
         pathToTemplatePackage,
         defaultTemplateFolderName
     );
-    const destDir = path.resolve(__dirname);
 
     // Copy all files in the template folder
     fs.copySync(
@@ -104,7 +120,8 @@ function copyTemplateToProject(
         }
     );
 
-    const packageName = folderMatches !== null ? folderMatches[0] : packageJson.name;
+    // Update the package.json file
+    const packageName = getPackageName(packageJson);
     fs.writeJsonSync(path.resolve(destDir, "package.json"), {
         ...packageJson,
         name: packageName
@@ -215,20 +232,26 @@ function uninstallTemplate(packageName: string): Promise<unknown> {
     });
 }
 
-async function createDesignSystemFile(
-    designSystemOptions: AddDesignSystemOptions,
-): Promise<void> {
+async function getFastConfig(): Promise<FastConfig> {
     const fastConfigPath = path.resolve(process.cwd(), "fastconfig.json");
 
     if (!await fs.pathExists(fastConfigPath)) {
-        throw new Error("fastconfig.json file does not exist, run the config command to generate this file.");
+        throw new Error(fastConfigDoesNotExistErrorMessage);
     }
 
     const fastConfig = JSON.parse(fs.readFileSync(fastConfigPath, { encoding: "utf8" }));
 
     if (typeof fastConfig.componentPath !== "string") {
-        throw new Error("fastconfig.json file does not contain a component path, add a component path to generate a design system file.");
+        throw new Error(fastConfigDoesNotContainComponentPathMessage);
     }
+
+    return fastConfig;
+}
+
+async function createDesignSystemFile(
+    designSystemOptions: AddDesignSystemOptions,
+): Promise<void> {
+    const fastConfig = await getFastConfig();
 
     fs.ensureDirSync(path.resolve(fastConfig.componentPath, "../"));
     fs.writeFileSync(path.resolve(fastConfig.componentPath, "../design-system.ts"),
@@ -277,6 +300,110 @@ async function addDesignSystem(
     await createDesignSystemFile(config).catch((reason) => {
         throw reason;
     });
+}
+
+async function checkTemplateForFiles(pathToTemplatePackage: string): Promise<void> {
+    const templateDir = path.resolve(
+        __dirname,
+        "node_modules",
+        pathToTemplatePackage,
+        defaultTemplateFolderName
+    );
+    const directoryContents = fs.readdirSync(templateDir);
+
+    if (!Array.isArray(directoryContents)) {
+        throw new Error(componentTemplateFilesNotFoundMessage);
+    }
+
+    // Run through available template files and make sure all required files are accounted for
+    for (const [templateFile, fileName] of Object.entries(requiredComponentTemplateFiles)) {
+        if (!directoryContents.includes(templateFile)) {
+            throw new Error(`${componentTemplateFileNotFoundMessage}: ${templateFile}`);
+        }
+    }
+}
+
+function toPascalCase(kabobCase: string): string {
+    return `${kabobCase}`
+        .replace(new RegExp(/[-]+/, 'g'), ' ')
+        .replace(new RegExp(/[^\w\s]/, 'g'), '')
+        .replace(
+            new RegExp(/\s+(.)(\w*)/, 'g'),
+            ($1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`
+        )
+        .replace(new RegExp(/\w/), s => s.toUpperCase());
+}
+
+async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage: string, cliTemplate: boolean, name: string): Promise<void> {
+    const normalizedPathToTemplatePackage: string = cliTemplate
+        ? path.resolve(
+            cliPath,
+            `dist/esm/components/${pathToTemplatePackage}`)
+        : pathToTemplatePackage;
+
+    // Ensure there is an empty directory with the provided name
+    fs.emptydirSync(path.resolve(fastConfig.componentPath, name));
+
+    // Create an array of template items based on the files.ts
+    for (const [templateName, fileName] of Object.entries(requiredComponentTemplateFiles)) {
+        console.log("BEFORE IMPORT")
+        const { default: template } = await import(`${normalizedPathToTemplatePackage}/template/${templateName}`);
+        console.log("AFTER IMPORT");
+        const filePath = path.resolve(fastConfig.componentPath, name, fileName(name));
+
+        fs.ensureFileSync(filePath);
+        fs.writeFileSync(
+            filePath,
+            template({ tagName: name, className: toPascalCase(name) })
+        );
+    }
+}
+
+function isCliTemplate(template: string): boolean {
+    return availableTemplates.includes(template);
+}
+
+async function addComponent(
+    options: AddComponentOptions,
+    messages: AddComponentOptionMessages,
+): Promise<void> {
+    const config: AddComponentOptions = options;
+
+    if (!options.name) {
+        config.name = await prompts([
+            {
+                type: "text",
+                name: "name",
+                message: messages.name
+            }
+        ]).name;
+    }
+
+    if (!options.template) {
+        config.template = await prompts([
+            {
+                type: "text",
+                name: "template",
+                message: messages.template
+            }
+        ]).template;
+    }
+
+    const fastConfig: FastConfig = await getFastConfig();
+    const cliTemplate = isCliTemplate(options.template as string);
+
+    if (!cliTemplate) {
+        await installTemplate(options.template as string);
+        await checkTemplateForFiles(options.template as string);
+    }
+
+    await writeTemplateFiles(fastConfig, options.template as string, cliTemplate, options.name as string);
+
+    if (!cliTemplate) {
+        await uninstallTemplate(options.template as string);
+    }
+
+    // await installDependencies(); // TODO: investigate adding this for foundation using fast.add-component.json
 }
 
 /**
@@ -338,7 +465,7 @@ async function init(options: InitOptions, messages: FastInitOptionMessages): Pro
     const initFile: FastInit = getFastInitFile(pathToTemplatePackage);
     await installTemplate(pathToTemplatePackage);
     createConfigFile(initFile.fastConfig);
-    const packageName: string = copyTemplateToProject(pathToTemplatePackage, initFile.packageJson);
+    const packageName: string = copyTemplateToProject(pathToTemplatePackage, initFile.packageJson, path.resolve(__dirname));
     await installDependencies();
     await installPlaywrightBrowsers();
     await uninstallTemplate(packageName);
@@ -387,4 +514,22 @@ program.command("add-design-system")
         });
     });
 
+const addComponentTemplateMessage = "";
+const addComponentNameMessage = "";
+
+program.command("add-component")
+    .description("Add a component")
+    .option("-t, --template <template>", addComponentTemplateMessage)
+    .option("-n, --name <name>", addComponentNameMessage)
+    .action(async (options): Promise<void> => {
+        await addComponent(options, {
+            template: addComponentTemplateMessage,
+            name: addComponentNameMessage,
+        }).catch((reason) => {
+            throw reason;
+        })
+    });
+
 program.parse(process.argv);
+
+export { ComponentTemplateConfig };

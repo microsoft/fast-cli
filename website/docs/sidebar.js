@@ -46,6 +46,24 @@ export default {
             type: "doc",
             label: "Add a design system",
             path: "add-a-design-system",
+        },
+        {
+            type: "doc",
+            label: "Add a component",
+            path: "add-a-component",
+        },
+        {
+            type: "category",
+            label: "Templates",
+            path: "templates",
+            description: "Create your own templates to scaffold a project or component. Template provide scaffolding for entire projects and smaller pieces of code to accelerate developer workflows.",
+            items: [
+                {
+                    type: "doc",
+                    label: "Component",
+                    path: "templates/component"
+                }
+            ]
         }
     ],
 };

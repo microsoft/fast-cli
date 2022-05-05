@@ -54,6 +54,7 @@ storybook-static
 # tmp directories
 .tmp/
 temp/
+temp-component/
 
 # GitHub Actions Local Testing
 .github/workflows/testing/*.json

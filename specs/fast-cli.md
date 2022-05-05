@@ -140,7 +140,7 @@ Template provide scaffolding for entire projects and smaller pieces of code to a
 Project templates can be for web sites, web apps, and/or component packages. They should include the following structure:
 
 ```text
-cfp-example-template/
+cfp-template/
 └─ package.json
 └─ fastconfig.json
 └─ template/
@@ -151,15 +151,33 @@ cfp-example-template/
 ### Component templates
 
 Component templates are intended to be used for FAST based web components. They should include the following structure:
-
 ```text
-example-component-template/
-└─ example-component.ts
-└─ example-component.template.ts
-└─ example-component.style.ts
-└─ example-component.definition.ts
-└─ example-component.spec.ts
+template/
+└─ fixture.ts
+└─ component.ts
+└─ component.template.ts
+└─ component.styles.ts
+└─ component.definition.ts
+└─ component.pw.spec.ts
+└─ component.stories.ts
 └─ define.ts
+└─ fast.add-component.json
+└─ README.ts
+```
+
+Which when parsed with a name, for example "test" should result in the following structure:
+```text
+test/
+└─ fixtures/
+   └─ base.html
+└─ test.ts
+└─ test.template.ts
+└─ test.styles.ts
+└─ test.definition.ts
+└─ test.pw.spec.ts
+└─ test.stories.ts
+└─ define.ts
+└─ README.md
 ```
 
 ## Example scenarios
