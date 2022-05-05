@@ -22,5 +22,5 @@
             "ES2016.Array.Include"
         ]
     },
-    "include": ["src/**/*"]
+    "include": ["src"]
 }
