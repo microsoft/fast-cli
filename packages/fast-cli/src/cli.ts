@@ -346,9 +346,7 @@ async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage:
 
     // Create an array of template items based on the files.ts
     for (const [templateName, fileName] of Object.entries(requiredComponentTemplateFiles)) {
-        console.log("BEFORE IMPORT")
         const { default: template } = await import(`${normalizedPathToTemplatePackage}/template/${templateName}`);
-        console.log("AFTER IMPORT");
         const filePath = path.resolve(fastConfig.componentPath, name, fileName(name));
 
         fs.ensureFileSync(filePath);
