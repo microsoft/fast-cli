@@ -38,6 +38,7 @@ There are some issues with scaffolding projects outlined below:
 - [fast config](#configuration)
 - [fast add-design-system](#add-a-design-system)
 - [fast add-component](#add-a-component)
+- [fast add-foundation-component](#add-a-foundation-component)
 
 ## CLI information
 
@@ -69,9 +70,9 @@ $ fast config
 
 ### Arguments
 
-Argument | Shorthand | Description | Required | Default |
----------|-----------|-------------|----------|---------|
-`--component-path <path/to/components>` | `-p <path/to/components>` | The relative path of the FAST components folder | Yes | |
+Argument | Shorthand | Description | Required |
+---------|-----------|-------------|----------|
+`--component-path <path/to/components>` | `-p <path/to/components>` | The relative path of the FAST components folder | Yes |
 
 ### Example fastconfig.json file
 
@@ -109,7 +110,7 @@ export const designSystem = {
 
 ## Add a component
 
-Components are added and configured based on a design system.
+Components are added and configured based on a design system. Templates can use either the "blank" template with the default files, or it can point to a local or remote package.
 
 ```bash
 $ fast add-component
@@ -117,19 +118,26 @@ $ fast add-component
 
 ### Arguments
 
-Argument | Shorthand | Description | Required | Default
----------|-----------|-------------|----------|--------
+Argument | Shorthand | Description | Required | Options
+---------|-----------|-------------|----------|---------
 `--name <name>` | `-n <name>` | The name of the functionality to be added | Yes | |
-`--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | No |
-`--foundation <foundation-component>` | `-f <foundation-component>` | Foundation template | No | 
-
-Should no template or foundation component be selected, a blank component will be created.
-
-TBD list available foundation components.
+`--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | No | `<path/to/template>`, "blank" |
 
 > Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
 
 > Important: During implementation the `define.ts` which will be part of a components template may require a `package.json` update to include a list of `sideEffects`.
+
+## Add a foundation component
+
+Components are added and configured based on a design system and rely on a `@microsoft/fast-foundation` depenency.
+
+```bash
+$ fast add-foundation-component
+```
+
+Argument | Shorthand | Description | Required | Default
+---------|-----------|-------------|----------|--------
+`--name <name>` | `-n <name>` | The name of the foundation element | Yes | "accordion", "accordion-item", "anchor", "anchored-region", "avatar", "badge", "breadcrumb", "breadcrumb-item", "button", "calendar", "card", "checkbox", "combobox", "data-grid", "dialog", "disclosure", "divider", "flipper", "horizontal-scroll", "listbox", "listbox-option", "menu", "menu-item", "number-field", "picker", "progress", "progress-ring", "radio", "radio-group", "search", "select", "skeleton", "slider", "slider-label", "switch", "tabs", "tab", "tab-panel", "text-area", "text-field", "toolbar", "tooltip", "tree-view", "tree-item" |
 
 ## Templates
 
