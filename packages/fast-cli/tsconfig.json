@@ -13,6 +13,7 @@
         "target": "es2015",
         "module": "ESNext",
         "importHelpers": true,
+        "resolveJsonModule": true,
         "types": [
             "node"
         ],
@@ -22,5 +23,5 @@
             "ES2016.Array.Include"
         ]
     },
-    "include": ["src"]
+    "include": ["src", "src/components/blank/template/component.definition.ts"]
 }

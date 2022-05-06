@@ -10,9 +10,11 @@
     "scripts": {
         "build": "npm run build:tsc",
         "build:tsc": "tsc -p ./tsconfig.json",
+        "build:storybook": "build-storybook",
         "dev": "tsc -p ./tsconfig.json -w",
         "eslint": "eslint . --ext .ts",
         "eslint:fix": "eslint . --ext .ts --fix",
+        "start:storybook": "start-storybook -p 3000 -h localhost",
         "test": "npm run build && npm run eslint && npx playwright test"
     },
     "repository": {
@@ -29,13 +31,17 @@
     },
     "homepage": "https://github.com/Microsoft/fast#readme",
     "dependencies": {
+        "@microsoft/fast-foundation": "^2.44.0",
         "commander": "^9.0.0",
         "cross-spawn": "^7.0.3",
         "fs-extra": "^10.0.1",
         "prompts": "^2.4.2"
     },
     "devDependencies": {
-        "@playwright/test": "^1.21.0",
+        "@playwright/test": "^1.21.1",
+        "@storybook/builder-webpack5": "^6.4.22",
+        "@storybook/html": "^6.4.22",
+        "@storybook/manager-webpack5": "^6.4.22",
         "@typescript-eslint/eslint-plugin": "^5.17.0",
         "@typescript-eslint/parser": "^5.17.0",
         "eslint": "^8.12.0",

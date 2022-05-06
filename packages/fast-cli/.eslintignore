@@ -4,6 +4,12 @@ webpack.*.js
 # Never lint test files
 *.spec.ts
 
+# don't lint storybook
+.storybook
+
+# don't lint stories
+*.stories.ts
+
 # Never lint node_modules
 node_modules
 

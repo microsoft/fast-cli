@@ -6,7 +6,7 @@ export interface FastConfigOptionMessages {
     componentPath: string;
 }
 
-export interface PackageJson {
+export interface PackageJsonInit {
     name: string;
     version: string;
     description: string;
@@ -18,7 +18,17 @@ export interface PackageJson {
 
 export interface FastInit {
     fastConfig: FastConfig,
-    packageJson: PackageJson
+    packageJson: PackageJsonInit
+}
+
+export interface PackageJsonAddComponent {
+    dependencies: { [key: string]: string };
+    devDependencies: { [key: string]: string };
+    peerDependencies: { [key: string]: string };
+}
+
+export interface FastAddComponent {
+    packageJson: PackageJsonAddComponent
 }
 
 export interface FastInitOptionMessages {
@@ -33,4 +43,14 @@ export interface AddDesignSystemOptions {
 export interface AddDesignSystemOptionMessages {
     prefix: string;
     shadowRootMode: string;
+}
+
+export interface AddComponentOptions {
+    name?: string;
+    template?: string;
+}
+
+export interface AddComponentOptionMessages {
+    name: string;
+    template: string;
 }

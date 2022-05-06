@@ -2,11 +2,44 @@ import { expect, test } from "@playwright/test";
 import { execSync } from "child_process";
 import path from "path";
 import fs from "fs-extra";
+import { requiredComponentTemplateFiles } from "./components/files.js";
 
 const dirname = path.resolve(process.cwd());
 const tempDirRelativeLocation = "../temp";
+const tempComponentDirRelativeLocation = "../temp-component"
 const tempDir = path.resolve(dirname, tempDirRelativeLocation);
+const tempComponentDir = path.resolve(dirname, tempComponentDirRelativeLocation);
 const templateDir = path.resolve(dirname, "../cfp-template/template");
+const expectedGeneratedComponentTemplateFiles = [
+    "README.md",
+    "define.ts",
+    "fixtures/base.html",
+    "test-component.definition.ts",
+    "test-component.pw.spec.ts",
+    "test-component.stories.ts",
+    "test-component.styles.ts",
+    "test-component.template.ts",
+    "test-component.ts"
+];
+
+function setupBlankAsTemplate() {
+    fs.ensureDirSync(tempComponentDir);
+
+    // Initialize the .tmp dir as a blank template
+    execSync(`cd ${tempComponentDir} && npm init -y`);
+
+    // Copy over the contents of the blank template
+    fs.copySync(path.resolve(dirname, "../fast-cli/dist/esm/components/blank"), tempComponentDir);
+    const packageJsonString = fs.readFileSync(
+        path.resolve(tempComponentDir, "package.json"),
+        { "encoding": "utf8" }
+    );
+    const packageJson = JSON.parse(packageJsonString);
+    packageJson.type = "module";
+    fs.writeFileSync(
+        path.resolve(tempComponentDir, "package.json"), JSON.stringify(packageJson, null, 2)
+    );
+}
 
 function setup() {
     fs.ensureDirSync(tempDir);
@@ -21,15 +54,19 @@ function setup() {
     const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
     const packageJson = JSON.parse(packageJsonString);
     packageJson.scripts = {
+        "build": "webpack --config=./webpack.prod.cjs",
         "fast:init": `fast init -t ${path.resolve(dirname, "../cfp-template")}`,
         "fast:config": `fast config -p ./src/components`,
         "fast:add-design-system": `fast add-design-system -p test -s open`,
+        "fast:add-component:blank": `fast add-component -n test-component -t blank`,
+        "fast:add-component:template": `fast add-component -n test-component -t ${path.resolve(dirname, "../temp-component")}`
     };
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
 }
 
 function teardown() {
     fs.removeSync(tempDir);
+    fs.removeSync(tempComponentDir);
 }
 
 /**
@@ -42,7 +79,7 @@ function teardown() {
  * When switching between npm versions if you recieve a permissions error, try
  * npx clear-npx-cache
  */
-test.describe.skip("CLI", () => {
+test.describe("CLI", () => {
     test.describe("init", () => {
         test.beforeAll(() => {
             setup();
@@ -50,7 +87,7 @@ test.describe.skip("CLI", () => {
         });
         test.afterAll(() => {
             teardown();
-        })
+        });
         test("should create a package.json file with contents from the fast init", () => {
             const packageJsonFile = JSON.parse(
                 fs.readFileSync(path.resolve(tempDir, "package.json"), {
@@ -164,6 +201,95 @@ test.describe.skip("CLI", () => {
 
             expect(designSystem.prefix).toEqual("test");
             expect(designSystem.shadowRootMode).toEqual("open");
+        });
+    });
+    test.describe("add-component", () => {
+        test.describe("template", () => {
+            test.beforeAll(() => {
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:init`);
+                setup();
+                setupBlankAsTemplate();
+                execSync(`cd ${tempDir} && npm run fast:add-component:template`);
+            });
+            test.afterAll(() => {
+                teardown();
+            });
+            test("should copy files from a provided template", () => {
+                let files: Array<string> = [];
+
+                function testGeneratedFiles(folderName: string) {
+                    const tempDirContents = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName));
+                    const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName), {
+                        withFileTypes: true
+                    });
+
+                    for (let i = 0, contentLength = tempDirContents.length; i < contentLength; i++) {
+                        if (tempDirContentsWithFileTypes[i].isDirectory()) {
+                            testGeneratedFiles(tempDirContents[i]);
+                        } else {
+                            files.push(
+                                folderName
+                                    ? `${folderName}/${tempDirContents[i]}`
+                                    : tempDirContents[i]
+                            );
+                        }
+                    }
+                }
+                
+                testGeneratedFiles("");
+                expect(files).toEqual(expectedGeneratedComponentTemplateFiles);
+            });
+            test("should be able to run the build", () => {
+                expect(
+                    () => {
+                        execSync(`cd ${tempDir} && npm run build`);
+                    }
+                ).not.toThrow();
+            });
+        });
+        test.describe("blank", () => {
+            test.beforeAll(() => {
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:init`);
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:add-component:blank`);
+            });
+            test.afterAll(() => {
+                teardown();
+            });
+            test("should copy files from the blank template", () => {
+                let files: Array<string> = [];
+
+                function testGeneratedFiles(folderName: string) {
+                    const tempDirContents = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName));
+                    const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName), {
+                        withFileTypes: true
+                    });
+
+                    for (let i = 0, contentLength = tempDirContents.length; i < contentLength; i++) {
+                        if (tempDirContentsWithFileTypes[i].isDirectory()) {
+                            testGeneratedFiles(tempDirContents[i]);
+                        } else {
+                            files.push(
+                                folderName
+                                    ? `${folderName}/${tempDirContents[i]}`
+                                    : tempDirContents[i]
+                            );
+                        }
+                    }
+                }
+                
+                testGeneratedFiles("");
+                expect(files).toEqual(expectedGeneratedComponentTemplateFiles);
+            });
+            test("should be able to run the build", () => {
+                expect(
+                    () => {
+                        execSync(`cd ${tempDir} && npm run build`);
+                    }
+                ).not.toThrow();
+            });
         });
     });
 });
