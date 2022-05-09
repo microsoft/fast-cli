@@ -121,11 +121,22 @@ $ fast add-component
 Argument | Shorthand | Description | Required | Options
 ---------|-----------|-------------|----------|---------
 `--name <name>` | `-n <name>` | The name of the functionality to be added | Yes | |
-`--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | No | `<path/to/template>`, "blank" |
+`--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | No | `<path/to/template>` |
 
 > Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
 
 > Important: During implementation the `define.ts` which will be part of a components template may require a `package.json` update to include a list of `sideEffects`.
+
+Should no template or foundation component be selected, a blank component will be created.
+
+TBD list available foundation components.
+
+> Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
+
+Argument | Shorthand | Description | Required | Default
+---------|-----------|-------------|----------|--------
+`--template <template>` | `-t <template>` | The name of the foundation element | Yes | "accordion", "anchor", "anchored-region", "avatar", "badge", "blank", "breadcrumb", "button", "calendar", "card", "checkbox", "combobox", "data-grid", "dialog", "disclosure", "divider", "flipper", "horizontal-scroll", "listbox", "menu", "number-field", "picker", "progress", "progress-ring", "radio-group", "search", "select", "skeleton", "slider", "switch", "tabs", "text-area", "text-field", "toolbar", "tooltip", "tree-view" |
+`--name <name>` | `-n <name>` | The name of the component to be added | Yes | The name of the foundation template |
 
 ## Add a foundation component
 

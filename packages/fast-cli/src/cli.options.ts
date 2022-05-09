@@ -54,3 +54,13 @@ export interface AddComponentOptionMessages {
     name: string;
     template: string;
 }
+
+export interface AddFoundationComponentOptions {
+    name?: string;
+    template?: string;
+}
+
+export interface AddFoundationComponentOptionMessages {
+    name: string;
+    template: string;
+}
