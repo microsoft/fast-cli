@@ -137,7 +137,8 @@ $ fast add-foundation-component
 
 Argument | Shorthand | Description | Required | Default
 ---------|-----------|-------------|----------|--------
-`--name <name>` | `-n <name>` | The name of the foundation element | Yes | "accordion", "accordion-item", "anchor", "anchored-region", "avatar", "badge", "breadcrumb", "breadcrumb-item", "button", "calendar", "card", "checkbox", "combobox", "data-grid", "dialog", "disclosure", "divider", "flipper", "horizontal-scroll", "listbox", "listbox-option", "menu", "menu-item", "number-field", "picker", "progress", "progress-ring", "radio", "radio-group", "search", "select", "skeleton", "slider", "slider-label", "switch", "tabs", "tab", "tab-panel", "text-area", "text-field", "toolbar", "tooltip", "tree-view", "tree-item" |
+`--template <template>` | `-t <template>` | The name of the foundation element | Yes | "accordion", "anchor", "anchored-region", "avatar", "badge", "breadcrumb", "button", "calendar", "card", "checkbox", "combobox", "data-grid", "dialog", "disclosure", "divider", "flipper", "horizontal-scroll", "listbox", "menu", "number-field", "picker", "progress", "progress-ring", "radio-group", "search", "select", "skeleton", "slider", "switch", "tabs", "text-area", "text-field", "toolbar", "tooltip", "tree-view" |
+`--name <name>` | `-n <name>` | The name of the component to be added | Yes | The name of the foundation template |
 
 ## Templates
 
