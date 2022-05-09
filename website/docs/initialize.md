@@ -20,7 +20,7 @@ Install the `@microsoft/fast-cli` locally or globally.
 $ fast init
 ```
 
-### Arguments
+## Arguments
 
 Argument | Shorthand | Description | Required
 ---------|-----------|-------------|---------
