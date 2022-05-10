@@ -126,7 +126,7 @@ Argument | Shorthand | Description | Required | Options
 > Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
 > Important: During implementation the `define.ts` which will be part of a components template may require a `package.json` update to include a list of `sideEffects`.
 
-## Add a foundation comopnent
+## Add a foundation component
 
 Foundation components are similar to adding a component except they are based on the `@microsoft/fast-foundation` templates. These are bundled with flexible styles to provide an easy method for component creation and modification.
 
