@@ -120,10 +120,11 @@ $ fast add-component
 
 Argument | Shorthand | Description | Required | Options
 ---------|-----------|-------------|----------|---------
-`--name <name>` | `-n <name>` | The name of the functionality to be added | Yes | |
 `--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | No | `<path/to/template>` |
+`--name <name>` | `-n <name>` | The name of the component to be added | Yes | |
 
 > Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
+
 > Important: During implementation the `define.ts` which will be part of a components template may require a `package.json` update to include a list of `sideEffects`.
 
 ## Add a foundation component
@@ -142,6 +143,7 @@ Argument | Shorthand | Description | Required | Options
 `--name <name>` | `-n <name>` | The name of the component to be added | Yes | |
 
 > Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
+
 > Important: During implementation the `define.ts` which will be part of a components template may require a `package.json` update to include a list of `sideEffects`.
 
 ## Templates
