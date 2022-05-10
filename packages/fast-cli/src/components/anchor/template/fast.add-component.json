@@ -1,0 +1,11 @@
+{
+    "utilities": [
+        "behaviors",
+        "styles"
+    ],
+    "packageJson": {
+        "dependencies": {
+            "@microsoft/fast-foundation": "^2.0.0"
+        }
+    }
+}
