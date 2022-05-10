@@ -110,7 +110,7 @@ export const designSystem = {
 
 ## Add a component
 
-Components are added and configured based on a design system. Templates can use either the "blank" template with the default files, or it can point to a local or remote package.
+Components are added and configured based on a design system. Templates can use either a local or remote package.
 
 ```bash
 $ fast add-component
@@ -120,7 +120,7 @@ $ fast add-component
 
 Argument | Shorthand | Description | Required | Options
 ---------|-----------|-------------|----------|---------
-`--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | No | `<path/to/template>` |
+`--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | Yes | `<path/to/template>` |
 `--name <name>` | `-n <name>` | The name of the component to be added | Yes | |
 
 > Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
