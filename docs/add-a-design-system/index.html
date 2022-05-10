@@ -491,6 +491,16 @@
             <li>
                 <a
                     class=""
+                    href="https://microsoft.github.io/fast-cli/docs/add-a-foundation-component"
+                >
+                    Add a foundation component
+                </a>
+                
+            </li>
+            
+            <li>
+                <a
+                    class=""
                     href="https://microsoft.github.io/fast-cli/docs/templates"
                 >
                     Templates
@@ -527,8 +537,10 @@
                 <div class="content">
                      <h1 id="add-a-design-system">Add a design system</h1>
 <p>Before adding your own components, a design system file must be available. The design system will dictate web component configuration options.</p>
+<h2 id="command-line">Command line</h2>
 <pre><code class="language-bash">$ fast add-design-system
 </code></pre>
+<h2 id="arguments">Arguments</h2>
 <table>
 <thead>
 <tr>
@@ -557,6 +569,7 @@
 <td>&quot;closed&quot;, &quot;open&quot;</td>
 </tr>
 </tbody></table>
+<h2 id="generated-files">Generated files</h2>
 <p>Example design-system.ts contents:</p>
 <pre><code class="language-ts">export const designSystem = {
   prefix: &quot;example&quot;,

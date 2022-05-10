@@ -490,7 +490,7 @@
             
             <li>
                 <a
-                    class=""
+                    class="active"
                     href="https://microsoft.github.io/fast-cli/docs/add-a-foundation-component"
                 >
                     Add a foundation component
@@ -500,7 +500,7 @@
             
             <li>
                 <a
-                    class="active"
+                    class=""
                     href="https://microsoft.github.io/fast-cli/docs/templates"
                 >
                     Templates
@@ -535,13 +535,37 @@
 
 
                 <div class="content">
-                     <h1>Templates</h1>
-<p>Create your own templates to scaffold a project or component. Template provide scaffolding for entire projects and smaller pieces of code to accelerate developer workflows.</p>
-<ul class="category">
-    
-    <li><a href="https://microsoft.github.io/fast-cli/docs/templates/component">Component</a></li>
-    
-</ul>
+                     <h1 id="add-a-foundation-comopnent">Add a foundation comopnent</h1>
+<p>Foundation components are similar to adding a component except they are based on the <code>@microsoft/fast-foundation</code> templates. These are bundled with flexible styles to provide an easy method for component creation and modification.</p>
+<h2 id="command-line">Command line</h2>
+<pre><code class="language-bash">$ fast add-foundation-component
+</code></pre>
+<h2 id="arguments">Arguments</h2>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Shorthand</th>
+<th>Description</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--template &lt;template&gt;</code></td>
+<td><code>-t &lt;template&gt;</code></td>
+<td>The name of the foundation element</td>
+<td>Yes</td>
+<td>&quot;accordion&quot;, &quot;anchor&quot;, &quot;anchored-region&quot;, &quot;avatar&quot;, &quot;badge&quot;, &quot;blank&quot;, &quot;breadcrumb&quot;, &quot;button&quot;, &quot;calendar&quot;, &quot;card&quot;, &quot;checkbox&quot;, &quot;combobox&quot;, &quot;data-grid&quot;, &quot;dialog&quot;, &quot;disclosure&quot;, &quot;divider&quot;, &quot;flipper&quot;, &quot;horizontal-scroll&quot;, &quot;listbox&quot;, &quot;menu&quot;, &quot;number-field&quot;, &quot;picker&quot;, &quot;progress&quot;, &quot;progress-ring&quot;, &quot;radio-group&quot;, &quot;search&quot;, &quot;select&quot;, &quot;skeleton&quot;, &quot;slider&quot;, &quot;switch&quot;, &quot;tabs&quot;, &quot;text-area&quot;, &quot;text-field&quot;, &quot;toolbar&quot;, &quot;tooltip&quot;, &quot;tree-view&quot;</td>
+</tr>
+<tr>
+<td><code>--name &lt;name&gt;</code></td>
+<td><code>-n &lt;name&gt;</code></td>
+<td>The name of the component to be added</td>
+<td>Yes</td>
+<td>The name of the foundation template</td>
+</tr>
+</tbody></table>
 
                 </div>
             </main>

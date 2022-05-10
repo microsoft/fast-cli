@@ -491,6 +491,16 @@
             <li>
                 <a
                     class=""
+                    href="https://microsoft.github.io/fast-cli/docs/add-a-foundation-component"
+                >
+                    Add a foundation component
+                </a>
+                
+            </li>
+            
+            <li>
+                <a
+                    class=""
                     href="https://microsoft.github.io/fast-cli/docs/templates"
                 >
                     Templates
@@ -539,7 +549,13 @@
 └─ define.ts
 └─ fast.add-component.json
 └─ README.ts</p>
+<h2 id="file-contents">File contents</h2>
+<p>Each file should contain a default export, using the <code>ComponentTemplateConfig</code> as an argument.</p>
+<pre><code class="language-ts">import type { ComponentTemplateConfig } from &quot;@microsoft/fast-cli&quot;;
 
+export default (config: ComponentTemplateConfig): string =&gt; `...your template`;
+</code></pre>
+<!-- TODO: add api-extractor information for the ComopnentTemplateConfig -->
                 </div>
             </main>
         </div>
