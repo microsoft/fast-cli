@@ -5,7 +5,7 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { XOR } from "./cli.types.js";
@@ -357,25 +357,14 @@ async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage:
     }
 }
 
-function isCliTemplate(template: string): boolean {
-    return availableTemplates.includes(template);
-}
-
+/**
+ * Add a "blank" component or component from a npm package or local template
+ */
 async function addComponent(
     options: AddComponentOptions,
     messages: AddComponentOptionMessages,
 ): Promise<void> {
     const config: AddComponentOptions = options;
-
-    if (!options.name) {
-        config.name = await prompts([
-            {
-                type: "text",
-                name: "name",
-                message: messages.name
-            }
-        ]).name;
-    }
 
     if (!options.template) {
         config.template = await prompts([
@@ -387,19 +376,63 @@ async function addComponent(
         ]).template;
     }
 
+    if (!options.name) {
+        config.name = await prompts([
+            {
+                type: "text",
+                name: "name",
+                message: messages.name
+            }
+        ]).name;
+    }
+
     const fastConfig: FastConfig = await getFastConfig();
-    const cliTemplate = isCliTemplate(options.template as string);
 
-    if (!cliTemplate) {
-        await installTemplate(options.template as string);
-        await checkTemplateForFiles(options.template as string);
+    await installTemplate(options.template as string);
+    await checkTemplateForFiles(options.template as string);
+    await writeTemplateFiles(fastConfig, options.template as string, false, options.name as string);
+    await uninstallTemplate(options.template as string);
+
+    // await installDependencies(); // TODO: investigate adding this for foundation using fast.add-component.json
+}
+
+/**
+ * Add a foundation component
+ */
+async function addFoundationComponent(
+    options: AddFoundationComponentOptions,
+    messages: AddFoundationComponentOptionMessages,
+): Promise<void> {
+    const config: AddFoundationComponentOptions = options;
+
+    if (!options.template) {
+        config.template = await prompts([
+            {
+                type: "autocomplete",
+                name: "template",
+                message: messages.template,
+                choices: availableTemplates.map((availableTemplate) => {
+                    return {
+                        title: availableTemplate
+                    };
+                })
+            }
+        ]).template;
     }
 
-    await writeTemplateFiles(fastConfig, options.template as string, cliTemplate, options.name as string);
-
-    if (!cliTemplate) {
-        await uninstallTemplate(options.template as string);
+    if (!options.name) {
+        config.name = await prompts([
+            {
+                type: "text",
+                name: "name",
+                message: messages.name,
+                initial: config.template
+            }
+        ]).name;
     }
+
+    const fastConfig: FastConfig = await getFastConfig();
+    await writeTemplateFiles(fastConfig, options.template as string, true, options.name as string);
 
     // await installDependencies(); // TODO: investigate adding this for foundation using fast.add-component.json
 }
@@ -512,8 +545,8 @@ program.command("add-design-system")
         });
     });
 
-const addComponentTemplateMessage = "";
-const addComponentNameMessage = "";
+const addComponentTemplateMessage = "The package containing a component template";
+const addComponentNameMessage = "The name of the component";
 
 program.command("add-component")
     .description("Add a component")
@@ -523,6 +556,22 @@ program.command("add-component")
         await addComponent(options, {
             template: addComponentTemplateMessage,
             name: addComponentNameMessage,
+        }).catch((reason) => {
+            throw reason;
+        })
+    });
+
+const addFoundationComponentTemplateMessage = "The name of the foundation component template";
+const addFoundationComponentNameMessage = "The name of the component";
+
+program.command("add-foundation-component")
+    .description("Add a foundation component")
+    .option("-t, --template <template>", addFoundationComponentTemplateMessage)
+    .option("-n, --name <name>", addFoundationComponentNameMessage)
+    .action(async (options): Promise<void> => {
+        await addFoundationComponent(options, {
+            template: addFoundationComponentTemplateMessage,
+            name: addFoundationComponentNameMessage,
         }).catch((reason) => {
             throw reason;
         })

@@ -2,18 +2,21 @@
 
 Running the `config` command will create a `fastconfig.json` file. This should be useful in existing projects which could take advantage of the CLI once it has been initialized.
 
+## Command line
+
 ```bash
 $ fast config
 ```
 
-### Arguments
+## Arguments
 
 Argument | Shorthand | Description | Required | Default |
 ---------|-----------|-------------|----------|---------|
 `--component-path <path/to/components>` | `-p <path/to/components>` | The relative path of the FAST components folder | Yes | |
 
-### Example fastconfig.json file
+## Generated files
 
+Example fastconfig.json file:
 ```json
 {
     "componentPath": "./src/components"

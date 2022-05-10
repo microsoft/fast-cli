@@ -110,7 +110,7 @@ export const designSystem = {
 
 ## Add a component
 
-Components are added and configured based on a design system. Templates can use either the "blank" template with the default files, or it can point to a local or remote package.
+Components are added and configured based on a design system. Templates can use either a local or remote package.
 
 ```bash
 $ fast add-component
@@ -120,8 +120,8 @@ $ fast add-component
 
 Argument | Shorthand | Description | Required | Options
 ---------|-----------|-------------|----------|---------
-`--name <name>` | `-n <name>` | The name of the functionality to be added | Yes | |
-`--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | No | `<path/to/template>`, "blank" |
+`--template <path/to/template>` | `-t <path/to/template>` | Template including HTML, CSS, and [other files](#component-templates) | Yes | `<path/to/template>` |
+`--name <name>` | `-n <name>` | The name of the component to be added | Yes | |
 
 > Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
 
@@ -129,16 +129,22 @@ Argument | Shorthand | Description | Required | Options
 
 ## Add a foundation component
 
-Components are added and configured based on a design system and rely on a `@microsoft/fast-foundation` depenency.
+Foundation components are similar to adding a component except they are based on the `@microsoft/fast-foundation` templates. These are bundled with flexible styles to provide an easy method for component creation and modification.
 
 ```bash
 $ fast add-foundation-component
 ```
 
-Argument | Shorthand | Description | Required | Default
+### Arguments
+
+Argument | Shorthand | Description | Required | Options
 ---------|-----------|-------------|----------|--------
-`--template <template>` | `-t <template>` | The name of the foundation element | Yes | "accordion", "anchor", "anchored-region", "avatar", "badge", "breadcrumb", "button", "calendar", "card", "checkbox", "combobox", "data-grid", "dialog", "disclosure", "divider", "flipper", "horizontal-scroll", "listbox", "menu", "number-field", "picker", "progress", "progress-ring", "radio-group", "search", "select", "skeleton", "slider", "switch", "tabs", "text-area", "text-field", "toolbar", "tooltip", "tree-view" |
-`--name <name>` | `-n <name>` | The name of the component to be added | Yes | The name of the foundation template |
+`--template <template>` | `-t <template>` | The name of the foundation element | Yes | "accordion", "anchor", "anchored-region", "avatar", "badge", "blank", "breadcrumb", "button", "calendar", "card", "checkbox", "combobox", "data-grid", "dialog", "disclosure", "divider", "flipper", "horizontal-scroll", "listbox", "menu", "number-field", "picker", "progress", "progress-ring", "radio-group", "search", "select", "skeleton", "slider", "switch", "tabs", "text-area", "text-field", "toolbar", "tooltip", "tree-view" |
+`--name <name>` | `-n <name>` | The name of the component to be added | Yes | |
+
+> Important: The user should be prompted if no design system is present when attempting to add a new component to run the command `fast add-design-system`.
+
+> Important: During implementation the `define.ts` which will be part of a components template may require a `package.json` update to include a list of `sideEffects`.
 
 ## Templates
 

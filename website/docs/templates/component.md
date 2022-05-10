@@ -15,3 +15,15 @@ template/
 └─ define.ts
 └─ fast.add-component.json
 └─ README.ts
+
+## File contents
+
+Each file should contain a default export, using the `ComponentTemplateConfig` as an argument.
+
+```ts
+import type { ComponentTemplateConfig } from "@microsoft/fast-cli";
+
+export default (config: ComponentTemplateConfig): string => `...your template`;
+```
+
+<!-- TODO: add api-extractor information for the ComopnentTemplateConfig -->

@@ -1,5 +1,8 @@
 # Add a component
 
+Adding a component from a template allows a user to leverage an `npm` package or a local template they have created themselves.
+
+## Command line
 ```bash
 $ fast add-component
 ```

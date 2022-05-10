@@ -53,6 +53,11 @@ export default {
             path: "add-a-component",
         },
         {
+            type: "doc",
+            label: "Add a foundation component",
+            path: "add-a-foundation-component",
+        },
+        {
             type: "category",
             label: "Templates",
             path: "templates",
@@ -64,6 +69,6 @@ export default {
                     path: "templates/component"
                 }
             ]
-        }
+        },
     ],
 };
