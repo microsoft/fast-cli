@@ -23,5 +23,5 @@
             "ES2016.Array.Include"
         ]
     },
-    "include": ["src", "src/components/blank/template/component.definition.ts", "../adaptive-ui/src/shared.ts", "../adaptive-ui/src/styles", "../adaptive-ui/src/color"]
+    "include": ["src", "src/components/blank/template/component.definition.ts"]
 }
