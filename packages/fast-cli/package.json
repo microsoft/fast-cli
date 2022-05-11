@@ -32,9 +32,7 @@
     },
     "homepage": "https://github.com/Microsoft/fast#readme",
     "dependencies": {
-        "@microsoft/fast-colors": "^5.3.0",
         "@microsoft/fast-foundation": "^2.44.0",
-        "@microsoft/fast-web-utilities": "^5.4.1",
         "commander": "^9.0.0",
         "cross-spawn": "^7.0.3",
         "fs-extra": "^10.0.1",
