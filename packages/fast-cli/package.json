@@ -16,7 +16,7 @@
         "eslint:fix": "eslint . --ext .ts --fix",
         "serve:storybook": "node ./build/server.js",
         "start:storybook": "start-storybook -p 3000 -h localhost",
-        "test": "npm run build && npm run eslint && npx playwright test"
+        "test": "npm run build && npm run eslint && npm run build:storybook && npx playwright test"
     },
     "repository": {
         "type": "git",
