@@ -4,9 +4,8 @@ const config: PlaywrightTestConfig = {
     testDir: "dist",
     testMatch: "**/?(*.)+(spec).+(js)",
     webServer: {
-        command: "npm run start:storybook",
+        command: "npm run serve:storybook",
         port: 3000,
-        timeout: 240 * 1000,
         reuseExistingServer: !process.env.CI,
     }
 };
