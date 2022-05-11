@@ -4,6 +4,7 @@ These templates will be used in the `add-component` command. Create your own and
 
 ## Required folder and files
 
+```
 template/
 └─ fixture.ts
 └─ component.ts
@@ -15,6 +16,7 @@ template/
 └─ define.ts
 └─ fast.add-component.json
 └─ README.ts
+```
 
 ## File contents
 
