@@ -50,6 +50,12 @@ myFunction(): void {
 }
 ```
 
+### Files needed for commands
+
+Files that are generated and/or needed for the CLI to function based on a command should follow the naming convention `fast.<command>.json`.
+
+Example: `fast.config.json`
+
 ### Web Component Attributes
 
 Web component attributes should be camelCased as properties and be dash separated as the HTML attribute.
