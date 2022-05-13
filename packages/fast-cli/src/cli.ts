@@ -5,7 +5,7 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { XOR } from "./cli.types.js";
@@ -16,7 +16,7 @@ const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
 const defaultTemplatePath = path.resolve(__dirname, "@microsoft/cfp-template");
 const cliPath = path.resolve(__dirname, "node_modules", "@microsoft/fast-cli");
-const defaultTemplateFolderName = "template";
+const templateFolderName = "template";
 /* eslint-disable no-useless-escape */
 const folderMatches = process.cwd().match(/[^(\\|\/)]+(?=$)/);
 const ascii = `
@@ -62,20 +62,20 @@ interface ConfigOptions {
 program.name("fast").description(ascii);
 
 /**
- * Get the fastinit.json file
+ * Get the fast.init.json file
  */
-function getFastInitFile(
+function getFastInit(
     pathToTemplatePackage: string
 ): FastInit {
     const templateDir = path.resolve(
         __dirname,
         "node_modules",
         pathToTemplatePackage,
-        defaultTemplateFolderName
+        templateFolderName
     );
 
     return JSON.parse(
-        fs.readFileSync(path.resolve(templateDir, "fastinit.json"), {
+        fs.readFileSync(path.resolve(templateDir, "fast.init.json"), {
             encoding: "utf8",
         })
     );
@@ -103,7 +103,7 @@ function copyTemplateToProject(
         __dirname,
         "node_modules",
         pathToTemplatePackage,
-        defaultTemplateFolderName
+        templateFolderName
     );
 
     // Copy all files in the template folder
@@ -150,6 +150,55 @@ function installDependencies(): Promise<unknown> {
         });
     }).catch((reason) => {
         throw reason;
+    });
+}
+
+/**
+ * Install an npm dependency
+ */
+function installEnumeratedDependencies(dependencies?: Array<string>, devDependencies?: Array<string>): Promise<unknown> {
+    const getDependencyCommand = (listOfDependencies: Array<string>, modifier?: string): Promise<unknown> => {
+        return new Promise((resolve, reject) => {
+            const args = modifier
+                ? [
+                    "install",
+                    modifier,
+                    ...listOfDependencies
+                ]
+                : [
+                    "install",
+                    ...listOfDependencies
+                ];
+            const child = spawn("npm", args, { stdio: "inherit" });
+            child.on("close", code => {
+                if (code !== 0) {
+                    reject({
+                        command: "npm install",
+                    });
+                    return;
+                }
+                resolve(void 0);
+            });
+        }).catch((reason) => {
+            throw reason;
+        });
+    }
+    const installers: Array<Promise<unknown>> = [];
+
+    if (dependencies) {
+        installers.push(
+            getDependencyCommand(dependencies)
+        );
+    }
+
+    if (devDependencies) {
+        installers.push(
+            getDependencyCommand(devDependencies, "--save-dev")
+        );
+    }
+
+    return Promise.all(installers).then(() => {
+        Promise.resolve();
     });
 }
 
@@ -201,7 +250,7 @@ function installTemplate(pathToTemplate: string): Promise<unknown> {
 function createConfigFile(
     fastConfig: FastConfig,
 ): void {
-    fs.writeJsonSync(path.resolve(process.cwd(), "fastconfig.json"), {
+    fs.writeJsonSync(path.resolve(process.cwd(), "fast.config.json"), {
         ...fastConfig
     }, {
         spaces: 2,
@@ -233,7 +282,7 @@ function uninstallTemplate(packageName: string): Promise<unknown> {
 }
 
 async function getFastConfig(): Promise<FastConfig> {
-    const fastConfigPath = path.resolve(process.cwd(), "fastconfig.json");
+    const fastConfigPath = path.resolve(process.cwd(), "fast.config.json");
 
     if (!await fs.pathExists(fastConfigPath)) {
         throw new Error(fastConfigDoesNotExistErrorMessage);
@@ -246,6 +295,21 @@ async function getFastConfig(): Promise<FastConfig> {
     }
 
     return fastConfig;
+}
+
+async function getFastAddComponent(pathToTemplatePackage: string): Promise<FastAddComponent> {
+    const templateDir = path.resolve(
+        __dirname,
+        "node_modules",
+        pathToTemplatePackage,
+        templateFolderName
+    );
+
+    return JSON.parse(
+        fs.readFileSync(path.resolve(templateDir, "fast.add-component.json"), {
+            encoding: "utf8",
+        })
+    );
 }
 
 async function createDesignSystemFile(
@@ -307,7 +371,7 @@ async function checkTemplateForFiles(pathToTemplatePackage: string): Promise<voi
         __dirname,
         "node_modules",
         pathToTemplatePackage,
-        defaultTemplateFolderName
+        templateFolderName
     );
     const directoryContents = fs.readdirSync(templateDir);
 
@@ -358,7 +422,7 @@ async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage:
 }
 
 /**
- * Add a "blank" component or component from a npm package or local template
+ * Add a component from a npm package or local template
  */
 async function addComponent(
     options: AddComponentOptions,
@@ -433,8 +497,20 @@ async function addFoundationComponent(
 
     const fastConfig: FastConfig = await getFastConfig();
     await writeTemplateFiles(fastConfig, options.template as string, true, options.name as string);
-
-    // await installDependencies(); // TODO: investigate adding this for foundation using fast.add-component.json
+    const fastAddComponent: FastAddComponent = await getFastAddComponent(
+        path.resolve(
+            cliPath,
+            `dist/esm/components/${options.template}`
+        )
+    );
+    await installEnumeratedDependencies(
+        Object.entries(fastAddComponent?.packageJson?.dependencies || {}).map(([key, value]: [string, string]): string => {
+            return `${key}@${value}`;
+        }),
+        Object.entries(fastAddComponent?.packageJson?.devDependencies || {}).map(([key, value]: [string, string]): string => {
+            return `${key}@${value}`;
+        }),
+    );
 }
 
 /**
@@ -445,7 +521,7 @@ async function config(options: ConfigOptions, messages: FastConfigOptionMessages
 
     if (!options.componentPath) {
         /**
-         * Collect information for the fastconfig.json file
+         * Collect information for the fast.config.json file
          */
         config.componentPath = await prompts([
             {
@@ -493,7 +569,7 @@ async function init(options: InitOptions, messages: FastInitOptionMessages): Pro
         pathToTemplatePackage = path.resolve(__dirname, options.template);
     }
 
-    const initFile: FastInit = getFastInitFile(pathToTemplatePackage);
+    const initFile: FastInit = getFastInit(pathToTemplatePackage);
     await installTemplate(pathToTemplatePackage);
     createConfigFile(initFile.fastConfig);
     const packageName: string = copyTemplateToProject(pathToTemplatePackage, initFile.packageJson, path.resolve(__dirname));

@@ -60,6 +60,7 @@ function setup() {
         "fast:add-design-system": `fast add-design-system -p test -s open`,
         "fast:add-component:template": `fast add-component -n test-component -t ${path.resolve(dirname, "../temp-component")}`,
         "fast:add-foundation-component:blank": `fast add-foundation-component -n test-component -t blank`,
+        "fast:add-foundation-component:badge": `fast add-foundation-component -n test-component -t badge`,
     };
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
 }
@@ -95,7 +96,7 @@ test.describe("CLI", () => {
                 })
             );
             const configFilePackageJson = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fastinit.json"), {
+                fs.readFileSync(path.resolve(tempDir, "fast.init.json"), {
                     encoding: "utf8",
                 })
             ).packageJson;
@@ -108,14 +109,14 @@ test.describe("CLI", () => {
                 }
             }
         });
-        test("should create a fastconfig file with contents from the fast init", () => {
+        test("should create a fast.config file with contents from the fast init", () => {
             const fastConfigFile = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
+                fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
                     encoding: "utf8",
                 })
             );
             const configFilePackageJson = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fastinit.json"), {
+                fs.readFileSync(path.resolve(tempDir, "fast.init.json"), {
                     encoding: "utf8",
                 })
             ).fastConfig;
@@ -151,10 +152,10 @@ test.describe("CLI", () => {
         test.afterAll(() => {
             teardown();
         });
-        test("should create a fastconfig.json file", () => {
+        test("should create a fast.config.json file", () => {
             expect(() => {
                 JSON.parse(
-                    fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
+                    fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
                         encoding: "utf8",
                     })
                 )
@@ -162,7 +163,7 @@ test.describe("CLI", () => {
         });
         test("should contain a custom component path", () => {
             const config = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fastconfig.json"), {
+                fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
                     encoding: "utf8",
                 })
             );
@@ -177,15 +178,15 @@ test.describe("CLI", () => {
         test.afterAll(() => {
             teardown();
         });
-        test("should throw if there is no fastconfig.json file", () => {
+        test("should throw if there is no fast.config.json file", () => {
             expect(() => {
                 execSync(`cd ${tempDir} && npm run fast:add-design-system`);
             }).toThrow();
         });
-        test("should throw if the fastconfig.json file does not contain a component path", () => {
+        test("should throw if the fast.config.json file does not contain a component path", () => {
             execSync(`cd ${tempDir} && npm run fast:config`);
 
-            fs.writeFileSync(path.resolve(tempDir, "fastconfig.json"), "{}");
+            fs.writeFileSync(path.resolve(tempDir, "fast.config.json"), "{}");
 
             expect(() => {
                 execSync(`cd ${tempDir} && npm run fast:add-design-system`);
@@ -258,7 +259,50 @@ test.describe("CLI", () => {
             test.afterAll(() => {
                 teardown();
             });
-            test("should copy files from the blank template", () => {
+            test("should copy files from the template", () => {
+                let files: Array<string> = [];
+
+                function testGeneratedFiles(folderName: string) {
+                    const tempDirContents = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName));
+                    const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName), {
+                        withFileTypes: true
+                    });
+
+                    for (let i = 0, contentLength = tempDirContents.length; i < contentLength; i++) {
+                        if (tempDirContentsWithFileTypes[i].isDirectory()) {
+                            testGeneratedFiles(tempDirContents[i]);
+                        } else {
+                            files.push(
+                                folderName
+                                    ? `${folderName}/${tempDirContents[i]}`
+                                    : tempDirContents[i]
+                            );
+                        }
+                    }
+                }
+                
+                testGeneratedFiles("");
+                expect(files).toEqual(expectedGeneratedComponentTemplateFiles);
+            });
+            test("should be able to run the build", () => {
+                expect(
+                    () => {
+                        execSync(`cd ${tempDir} && npm run build`);
+                    }
+                ).not.toThrow();
+            });
+        });
+        test.describe("badge", () => {
+            test.beforeAll(() => {
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:init`);
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:add-foundation-component:badge`);
+            });
+            test.afterAll(() => {
+                teardown();
+            });
+            test("should copy files from the template", () => {
                 let files: Array<string> = [];
 
                 function testGeneratedFiles(folderName: string) {
