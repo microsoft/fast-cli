@@ -41,6 +41,7 @@
         --font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
             Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
             sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         --background-color-layer-1: #18191a;
         --background-color-layer-2: #242526;
         --background-color-layer-3: hsla(0, 0%, 100%, 0.05);
@@ -66,6 +67,9 @@
         --category-background-color: var(--background-color-layer-2);
         --category-border-radius: 10px;
         --table-caption-background-color: var(--background-color-layer-3);
+        --code-background: #333437;
+        --code-border-radius: 6px;
+        --code-block-background: rgb(41, 45, 62);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -116,7 +120,7 @@
         width: var(--sidebar-width);
         min-width: var(--sidebar-width);
         border-right: 1px solid var(--sidebar-border-color);
-        height: calc(100vh - var(--toolbar-height) - var(--footer-height) - 30px);
+        min-height: calc(100vh - var(--toolbar-height) - var(--footer-height) - 30px);
         overflow: auto;
     }
 
@@ -317,6 +321,20 @@
     table th {
         border: var(--table-border-width) solid var(--table-border-color);
         padding: var(--table-cell-padding);
+    }
+
+    pre code {
+        display: block;
+        padding: 16px;
+        background-color: var(--code-block-background);
+    }
+
+    code {
+        background-color: var(--code-background);
+        border: .1rem solid rgba(0,0,0,.1);
+        border-radius: var(--code-border-radius);
+        font-family: var(--font-family-monospace);
+        padding: 2px;
     }
 
     @media (max-width: 996px) {
@@ -538,7 +556,7 @@
                      <h1 id="component-templates">Component templates</h1>
 <p>These templates will be used in the <code>add-component</code> command. Create your own and refer to them locally, or publish an <code>npm</code> package and install via the package name.</p>
 <h2 id="required-folder-and-files">Required folder and files</h2>
-<p>template/
+<pre><code>template/
 └─ fixture.ts
 └─ component.ts
 └─ component.template.ts
@@ -548,7 +566,8 @@
 └─ component.stories.ts
 └─ define.ts
 └─ fast.add-component.json
-└─ README.ts</p>
+└─ README.ts
+</code></pre>
 <h2 id="file-contents">File contents</h2>
 <p>Each file should contain a default export, using the <code>ComponentTemplateConfig</code> as an argument.</p>
 <pre><code class="language-ts">import type { ComponentTemplateConfig } from &quot;@microsoft/fast-cli&quot;;
