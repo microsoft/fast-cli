@@ -5,4 +5,4 @@ export default (config: ComponentTemplateConfig): string =>
 /**
  * A class derived from the Card foundation component
  */
-export default class ${config.className} extends Card {};` 
+export class ${config.className} extends Card {};` 

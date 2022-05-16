@@ -3,6 +3,7 @@ import type { ComponentTemplateConfig } from "../../../utilities/template";
 export default (config: ComponentTemplateConfig): string => `
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "@microsoft/fast-cli/dist/esm/utilities/playwright.js";
+
 test.describe("${config.tagName}", () => {
     const fixture = fixtureURL("${config.tagName}");
     test.beforeEach(async ({ page }) => {
