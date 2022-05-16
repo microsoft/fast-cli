@@ -6,4 +6,4 @@ export default (config: ComponentTemplateConfig): string =>
 /**
  * A class derived from the Badge foundation component
  */
-export default class ${config.className} extends Badge {};`
+export class ${config.className} extends Badge {};`

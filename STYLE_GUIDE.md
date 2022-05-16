@@ -92,3 +92,7 @@ Examples:
 ```
 
 Note that there is only ever a single block present, and optionally a single element and/or modifier. There are never multiple blocks, elements, or modifiers which should keep CSS class names short and readable.
+
+### Exports
+
+Default exports should be avoided, use named exports wherever possible.
