@@ -1,6 +1,6 @@
 # Configure
 
-Running the `config` command will create a `fastconfig.json` file. This should be useful in existing projects which could take advantage of the CLI once it has been initialized.
+Running the `config` command will create a `fast.config.json` file. This should be useful in existing projects which could take advantage of the CLI once it has been initialized.
 
 ## Command line
 
@@ -16,7 +16,7 @@ Argument | Shorthand | Description | Required | Default |
 
 ## Generated files
 
-Example fastconfig.json file:
+Example fast.config.json file:
 ```json
 {
     "componentPath": "./src/components"

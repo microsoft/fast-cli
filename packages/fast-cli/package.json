@@ -32,6 +32,7 @@
     },
     "homepage": "https://github.com/Microsoft/fast#readme",
     "dependencies": {
+        "@microsoft/adaptive-ui": "^0.1.0",
         "@microsoft/fast-foundation": "^2.44.0",
         "commander": "^9.0.0",
         "cross-spawn": "^7.0.3",

@@ -50,6 +50,12 @@ myFunction(): void {
 }
 ```
 
+### Files needed for commands
+
+Files that are generated and/or needed for the CLI to function based on a command should follow the naming convention `fast.<command>.json`.
+
+Example: `fast.config.json`
+
 ### Web Component Attributes
 
 Web component attributes should be camelCased as properties and be dash separated as the HTML attribute.
@@ -86,3 +92,7 @@ Examples:
 ```
 
 Note that there is only ever a single block present, and optionally a single element and/or modifier. There are never multiple blocks, elements, or modifiers which should keep CSS class names short and readable.
+
+### Exports
+
+Default exports should be avoided, use named exports wherever possible.
