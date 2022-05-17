@@ -1,4 +1,5 @@
 export const availableTemplates = [
     "badge",
-    "blank"
+    "blank",
+    "dialog"
 ]
