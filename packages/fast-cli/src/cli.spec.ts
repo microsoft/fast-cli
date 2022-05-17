@@ -63,6 +63,7 @@ function setup() {
         "fast:add-foundation-component:badge": `fast add-foundation-component -n test-component -t badge`,
         "fast:add-foundation-component:card": `fast add-foundation-component -n test-component -t card`,
         "fast:add-foundation-component:dialog": `fast add-foundation-component -n test-component -t dialog`,
+        "fast:add-foundation-component:disclosure": `fast add-foundation-component -n test-component -t disclosure`,
     };
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
 }
@@ -300,6 +301,49 @@ test.describe("CLI", () => {
                 execSync(`cd ${tempDir} && npm run fast:init`);
                 setup();
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:badge`);
+            });
+            test.afterAll(() => {
+                teardown();
+            });
+            test("should copy files from the template", () => {
+                let files: Array<string> = [];
+
+                function testGeneratedFiles(folderName: string) {
+                    const tempDirContents = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName));
+                    const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName), {
+                        withFileTypes: true
+                    });
+
+                    for (let i = 0, contentLength = tempDirContents.length; i < contentLength; i++) {
+                        if (tempDirContentsWithFileTypes[i].isDirectory()) {
+                            testGeneratedFiles(tempDirContents[i]);
+                        } else {
+                            files.push(
+                                folderName
+                                    ? `${folderName}/${tempDirContents[i]}`
+                                    : tempDirContents[i]
+                            );
+                        }
+                    }
+                }
+                
+                testGeneratedFiles("");
+                expect(files).toEqual(expectedGeneratedComponentTemplateFiles);
+            });
+            test("should be able to run the build", () => {
+                expect(
+                    () => {
+                        execSync(`cd ${tempDir} && npm run build`);
+                    }
+                ).not.toThrow();
+            });
+        });
+        test.describe("disclosure", () => {
+            test.beforeAll(() => {
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:init`);
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:add-foundation-component:disclosure`);
             });
             test.afterAll(() => {
                 teardown();
