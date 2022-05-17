@@ -6,5 +6,9 @@ export const availableTemplates = [
     "dialog",
     "disclosure",
     "number-field",
+<<<<<<< HEAD
     "search",
+=======
+    "progress",
+>>>>>>> b707c32 (Added progress component)
 ]
