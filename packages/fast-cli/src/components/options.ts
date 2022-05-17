@@ -5,6 +5,7 @@ export const availableTemplates = [
     "checkbox",
     "dialog",
     "disclosure",
+    "flipper",
     "number-field",
     "search",
 ]
