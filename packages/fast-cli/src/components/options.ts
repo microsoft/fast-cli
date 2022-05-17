@@ -1,5 +1,6 @@
 export const availableTemplates = [
     "badge",
     "blank",
-    "dialog"
+    "dialog",
+    "number-field"
 ]

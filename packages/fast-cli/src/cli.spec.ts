@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { execSync } from "child_process";
 import path from "path";
 import fs from "fs-extra";
-import { requiredComponentTemplateFiles } from "./components/files.js";
+import { availableTemplates } from "./components/options.js";
 
 const dirname = path.resolve(process.cwd());
 const tempDirRelativeLocation = "../temp";
@@ -59,9 +59,12 @@ function setup() {
         "fast:config": `fast config -p ./src/components`,
         "fast:add-design-system": `fast add-design-system -p test -s open`,
         "fast:add-component:template": `fast add-component -n test-component -t ${path.resolve(dirname, "../temp-component")}`,
-        "fast:add-foundation-component:blank": `fast add-foundation-component -n test-component -t blank`,
-        "fast:add-foundation-component:badge": `fast add-foundation-component -n test-component -t badge`,
-        "fast:add-foundation-component:dialog": `fast add-foundation-component -n test-component -t dialog`,
+        ...availableTemplates.reduce((prevValue, currValue: string) => {
+            return {
+                ...prevValue,
+                [`fast:add-foundation-component:${currValue}`]: `fast add-foundation-component -n test-component -t ${currValue}`
+            }
+        }, {}),
     };
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
 }
@@ -342,6 +345,49 @@ test.describe("CLI", () => {
                 execSync(`cd ${tempDir} && npm run fast:init`);
                 setup();
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:dialog`);
+            });
+            test.afterAll(() => {
+                teardown();
+            });
+            test("should copy files from the template", () => {
+                let files: Array<string> = [];
+
+                function testGeneratedFiles(folderName: string) {
+                    const tempDirContents = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName));
+                    const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName), {
+                        withFileTypes: true
+                    });
+
+                    for (let i = 0, contentLength = tempDirContents.length; i < contentLength; i++) {
+                        if (tempDirContentsWithFileTypes[i].isDirectory()) {
+                            testGeneratedFiles(tempDirContents[i]);
+                        } else {
+                            files.push(
+                                folderName
+                                    ? `${folderName}/${tempDirContents[i]}`
+                                    : tempDirContents[i]
+                            );
+                        }
+                    }
+                }
+                
+                testGeneratedFiles("");
+                expect(files).toEqual(expectedGeneratedComponentTemplateFiles);
+            });
+            test("should be able to run the build", () => {
+                expect(
+                    () => {
+                        execSync(`cd ${tempDir} && npm run build`);
+                    }
+                ).not.toThrow();
+            });
+        });
+        test.describe("number-field", () => {
+            test.beforeAll(() => {
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:init`);
+                setup();
+                execSync(`cd ${tempDir} && npm run fast:add-foundation-component:number-field`);
             });
             test.afterAll(() => {
                 teardown();
