@@ -3,5 +3,6 @@ export const availableTemplates = [
     "blank",
     "card",
     "dialog",
+    "disclosure",
     "number-field",
 ]
