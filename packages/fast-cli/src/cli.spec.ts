@@ -518,9 +518,9 @@ test.describe("CLI", () => {
                 setup();
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:search`);
             });
-            // test.afterAll(() => {
-            //     teardown();
-            // });
+            test.afterAll(() => {
+                teardown();
+            });
             test("should copy files from the template", () => {
                 let files: Array<string> = [];
 
