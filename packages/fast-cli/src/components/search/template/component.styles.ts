@@ -34,10 +34,10 @@ import {
     neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,
-    Swatch,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "@microsoft/adaptive-ui";
+import type { Swatch } from "@microsoft/adaptive-ui/dist/dts/color/swatch.d.js"
 
 const clearButtonHover = DesignToken.create<Swatch>("clear-button-hover").withDefault(
     (target: HTMLElement) => {
