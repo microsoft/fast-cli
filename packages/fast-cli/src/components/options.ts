@@ -7,5 +7,6 @@ export const availableTemplates = [
     "disclosure",
     "flipper",
     "number-field",
+    "progress-ring",
     "search",
 ]
