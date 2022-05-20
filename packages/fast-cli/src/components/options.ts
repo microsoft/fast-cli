@@ -2,5 +2,9 @@ export const availableTemplates = [
     "badge",
     "blank",
     "card",
-    "dialog"
+    "checkbox",
+    "dialog",
+    "disclosure",
+    "number-field",
+    "search",
 ]
