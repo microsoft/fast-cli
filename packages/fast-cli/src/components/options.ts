@@ -5,4 +5,5 @@ export const availableTemplates = [
     "dialog",
     "disclosure",
     "number-field",
+    "search",
 ]
