@@ -2,25 +2,20 @@ import { expect, test } from "@playwright/test";
 import { execSync } from "child_process";
 import path from "path";
 import fs from "fs-extra";
-import { availableTemplates } from "./components/options.js";
+import {
+    dirname,
+    expectedGeneratedComponentTemplateFiles,
+    getTempDir,
+    getTempComponentDir,
+    setup,
+    teardown,
+    fastCliDir,
+} from "./test/helpers.js";
 
-const dirname = path.resolve(process.cwd());
-const tempDirRelativeLocation = "../temp";
-const tempComponentDirRelativeLocation = "../temp-component"
-const tempDir = path.resolve(dirname, tempDirRelativeLocation);
-const tempComponentDir = path.resolve(dirname, tempComponentDirRelativeLocation);
-const templateDir = path.resolve(dirname, "../cfp-template/template");
-const expectedGeneratedComponentTemplateFiles = [
-    "README.md",
-    "define.ts",
-    "fixtures/base.html",
-    "test-component.definition.ts",
-    "test-component.pw.spec.ts",
-    "test-component.stories.ts",
-    "test-component.styles.ts",
-    "test-component.template.ts",
-    "test-component.ts"
-];
+const uuid: string = "cli";
+const tempDir: string = getTempDir(uuid);
+const tempComponentDir: string = getTempComponentDir(uuid);
+const templateDir = path.resolve(dirname, "./cfp-template/template");
 
 function setupBlankAsTemplate() {
     fs.ensureDirSync(tempComponentDir);
@@ -29,7 +24,7 @@ function setupBlankAsTemplate() {
     execSync(`cd ${tempComponentDir} && npm init -y`);
 
     // Copy over the contents of the blank template
-    fs.copySync(path.resolve(dirname, "../fast-cli/dist/esm/components/blank"), tempComponentDir);
+    fs.copySync(path.resolve(fastCliDir, "./dist/esm/components/blank"), tempComponentDir);
     const packageJsonString = fs.readFileSync(
         path.resolve(tempComponentDir, "package.json"),
         { "encoding": "utf8" }
@@ -39,39 +34,6 @@ function setupBlankAsTemplate() {
     fs.writeFileSync(
         path.resolve(tempComponentDir, "package.json"), JSON.stringify(packageJson, null, 2)
     );
-}
-
-function setup() {
-    fs.ensureDirSync(tempDir);
-
-    // Create a temp project
-    execSync(`cd ${tempDir} && npm init -y`);
-
-    // Install the FAST CLI
-    execSync(`cd ${tempDir} && npm install --save-dev ${dirname}`);
-
-    // Update the scripts for testable CLI commands
-    const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
-    const packageJson = JSON.parse(packageJsonString);
-    packageJson.scripts = {
-        "build": "webpack --config=./webpack.prod.cjs",
-        "fast:init": `fast init -t ${path.resolve(dirname, "../cfp-template")}`,
-        "fast:config": `fast config -p ./src/components`,
-        "fast:add-design-system": `fast add-design-system -p test -s open`,
-        "fast:add-component:template": `fast add-component -n test-component -t ${path.resolve(dirname, "../temp-component")}`,
-        ...availableTemplates.reduce((prevValue, currValue: string) => {
-            return {
-                ...prevValue,
-                [`fast:add-foundation-component:${currValue}`]: `fast add-foundation-component -n test-component -t ${currValue}`
-            }
-        }, {}),
-    };
-    fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
-}
-
-function teardown() {
-    fs.removeSync(tempDir);
-    fs.removeSync(tempComponentDir);
 }
 
 /**
@@ -87,11 +49,11 @@ function teardown() {
 test.describe("CLI", () => {
     test.describe("init", () => {
         test.beforeAll(() => {
-            setup();
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:init`);
         });
         test.afterAll(() => {
-            teardown();
+            teardown(tempDir, tempComponentDir);
         });
         test("should create a package.json file with contents from the fast init", () => {
             const packageJsonFile = JSON.parse(
@@ -108,8 +70,6 @@ test.describe("CLI", () => {
             for (const [key, value] of Object.entries(configFilePackageJson)) {
                 if (key !== "name") {
                     expect(packageJsonFile[key].toString()).toEqual((value as any).toString());
-                } else {
-                    expect(packageJsonFile[key].toString()).toEqual("temp");
                 }
             }
         });
@@ -150,11 +110,11 @@ test.describe("CLI", () => {
     });
     test.describe("config", () => {
         test.beforeAll(() => {
-            setup();
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:config`);
         });
         test.afterAll(() => {
-            teardown();
+            teardown(tempDir, tempComponentDir);
         });
         test("should create a fast.config.json file", () => {
             expect(() => {
@@ -177,10 +137,10 @@ test.describe("CLI", () => {
     });
     test.describe("add-design-system", () => {
         test.beforeAll(() => {
-            setup();
+            setup(tempDir, tempComponentDir);
         });
         test.afterAll(() => {
-            teardown();
+            teardown(tempDir, tempComponentDir);
         });
         test("should throw if there is no fast.config.json file", () => {
             expect(() => {
@@ -210,24 +170,23 @@ test.describe("CLI", () => {
     });
     test.describe("add-component", () => {
         test.beforeAll(() => {
-            setup();
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:init`);
-            setup();
+            setup(tempDir, tempComponentDir);
             setupBlankAsTemplate();
             execSync(`cd ${tempDir} && npm run fast:add-component:template`);
         });
         test.afterAll(() => {
-            teardown();
+            teardown(tempDir, tempComponentDir);
         });
         test("should copy files from a provided template", () => {
             let files: Array<string> = [];
 
             function testGeneratedFiles(folderName: string) {
-                const tempDirContents = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName));
-                const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName), {
+                const tempDirContents = fs.readdirSync(path.resolve(tempDir, "./src/components/test-component", folderName));
+                const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "./src/components/test-component", folderName), {
                     withFileTypes: true
                 });
-
                 for (let i = 0, contentLength = tempDirContents.length; i < contentLength; i++) {
                     if (tempDirContentsWithFileTypes[i].isDirectory()) {
                         testGeneratedFiles(tempDirContents[i]);
@@ -255,13 +214,13 @@ test.describe("CLI", () => {
     test.describe("add-foundation-component", () => {
         test.describe("blank", () => {
             test.beforeAll(() => {
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:init`);
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:blank`);
             });
             test.afterAll(() => {
-                teardown();
+                teardown(tempDir, tempComponentDir);
             });
             test("should copy files from the template", () => {
                 let files: Array<string> = [];
@@ -298,13 +257,13 @@ test.describe("CLI", () => {
         });
         test.describe("badge", () => {
             test.beforeAll(() => {
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:init`);
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:badge`);
             });
             test.afterAll(() => {
-                teardown();
+                teardown(tempDir, tempComponentDir);
             });
             test("should copy files from the template", () => {
                 let files: Array<string> = [];
@@ -341,13 +300,13 @@ test.describe("CLI", () => {
         });
         test.describe("disclosure", () => {
             test.beforeAll(() => {
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:init`);
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:disclosure`);
             });
             test.afterAll(() => {
-                teardown();
+                teardown(tempDir, tempComponentDir);
             });
             test("should copy files from the template", () => {
                 let files: Array<string> = [];
@@ -384,13 +343,13 @@ test.describe("CLI", () => {
         });
         test.describe("card", () => {
             test.beforeAll(() => {
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:init`);
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:card`);
             });
             test.afterAll(() => {
-                teardown();
+                teardown(tempDir, tempComponentDir);
             });
             test("should copy files from the template", () => {
                 let files: Array<string> = [];
@@ -427,13 +386,13 @@ test.describe("CLI", () => {
         });
         test.describe("dialog", () => {
             test.beforeAll(() => {
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:init`);
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:dialog`);
             });
             test.afterAll(() => {
-                teardown();
+                teardown(tempDir, tempComponentDir);
             });
             test("should copy files from the template", () => {
                 let files: Array<string> = [];
@@ -470,13 +429,13 @@ test.describe("CLI", () => {
         });
         test.describe("number-field", () => {
             test.beforeAll(() => {
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:init`);
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:number-field`);
             });
             test.afterAll(() => {
-                teardown();
+                teardown(tempDir, tempComponentDir);
             });
             test("should copy files from the template", () => {
                 let files: Array<string> = [];
@@ -513,13 +472,13 @@ test.describe("CLI", () => {
         });
         test.describe("search", () => {
             test.beforeAll(() => {
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:init`);
-                setup();
+                setup(tempDir, tempComponentDir);
                 execSync(`cd ${tempDir} && npm run fast:add-foundation-component:search`);
             });
             test.afterAll(() => {
-                teardown();
+                teardown(tempDir, tempComponentDir);
             });
             test("should copy files from the template", () => {
                 let files: Array<string> = [];
