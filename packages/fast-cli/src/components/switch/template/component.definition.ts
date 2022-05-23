@@ -8,4 +8,7 @@ export const definition = {
     baseName: "${config.tagName}",
     template,
     styles,
+    switch: /* html */ \`
+        <span class="checked-indicator" part="checked-indicator"></span>
+    \`,
 };`;
