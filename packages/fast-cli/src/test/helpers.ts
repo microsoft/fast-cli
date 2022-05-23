@@ -40,9 +40,43 @@ export function setup(tempDir: string, tempComponentDir: string): void {
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
 }
 
+export function setupComponent(uuid: string, tempDir: string, tempComponentDir: string): void {
+    setup(tempDir, tempComponentDir);
+    execSync(`cd ${tempDir} && npm run fast:init`);
+    setup(tempDir, tempComponentDir);
+    execSync(`cd ${tempDir} && npm run fast:add-foundation-component:${uuid}`);
+}
+
 export function teardown(tempDir: string, tempComponentDir: string): void {
     fs.removeSync(tempDir);
     fs.removeSync(tempComponentDir);
+}
+
+export function getGeneratedComponentFiles(tempDir: string): Array<string> {
+    const files: Array<string> = [];
+
+    function testGeneratedFiles(folderName: string): void {
+        const tempDirContents = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName));
+        const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName), {
+            withFileTypes: true
+        });
+
+        for (let i = 0, contentLength = tempDirContents.length; i < contentLength; i++) {
+            if (tempDirContentsWithFileTypes[i].isDirectory()) {
+                testGeneratedFiles(tempDirContents[i]);
+            } else {
+                files.push(
+                    folderName
+                        ? `${folderName}/${tempDirContents[i]}`
+                        : tempDirContents[i]
+                );
+            }
+        }
+    }
+    
+    testGeneratedFiles("");
+
+    return files;
 }
 
 export const expectedGeneratedComponentTemplateFiles = [
