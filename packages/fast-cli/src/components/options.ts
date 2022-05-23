@@ -11,4 +11,5 @@ export const availableTemplates = [
     "progress",
     "progress-ring",
     "search",
+    "switch",
 ]
