@@ -31,7 +31,7 @@ export class ${config.className} extends Disclosure {
     }
 
     /**
-     * The appearance the anchor should have.
+     * The appearance the disclosure should have.
      *
      * @public
      * @remarks
@@ -39,15 +39,6 @@ export class ${config.className} extends Disclosure {
      */
     @attr
     public appearance?: DisclosureAppearance;
-    public appearanceChanged(
-        oldValue: DisclosureAppearance,
-        newValue: DisclosureAppearance
-    ): void {
-        if (oldValue !== newValue) {
-            this.classList.add(newValue);
-            this.classList.remove(oldValue);
-        }
-    }
 
     /**
      * Set disclosure height while transitioning
