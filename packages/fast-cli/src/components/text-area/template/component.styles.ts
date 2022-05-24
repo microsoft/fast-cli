@@ -32,7 +32,7 @@ import {
 } from "@microsoft/adaptive-ui";
 
 /**
- * Styles for \${config.className}
+ * Styles for ${config.className}
  * @public
  */
 export const styles: FoundationElementTemplate<ElementStyles> = (
