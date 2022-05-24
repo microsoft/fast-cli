@@ -13,4 +13,5 @@ export const availableTemplates = [
     "search",
     "switch",
     "text-field",
+    "toolbar",
 ]
