@@ -8,4 +8,7 @@ export const definition = {
     baseName: "${config.tagName}",
     template,
     styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 };`;
