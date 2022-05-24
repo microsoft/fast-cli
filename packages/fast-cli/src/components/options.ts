@@ -12,4 +12,7 @@ export const availableTemplates = [
     "progress-ring",
     "search",
     "switch",
+    "text-area",
+    "text-field",
+    "toolbar",
 ]
