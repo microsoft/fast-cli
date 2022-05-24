@@ -15,4 +15,5 @@ export const availableTemplates = [
     "text-area",
     "text-field",
     "toolbar",
+    "tooltip",
 ]
