@@ -25,9 +25,9 @@ export function setup(tempDir: string, tempComponentDir: string): void {
     const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
     const packageJson = JSON.parse(packageJsonString);
     packageJson.scripts = {
-        "build": "webpack --config=./webpack.prod.cjs",
+        ...packageJson.scripts,
         "fast:init": `fast init -t ${path.resolve(dirname, "cfp-template")}`,
-        "fast:config": `fast config -p ./src/components`,
+        "fast:config": `fast config -p ./components -r ./src`,
         "fast:add-design-system": `fast add-design-system -p test -s open`,
         "fast:add-component:template": `fast add-component -n test-component -t ${tempComponentDir}`,
         ...availableTemplates.reduce((prevValue, currValue: string) => {

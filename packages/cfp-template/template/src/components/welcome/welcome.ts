@@ -1,11 +1,8 @@
-import { customElement, FASTElement } from "@microsoft/fast-element";
-import { welcomeStyles as styles } from "./welcome.styles.js";
-import { welcomeTemplate as template } from "./welcome.template.js";
+import { FoundationElement } from "@microsoft/fast-foundation";
 
 /**
  * A Custom HTML Element.
  *
  * @public
  */
-@customElement({ name: "fast-welcome", template, styles })
-export class Welcome extends FASTElement {}
+ export class Welcome extends FoundationElement { }

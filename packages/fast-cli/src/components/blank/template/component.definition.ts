@@ -5,7 +5,7 @@ export default (config: ComponentTemplateConfig): string =>
 import { styles } from "./${config.tagName}.styles.js";
 
 export const definition = {
-    name: "${config.tagName}",
+    baseName: "${config.tagName}",
     template,
     styles
 };`;

@@ -21,6 +21,7 @@
     "eslint": "eslint . --ext .ts --config ./template/.eslintrc.cjs",
     "eslint:fix": "eslint . --ext .ts --config ./template/.eslintrc.cjs --fix",
     "start": "webpack-dev-server --config=./template/webpack.dev.cjs --history-api-fallback --progress",
+    "start:storybook": "start-storybook -c template/.storybook -p 3000 -h localhost",
     "test": "npm run eslint && npx playwright test --config=./template/playwright.config.ts",
     "serve": "node ./template/server.cjs"
   },
@@ -28,7 +29,11 @@
     "@microsoft/fast-element": "^1.7.0"
   },
   "devDependencies": {
+    "@microsoft/fast-cli": "^0.1.0",
     "@playwright/test": "^1.21.0",
+    "@storybook/builder-webpack5": "6.4.22",
+    "@storybook/html": "6.4.22",
+    "@storybook/manager-webpack5": "6.4.22",
     "@types/node": "^17.0.21",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
