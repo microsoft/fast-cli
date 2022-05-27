@@ -79,6 +79,10 @@
         font-family: var(--font-family);
     }
 
+    p {
+        line-height: 24px;
+    }
+
     .toolbar {
         position: sticky;
         top: 0;
@@ -191,7 +195,7 @@
     }
 
     main > div {
-        margin-inline-start: 25px;
+        padding: 25px;
     }
 
     main div a {
@@ -203,8 +207,12 @@
         padding-inline-end: 20px;
     }
 
-    .content {
-        width: 100%;
+    .container {
+        max-width: 900px;
+    }
+
+    .content ul {
+        list-style: inherit;
     }
 
     .frontpage {
@@ -552,8 +560,9 @@
 </div>
 
 
-                <div class="content">
-                     <h1 id="configure">Configure</h1>
+                <div class="container">
+                    
+                    <div class="content"><h1 id="configure">Configure</h1>
 <p>Running the <code>config</code> command will create a <code>fast.config.json</code> file. This should be useful in existing projects which could take advantage of the CLI once it has been initialized.</p>
 <h2 id="command-line">Command line</h2>
 <pre><code class="language-bash">$ fast config
@@ -576,6 +585,13 @@
 <td>Yes</td>
 <td></td>
 </tr>
+<tr>
+<td><code>--root-dir &lt;path/to/directory&gt;</code></td>
+<td><code>-r &lt;path/to/directory</code></td>
+<td>The root directory of the code.</td>
+<td>Yes</td>
+<td></td>
+</tr>
 </tbody></table>
 <h2 id="generated-files">Generated files</h2>
 <p>Example fast.config.json file:</p>
@@ -586,7 +602,8 @@
 <blockquote>
 <p>Important: The paths of components and design system must be relative to each other, therefore only the path to the component folder is required as the design system file path is assumed. In an app the path may be <code>&quot;./src/components&quot;</code> as shown above, or in the case of a component library the path may be <code>&quot;./src&quot;</code>.</p>
 </blockquote>
-
+</div>
+                    <div class="index"></div>
                 </div>
             </main>
         </div>

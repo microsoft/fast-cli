@@ -79,6 +79,10 @@
         font-family: var(--font-family);
     }
 
+    p {
+        line-height: 24px;
+    }
+
     .toolbar {
         position: sticky;
         top: 0;
@@ -191,7 +195,7 @@
     }
 
     main > div {
-        margin-inline-start: 25px;
+        padding: 25px;
     }
 
     main div a {
@@ -203,8 +207,12 @@
         padding-inline-end: 20px;
     }
 
-    .content {
-        width: 100%;
+    .container {
+        max-width: 900px;
+    }
+
+    .content ul {
+        list-style: inherit;
     }
 
     .frontpage {
@@ -552,8 +560,9 @@
 </div>
 
 
-                <div class="content">
-                     <h1 id="add-a-design-system">Add a design system</h1>
+                <div class="container">
+                    
+                    <div class="content"><h1 id="add-a-design-system">Add a design system</h1>
 <p>Before adding your own components, a design system file must be available. The design system will dictate web component configuration options.</p>
 <h2 id="command-line">Command line</h2>
 <pre><code class="language-bash">$ fast add-design-system
@@ -594,7 +603,8 @@
   shadowRootMode: &quot;closed&quot;
 };
 </code></pre>
-
+</div>
+                    <div class="index"></div>
                 </div>
             </main>
         </div>

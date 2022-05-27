@@ -79,6 +79,10 @@
         font-family: var(--font-family);
     }
 
+    p {
+        line-height: 24px;
+    }
+
     .toolbar {
         position: sticky;
         top: 0;
@@ -191,7 +195,7 @@
     }
 
     main > div {
-        margin-inline-start: 25px;
+        padding: 25px;
     }
 
     main div a {
@@ -203,8 +207,12 @@
         padding-inline-end: 20px;
     }
 
-    .content {
-        width: 100%;
+    .container {
+        max-width: 900px;
+    }
+
+    .content ul {
+        list-style: inherit;
     }
 
     .frontpage {
@@ -552,8 +560,9 @@
 </div>
 
 
-                <div class="content">
-                     <h1 id="add-a-component">Add a component</h1>
+                <div class="container">
+                    
+                    <div class="content"><h1 id="add-a-component">Add a component</h1>
 <p>Adding a component from a template allows a user to leverage an <code>npm</code> package or a local template they have created themselves.</p>
 <h2 id="command-line">Command line</h2>
 <pre><code class="language-bash">$ fast add-component
@@ -588,7 +597,8 @@
 </tr>
 </tbody></table>
 <p>A template npm package or local package can be specified or a selection of pre-congured named templates can be used.</p>
-
+</div>
+                    <div class="index"></div>
                 </div>
             </main>
         </div>

@@ -79,6 +79,10 @@
         font-family: var(--font-family);
     }
 
+    p {
+        line-height: 24px;
+    }
+
     .toolbar {
         position: sticky;
         top: 0;
@@ -191,7 +195,7 @@
     }
 
     main > div {
-        margin-inline-start: 25px;
+        padding: 25px;
     }
 
     main div a {
@@ -203,8 +207,12 @@
         padding-inline-end: 20px;
     }
 
-    .content {
-        width: 100%;
+    .container {
+        max-width: 900px;
+    }
+
+    .content ul {
+        list-style: inherit;
     }
 
     .frontpage {
@@ -552,8 +560,9 @@
 </div>
 
 
-                <div class="content">
-                     <h1 id="component-templates">Component templates</h1>
+                <div class="container">
+                    
+                    <div class="content"><h1 id="component-templates">Component templates</h1>
 <p>These templates will be used in the <code>add-component</code> command. Create your own and refer to them locally, or publish an <code>npm</code> package and install via the package name.</p>
 <h2 id="required-folder-and-files">Required folder and files</h2>
 <pre><code>template/
@@ -574,7 +583,8 @@
 
 export default (config: ComponentTemplateConfig): string =&gt; `...your template`;
 </code></pre>
-<!-- TODO: add api-extractor information for the ComopnentTemplateConfig -->
+<!-- TODO: add api-extractor information for the ComopnentTemplateConfig --></div>
+                    <div class="index"></div>
                 </div>
             </main>
         </div>

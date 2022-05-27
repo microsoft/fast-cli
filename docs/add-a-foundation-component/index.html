@@ -79,6 +79,10 @@
         font-family: var(--font-family);
     }
 
+    p {
+        line-height: 24px;
+    }
+
     .toolbar {
         position: sticky;
         top: 0;
@@ -191,7 +195,7 @@
     }
 
     main > div {
-        margin-inline-start: 25px;
+        padding: 25px;
     }
 
     main div a {
@@ -203,8 +207,12 @@
         padding-inline-end: 20px;
     }
 
-    .content {
-        width: 100%;
+    .container {
+        max-width: 900px;
+    }
+
+    .content ul {
+        list-style: inherit;
     }
 
     .frontpage {
@@ -552,8 +560,9 @@
 </div>
 
 
-                <div class="content">
-                     <h1 id="add-a-foundation-comopnent">Add a foundation comopnent</h1>
+                <div class="container">
+                    
+                    <div class="content"><h1 id="add-a-foundation-comopnent">Add a foundation comopnent</h1>
 <p>Foundation components are similar to adding a component except they are based on the <code>@microsoft/fast-foundation</code> templates. These are bundled with flexible styles to provide an easy method for component creation and modification.</p>
 <h2 id="command-line">Command line</h2>
 <pre><code class="language-bash">$ fast add-foundation-component
@@ -584,7 +593,8 @@
 <td>The name of the foundation template</td>
 </tr>
 </tbody></table>
-
+</div>
+                    <div class="index"></div>
                 </div>
             </main>
         </div>
