@@ -5,4 +5,4 @@ export default {
     title: "welcome",
 };
 
-export const Welcome = () => Template;
+export const Welcome: () => "*.html" = () => Template;
