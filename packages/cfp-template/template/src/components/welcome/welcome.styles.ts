@@ -4,7 +4,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Styles for Welcome
  * @public
  */
-export const welcomeStyles: ElementStyles = css`
+export const styles: ElementStyles = css`
     :host > div {
         display: flex;
         flex-direction: column;

@@ -1,9 +1,11 @@
 export interface FastConfig {
     componentPath: string;
+    rootDir: string;
 }
 
 export interface FastConfigOptionMessages {
     componentPath: string;
+    rootDir: string;
 }
 
 export interface PackageJsonInit {

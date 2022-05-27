@@ -50,6 +50,10 @@
         font-family: var(--font-family);
     }
 
+    p {
+        line-height: 24px;
+    }
+
     .toolbar {
         position: sticky;
         top: 0;
@@ -162,7 +166,7 @@
     }
 
     main > div {
-        margin-inline-start: 25px;
+        padding: 25px;
     }
 
     main div a {
@@ -174,8 +178,12 @@
         padding-inline-end: 20px;
     }
 
-    .content {
-        width: 100%;
+    .container {
+        max-width: 900px;
+    }
+
+    .content ul {
+        list-style: inherit;
     }
 
     .frontpage {

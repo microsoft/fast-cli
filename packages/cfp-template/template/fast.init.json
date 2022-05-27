@@ -1,6 +1,8 @@
 {
     "fastConfig": {
-        "componentPath": "./src/components"
+        "rootDir": "./src",
+        "componentPath": "./components",
+        "componentPrefix": "fast"
     },
     "packageJson": {
         "name": "fast-project",
@@ -16,6 +18,7 @@
             "eslint": "eslint . --ext .ts",
             "eslint:fix": "eslint . --ext .ts --fix",
             "start": "webpack-dev-server --config=./webpack.dev.cjs --history-api-fallback --progress",
+            "start:storybook": "start-storybook -p 3000 -h localhost",
             "test": "npm run eslint && npx playwright test",
             "test:serve": "node ./test-server.cjs"
         },
@@ -23,7 +26,11 @@
             "@microsoft/fast-element": "^1.7.0"
           },
         "devDependencies": {
+            "@microsoft/fast-cli": "^0.1.0",
             "@playwright/test": "^1.21.0",
+            "@storybook/builder-webpack5": "6.4.22",
+            "@storybook/html": "6.4.22",
+            "@storybook/manager-webpack5": "6.4.22",
             "@types/node": "^17.0.21",
             "@typescript-eslint/eslint-plugin": "^5.17.0",
             "@typescript-eslint/parser": "^5.17.0",

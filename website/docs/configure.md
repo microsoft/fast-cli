@@ -13,6 +13,7 @@ $ fast config
 Argument | Shorthand | Description | Required | Default |
 ---------|-----------|-------------|----------|---------|
 `--component-path <path/to/components>` | `-p <path/to/components>` | The relative path of the FAST components folder | Yes | |
+`--root-dir <path/to/directory>` | `-r <path/to/directory` | The root directory of the code. | Yes | |
 
 ## Generated files
 

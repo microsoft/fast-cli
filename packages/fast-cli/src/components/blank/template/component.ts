@@ -1,14 +1,14 @@
 import type { ComponentTemplateConfig } from "../../../utilities/template";
 
 export default (config: ComponentTemplateConfig): string =>
-`import { customElement, FASTElement } from "@microsoft/fast-element";
-import { definition } from "./${config.tagName}.definition.js";
+`import { FoundationElement } from "@microsoft/fast-foundation";
 
 /**
  * A Custom HTML Element.
  *
  * @public
  */
-@customElement(definition)
-export class ${config.className} extends FASTElement {}
-`;
+ /**
+  * A class derived from the FoundationElement
+  */
+ export class ${config.className} extends FoundationElement {};`;

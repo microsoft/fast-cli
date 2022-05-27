@@ -31,6 +31,10 @@ function setupBlankAsTemplate() {
     );
     const packageJson = JSON.parse(packageJsonString);
     packageJson.type = "module";
+    packageJson.dependencies = {
+        ...packageJson.dependencies,
+        
+    }
     fs.writeFileSync(
         path.resolve(tempComponentDir, "package.json"), JSON.stringify(packageJson, null, 2)
     );
@@ -132,7 +136,7 @@ test.describe("CLI", () => {
                 })
             );
 
-            expect(config.componentPath).toEqual("./src/components");
+            expect(config.componentPath).toEqual("./components");
         });
     });
     test.describe("add-design-system", () => {
@@ -162,10 +166,12 @@ test.describe("CLI", () => {
             expect(await fs.pathExists(path.resolve(tempDir, "src"))).toBeTruthy();
         });
         test("should contain a design system export with the provided options", async () => {
-            const { designSystem: designSystem } = await import(path.resolve(tempDir, "./src/design-system.ts"));
+            // The contents of this file have to be read as this is expected to work in browser and therefore will throw errors if imported
+            const designSystemFileContents = fs.readFileSync(path.resolve(tempDir, "./src/design-system.ts"), { encoding: "utf8" });
+            
 
-            expect(designSystem.prefix).toEqual("test");
-            expect(designSystem.shadowRootMode).toEqual("open");
+            expect(designSystemFileContents).toContain(`prefix: "test"`);
+            expect(designSystemFileContents).toContain(`shadowRootMode: "open"`);
         });
     });
     test.describe("add-component", () => {

@@ -7,5 +7,5 @@ import "./define.js";
 export default {
     title: "${config.tagName}",
 };
-export const ${config.className} = () => Template;
+export const ${config.className}: () => "*.html" = () => Template;
 `; 

@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Added define as export, add design-system use of foundation",
+  "packageName": "@microsoft/fast-cli",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

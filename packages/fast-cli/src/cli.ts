@@ -54,6 +54,11 @@ interface ConfigOptions {
      * The component path
      */
     componentPath: string;
+
+    /**
+     * The root directory
+     */
+    rootDir: string;
 }
 
 /**
@@ -316,14 +321,43 @@ async function createDesignSystemFile(
     designSystemOptions: AddDesignSystemOptions,
 ): Promise<void> {
     const fastConfig = await getFastConfig();
+    const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
 
-    fs.ensureDirSync(path.resolve(fastConfig.componentPath, "../"));
-    fs.writeFileSync(path.resolve(fastConfig.componentPath, "../design-system.ts"),
-        `export const designSystem = {` +
-        `    prefix: "${designSystemOptions.prefix}",` +
-        `    shadowRootMode: "${designSystemOptions.shadowRootMode}",` +
-        `}`
+    fs.ensureDirSync(path.resolve(rootDir, fastConfig.componentPath));
+    fs.writeFileSync(path.resolve(rootDir, "./design-system.ts"),
+        `import { DesignSystem } from "@microsoft/fast-foundation";\n` +
+        `import components from "${fastConfig.componentPath}/index.js";\n\n` +
+        `export const designSystem = {\n` +
+        `    prefix: "${designSystemOptions.prefix}",\n` +
+        `    shadowRootMode: "${designSystemOptions.shadowRootMode}",\n` +
+        `};\n\n` +
+        `DesignSystem.getOrCreate().withPrefix(\n` +
+        `    designSystem.prefix\n` +
+        `).register(\n` +
+        `    ...components\n` +
+        `);`
     );
+
+    ensureComponentExportFile(fastConfig, rootDir);
+}
+
+function ensureComponentExportFile(fastConfig: FastConfig, rootDir: string): void {
+    const filePath: string = path.resolve(rootDir, fastConfig.componentPath, "index.ts");
+
+    try {
+        const fileContents = fs.readFileSync(filePath);
+
+        if (!fileContents) {
+            throw new Error("Component export file not found.");
+        }
+    } catch (e) {
+        console.warn(e);
+
+        fs.writeFileSync(
+            filePath,
+            `export default [];`
+        );
+    }
 }
 
 /**
@@ -398,7 +432,13 @@ function toPascalCase(kabobCase: string): string {
         .replace(new RegExp(/\w/), s => s.toUpperCase());
 }
 
+function toCamelCase(kabobCase: string): string {
+    const pascalCase: string = toPascalCase(kabobCase);
+    return pascalCase.charAt(0).toLowerCase() + pascalCase.slice(1);
+}
+
 async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage: string, cliTemplate: boolean, name: string): Promise<void> {
+    const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
     const normalizedPathToTemplatePackage: string = cliTemplate
         ? path.resolve(
             cliPath,
@@ -406,17 +446,21 @@ async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage:
         : pathToTemplatePackage;
 
     // Ensure there is an empty directory with the provided name
-    fs.emptydirSync(path.resolve(fastConfig.componentPath, name));
+    fs.emptydirSync(path.resolve(rootDir, fastConfig.componentPath, name));
 
     // Create an array of template items based on the files.ts
     for (const [templateName, fileName] of Object.entries(requiredComponentTemplateFiles)) {
         const { default: template } = await import(`${normalizedPathToTemplatePackage}/template/${templateName}`);
-        const filePath = path.resolve(fastConfig.componentPath, name, fileName(name));
+        const filePath = path.resolve(rootDir, fastConfig.componentPath, name, fileName(name));
 
         fs.ensureFileSync(filePath);
         fs.writeFileSync(
             filePath,
-            template({ tagName: name, className: toPascalCase(name) })
+            template({
+                tagName: name,
+                className: toPascalCase(name),
+                definitionName: toCamelCase(name)
+            } as ComponentTemplateConfig)
         );
     }
 }
@@ -455,9 +499,17 @@ async function addComponent(
     await installTemplate(options.template as string);
     await checkTemplateForFiles(options.template as string);
     await writeTemplateFiles(fastConfig, options.template as string, false, options.name as string);
-    await uninstallTemplate(options.template as string);
-
-    // await installDependencies(); // TODO: investigate adding this for foundation using fast.add-component.json
+    const fastAddComponent: FastAddComponent = await getFastAddComponent(
+        options.template as string
+    );
+    await installEnumeratedDependencies(
+        Object.entries(fastAddComponent?.packageJson?.dependencies || {}).map(([key, value]: [string, string]): string => {
+            return `${key}@${value}`;
+        }),
+        Object.entries(fastAddComponent?.packageJson?.devDependencies || {}).map(([key, value]: [string, string]): string => {
+            return `${key}@${value}`;
+        }),
+    );
 }
 
 /**
@@ -533,6 +585,16 @@ async function config(options: ConfigOptions, messages: FastConfigOptionMessages
         ]).componentPath;
     }
 
+    if (!options.rootDir) {
+        config.rootDir = await prompts([
+            {
+                type: "text",
+                name: "rootDir",
+                message: messages.rootDir
+            }
+        ]).rootDir;
+    }
+
     createConfigFile(config);
 }
 
@@ -593,13 +655,16 @@ program
     });
 
 const configComponentPathMessage: string = "Path to component folder";
+const configRootDirMessage: string = "Root directory";
 
 program.command("config")
     .description("Configure a project")
     .option("-p, --component-path <path/to/components>", configComponentPathMessage)
+    .option("-r, --root-dir <path/to/root>", configRootDirMessage)
     .action(async (options): Promise<void> => {
         await config(options, {
-            componentPath: configComponentPathMessage
+            componentPath: configComponentPathMessage,
+            rootDir: configRootDirMessage
         }).catch((reason) => {
             throw reason;
         });

@@ -1,3 +1,7 @@
 {
-    "packageJson": {}
+    "packageJson": {
+        "dependencies": {
+            "@microsoft/fast-foundation": "^2.46.2"
+        }
+    }
 }

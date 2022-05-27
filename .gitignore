@@ -53,6 +53,7 @@ storybook-static
 
 # tmp directories
 .tmp/
+temp/
 temp--*/
 temp-component--*/
 
