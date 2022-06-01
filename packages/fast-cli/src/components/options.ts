@@ -1,4 +1,5 @@
 export const availableTemplates = [
+    "avatar",
     "badge",
     "blank",
     "card",
