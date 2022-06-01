@@ -27,8 +27,8 @@ export function setup(tempDir: string, tempComponentDir: string): void {
     packageJson.scripts = {
         ...packageJson.scripts,
         "fast:init": `fast init -t ${path.resolve(dirname, "cfp-template")}`,
-        "fast:config": `fast config -p ./components -r ./src`,
-        "fast:add-design-system": `fast add-design-system -p test -s open`,
+        "fast:config": `fast config -p ./components -r ./src -n test`,
+        "fast:add-design-system": `fast add-design-system -s open`,
         "fast:add-component:template": `fast add-component -n test-component -t ${tempComponentDir}`,
         ...availableTemplates.reduce((prevValue, currValue: string) => {
             return {
