@@ -2,6 +2,7 @@ export const availableTemplates = [
     "avatar",
     "badge",
     "blank",
+    "calendar",
     "card",
     "checkbox",
     "dialog",
