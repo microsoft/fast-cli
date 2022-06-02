@@ -1,0 +1,16 @@
+{
+    "packageJson": {
+        "dependencies": {
+            "@microsoft/adaptive-ui": "../adaptive-ui",
+            "@microsoft/fast-foundation": "^2.46.2"
+        }
+    },
+    "requiredComponents": [
+        {
+            "template": "accordion-item",
+            "nameModifier": {
+                "append": "-item"
+            }
+        }
+    ]
+}
