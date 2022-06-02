@@ -5,12 +5,12 @@ import * as commander from "commander";
 import prompts from "prompts";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit, RequiredComponents, RequiredComponentsNameModifierConfig } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
-import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
+import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastAddComponentRequiredComponentMissingNameModificatierMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { XOR } from "./cli.types.js";
 import type { ComponentTemplateConfig } from "./utilities/template.js";
-import { availableTemplates } from "./components/options.js";
+import { suggestedTemplates } from "./components/options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
@@ -295,13 +295,13 @@ async function getFastConfig(): Promise<FastConfig> {
     const fastConfigPath = path.resolve(process.cwd(), "fast.config.json");
 
     if (!await fs.pathExists(fastConfigPath)) {
-        throw new Error(fastConfigDoesNotExistErrorMessage);
+        throw new Error(fastConfigDoesNotExistErrorMessage());
     }
 
     const fastConfig = JSON.parse(fs.readFileSync(fastConfigPath, { encoding: "utf8" }));
 
     if (typeof fastConfig.componentPath !== "string") {
-        throw new Error(fastConfigDoesNotContainComponentPathMessage);
+        throw new Error(fastConfigDoesNotContainComponentPathMessage());
     }
 
     return fastConfig;
@@ -402,7 +402,7 @@ async function checkTemplateForFiles(pathToTemplatePackage: string): Promise<voi
     const directoryContents = fs.readdirSync(templateDir);
 
     if (!Array.isArray(directoryContents)) {
-        throw new Error(componentTemplateFilesNotFoundMessage);
+        throw new Error(componentTemplateFilesNotFoundMessage());
     }
 
     // Run through available template files and make sure all required files are accounted for
@@ -504,6 +504,27 @@ async function addComponent(
     );
 }
 
+function modifyName(
+    name: string,
+    modifierConfig: RequiredComponentsNameModifierConfig
+): string {
+    let updatedName = name;
+
+    if (modifierConfig.append) {
+        updatedName = updatedName + modifierConfig.append;
+    }
+
+    if (modifierConfig.prepend) {
+        updatedName = modifierConfig.prepend + updatedName;
+    }
+
+    if (name === updatedName) {
+        throw new Error(fastAddComponentRequiredComponentMissingNameModificatierMessage(name));
+    }
+
+    return updatedName;
+}
+
 /**
  * Add a foundation component
  */
@@ -519,9 +540,9 @@ async function addFoundationComponent(
                 type: "autocomplete",
                 name: "template",
                 message: messages.template,
-                choices: availableTemplates.map((availableTemplate) => {
+                choices: suggestedTemplates.map((suggestedTemplate) => {
                     return {
-                        title: availableTemplate
+                        title: suggestedTemplate
                     };
                 })
             }
@@ -547,6 +568,17 @@ async function addFoundationComponent(
             `dist/esm/components/${options.template}`
         )
     );
+
+    if (Array.isArray(fastAddComponent.requiredComponents)) {
+        fastAddComponent.requiredComponents.forEach((requiredComponent: RequiredComponents) => {
+            addFoundationComponent({
+                ...options,
+                name: modifyName(config.name as string, requiredComponent.nameModifier),
+                template: requiredComponent.template,
+            }, messages);
+        });
+    }
+
     await installEnumeratedDependencies(
         Object.entries(fastAddComponent?.packageJson?.dependencies || {}).map(([key, value]: [string, string]): string => {
             return `${key}@${value}`;

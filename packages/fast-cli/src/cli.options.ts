@@ -31,8 +31,19 @@ export interface PackageJsonAddComponent {
     peerDependencies: { [key: string]: string };
 }
 
+export interface RequiredComponentsNameModifierConfig {
+    prepend: string;
+    append: string;
+}
+
+export interface RequiredComponents {
+    template: string;
+    nameModifier: RequiredComponentsNameModifierConfig
+}
+
 export interface FastAddComponent {
-    packageJson: PackageJsonAddComponent
+    packageJson: PackageJsonAddComponent;
+    requiredComponents?: Array<RequiredComponents>;
 }
 
 export interface FastInitOptionMessages {
