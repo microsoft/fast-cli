@@ -1,11 +1,13 @@
 export interface FastConfig {
     componentPath: string;
     rootDir: string;
+    prefix: string;
 }
 
 export interface FastConfigOptionMessages {
     componentPath: string;
     rootDir: string;
+    prefix: string;
 }
 
 export interface PackageJsonInit {
@@ -49,12 +51,10 @@ export interface FastInitOptionMessages {
 }
 
 export interface AddDesignSystemOptions {
-    prefix?: string;
     shadowRootMode?: "open" | "closed";
 }
 
 export interface AddDesignSystemOptionMessages {
-    prefix: string;
     shadowRootMode: string;
 }
 

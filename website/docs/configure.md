@@ -13,15 +13,16 @@ $ fast config
 Argument | Shorthand | Description | Required | Default |
 ---------|-----------|-------------|----------|---------|
 `--component-path <path/to/components>` | `-p <path/to/components>` | The relative path of the FAST components folder | Yes | |
-`--root-dir <path/to/directory>` | `-r <path/to/directory` | The root directory of the code. | Yes | |
+`--root-dir <path/to/directory>` | `-r <path/to/directory` | The root directory of the code where the design system may be found. | Yes | |
+`--prefix <name>` | `-n <name>` | The components prefix | Yes | |
 
 ## Generated files
 
 Example fast.config.json file:
 ```json
 {
-    "componentPath": "./src/components"
+    "rootDir": "./src",
+    "componentPath": "./src/components",
+    "prefix": "fast"
 }
 ```
-
-> Important: The paths of components and design system must be relative to each other, therefore only the path to the component folder is required as the design system file path is assumed. In an app the path may be `"./src/components"` as shown above, or in the case of a component library the path may be `"./src"`.

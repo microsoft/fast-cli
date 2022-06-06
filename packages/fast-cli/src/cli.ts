@@ -59,6 +59,11 @@ interface ConfigOptions {
      * The root directory
      */
     rootDir: string;
+
+    /**
+     * The web components prefix
+     */
+    prefix: string;
 }
 
 /**
@@ -328,7 +333,7 @@ async function createDesignSystemFile(
         `import { DesignSystem } from "@microsoft/fast-foundation";\n` +
         `import components from "${fastConfig.componentPath}/index.js";\n\n` +
         `export const designSystem = {\n` +
-        `    prefix: "${designSystemOptions.prefix}",\n` +
+        `    prefix: "${fastConfig.prefix}",\n` +
         `    shadowRootMode: "${designSystemOptions.shadowRootMode}",\n` +
         `};\n\n` +
         `DesignSystem.getOrCreate().withPrefix(\n` +
@@ -368,19 +373,6 @@ async function addDesignSystem(
     messages: AddDesignSystemOptionMessages
 ): Promise<void> {
     const config: AddDesignSystemOptions = options;
-
-    if (!options.prefix) {
-        config.prefix = await prompts([
-            {
-                type: "text",
-                name: "prefix",
-                message: messages.prefix,
-                validate: (input): boolean => {
-                    return input !== "";
-                }
-            }
-        ]).prefix;
-    }
 
     if (!options.shadowRootMode) {
         config.shadowRootMode = await prompts([
@@ -627,6 +619,19 @@ async function config(options: ConfigOptions, messages: FastConfigOptionMessages
         ]).rootDir;
     }
 
+    if (!options.prefix) {
+        config.prefix = await prompts([
+            {
+                type: "text",
+                name: "prefix",
+                message: messages.prefix,
+                validate: (input): boolean => {
+                    return input !== "";
+                }
+            }
+        ]).prefix;
+    }
+
     createConfigFile(config);
 }
 
@@ -688,13 +693,16 @@ program
 
 const configComponentPathMessage: string = "Path to component folder";
 const configRootDirMessage: string = "Root directory";
+const configPrefixMessage: string = "The web component prefix";
 
 program.command("config")
     .description("Configure a project")
+    .option("-n, --prefix <prefix>", configPrefixMessage)
     .option("-p, --component-path <path/to/components>", configComponentPathMessage)
     .option("-r, --root-dir <path/to/root>", configRootDirMessage)
     .action(async (options): Promise<void> => {
         await config(options, {
+            prefix: configPrefixMessage,
             componentPath: configComponentPathMessage,
             rootDir: configRootDirMessage
         }).catch((reason) => {
@@ -702,16 +710,13 @@ program.command("config")
         });
     });
 
-const addDesignSystemPrefixMessage: string = "The web component prefix";
 const addDesignSystemShadowRootModeMessage: string = "The shadowroot mode";
 
 program.command("add-design-system")
     .description("Add a design system")
-    .option("-p, --prefix <prefix>", addDesignSystemPrefixMessage)
     .option("-s, --shadow-root-mode <mode>", addDesignSystemShadowRootModeMessage)
     .action(async (options): Promise<void> => {
         await addDesignSystem(options, {
-            prefix: addDesignSystemPrefixMessage,
             shadowRootMode: addDesignSystemShadowRootModeMessage,
         }).catch((reason) => {
             throw reason;
