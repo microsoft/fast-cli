@@ -588,7 +588,14 @@
 <tr>
 <td><code>--root-dir &lt;path/to/directory&gt;</code></td>
 <td><code>-r &lt;path/to/directory</code></td>
-<td>The root directory of the code.</td>
+<td>The root directory of the code where the design system may be found.</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>--prefix &lt;name&gt;</code></td>
+<td><code>-n &lt;name&gt;</code></td>
+<td>The components prefix</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -596,12 +603,11 @@
 <h2 id="generated-files">Generated files</h2>
 <p>Example fast.config.json file:</p>
 <pre><code class="language-json">{
-    &quot;componentPath&quot;: &quot;./src/components&quot;
+    &quot;rootDir&quot;: &quot;./src&quot;,
+    &quot;componentPath&quot;: &quot;./src/components&quot;,
+    &quot;prefix&quot;: &quot;fast&quot;
 }
 </code></pre>
-<blockquote>
-<p>Important: The paths of components and design system must be relative to each other, therefore only the path to the component folder is required as the design system file path is assumed. In an app the path may be <code>&quot;./src/components&quot;</code> as shown above, or in the case of a component library the path may be <code>&quot;./src&quot;</code>.</p>
-</blockquote>
 </div>
                     <div class="index"></div>
                 </div>
