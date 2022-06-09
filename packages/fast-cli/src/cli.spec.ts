@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs-extra";
 import {
     dirname,
-    expectedGeneratedComponentTemplateFiles,
+    getExpectedGeneratedComponentTemplateFiles,
     getTempDir,
     getTempComponentDir,
     setup,
@@ -207,7 +207,7 @@ test.describe("CLI", () => {
             }
             
             testGeneratedFiles("");
-            expect(files).toEqual(expectedGeneratedComponentTemplateFiles);
+            expect(files.sort()).toEqual(getExpectedGeneratedComponentTemplateFiles("test-component").sort());
         });
         test("should be able to run the build", () => {
             expect(

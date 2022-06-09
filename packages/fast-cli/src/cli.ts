@@ -10,7 +10,7 @@ import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastAddComponentRequiredComponentMissingNameModificatierMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { XOR } from "./cli.types.js";
 import type { ComponentTemplateConfig } from "./utilities/template.js";
-import { suggestedTemplates } from "./components/options.js";
+import { disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
@@ -451,7 +451,7 @@ async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage:
             template({
                 tagName: name,
                 className: toPascalCase(name),
-                definitionName: toCamelCase(name)
+                definitionName: `${toCamelCase(name)}Definition`
             } as ComponentTemplateConfig)
         );
     }
@@ -526,6 +526,26 @@ function modifyName(
 }
 
 /**
+ * Gets a foundation component name that will not cause naming conflicts
+ */
+async function getAllowedFoundationComponentName(name: string, template: string): Promise<string> {
+    const updatedName: string = await prompts([
+        {
+            type: "text",
+            name: "name",
+            message: `The name "${name}" is not allowed, choose a different name`,
+            initial: template
+        }
+    ]).name;
+
+    if (disallowedTemplateNames.includes(updatedName)) {
+        return await getAllowedFoundationComponentName(updatedName, template);
+    }
+
+    return updatedName;
+}
+
+/**
  * Add a foundation component
  */
 async function addFoundationComponent(
@@ -558,6 +578,13 @@ async function addFoundationComponent(
                 initial: config.template
             }
         ]).name;
+    }
+
+    if (disallowedTemplateNames.includes(config.name as string)) {
+        config.name = await getAllowedFoundationComponentName(
+            config.name as string,
+            config.template as string
+        );
     }
 
     const fastConfig: FastConfig = await getFastConfig();

@@ -33,7 +33,7 @@ export function setup(tempDir: string, tempComponentDir: string): void {
         ...availableTemplates.reduce((prevValue, currValue: string) => {
             return {
                 ...prevValue,
-                [`fast:add-foundation-component:${currValue}`]: `fast add-foundation-component -n test-component -t ${currValue}`
+                [`fast:add-foundation-component:${currValue}`]: `fast add-foundation-component -n ${currValue} -t ${currValue}`
             }
         }, {}),
     };
@@ -52,12 +52,12 @@ export function teardown(tempDir: string, tempComponentDir: string): void {
     fs.removeSync(tempComponentDir);
 }
 
-export function getGeneratedComponentFiles(tempDir: string): Array<string> {
+export function getGeneratedComponentFiles(tempDir: string, componentName: string): Array<string> {
     const files: Array<string> = [];
 
     function testGeneratedFiles(folderName: string): void {
-        const tempDirContents = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName));
-        const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, "src/components/test-component", folderName), {
+        const tempDirContents = fs.readdirSync(path.resolve(tempDir, `src/components/${componentName}`, folderName));
+        const tempDirContentsWithFileTypes = fs.readdirSync(path.resolve(tempDir, `src/components/${componentName}`, folderName), {
             withFileTypes: true
         });
 
@@ -79,14 +79,14 @@ export function getGeneratedComponentFiles(tempDir: string): Array<string> {
     return files;
 }
 
-export const expectedGeneratedComponentTemplateFiles = [
+export const getExpectedGeneratedComponentTemplateFiles = (componentName: string): Array<string> => [
     "README.md",
+    `${componentName}.definition.ts`,
+    `${componentName}.pw.spec.ts`,
+    `${componentName}.stories.ts`,
+    `${componentName}.styles.ts`,
+    `${componentName}.template.ts`,
+    `${componentName}.ts`,
     "define.ts",
     "fixtures/base.html",
-    "test-component.definition.ts",
-    "test-component.pw.spec.ts",
-    "test-component.stories.ts",
-    "test-component.styles.ts",
-    "test-component.template.ts",
-    "test-component.ts"
 ];
