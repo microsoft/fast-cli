@@ -14,7 +14,7 @@ import { suggestedTemplates } from "./components/options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
-const defaultTemplatePath = path.resolve(__dirname, "@microsoft/cfp-template");
+const defaultTemplatePath = "@microsoft/cfp-template";
 const cliPath = path.resolve(__dirname, "node_modules", "@microsoft/fast-cli");
 const templateFolderName = "template";
 /* eslint-disable no-useless-escape */
@@ -38,7 +38,7 @@ interface InitOptions {
     /**
      * Use defaults
      */
-    defaults: boolean;
+    useDefaults: boolean;
 
     /**
      * Path to template
@@ -50,6 +50,11 @@ interface InitOptions {
  * Config command options
  */
 interface ConfigOptions {
+    /**
+     * Use defaults
+     */
+     useDefaults: boolean;
+
     /**
      * The component path
      */
@@ -370,11 +375,16 @@ function ensureComponentExportFile(fastConfig: FastConfig, rootDir: string): voi
  */
 async function addDesignSystem(
     options: AddDesignSystemOptions,
-    messages: AddDesignSystemOptionMessages
+    messages: AddDesignSystemOptionMessages,
+    defaults: Partial<AddDesignSystemOptions>,
 ): Promise<void> {
-    const config: AddDesignSystemOptions = options;
+    let config: AddDesignSystemOptions = options;
 
-    if (!options.shadowRootMode) {
+    if (options.useDefaults) {
+        config = { ...defaults, ...options };
+    }
+
+    if (!config.shadowRootMode) {
         config.shadowRootMode = await prompts([
             {
                 type: "toggle",
@@ -534,7 +544,7 @@ async function addFoundationComponent(
 ): Promise<void> {
     const config: AddFoundationComponentOptions = options;
 
-    if (!options.template) {
+    if (!config.template) {
         config.template = await prompts([
             {
                 type: "autocomplete",
@@ -549,7 +559,12 @@ async function addFoundationComponent(
         ]).template;
     }
 
-    if (!options.name) {
+    if (options.useDefaults) {
+        // the foundation templates names are used as defaults
+        config.name = config.template
+    }
+
+    if (!config.name) {
         config.name = await prompts([
             {
                 type: "text",
@@ -561,11 +576,11 @@ async function addFoundationComponent(
     }
 
     const fastConfig: FastConfig = await getFastConfig();
-    await writeTemplateFiles(fastConfig, options.template as string, true, options.name as string);
+    await writeTemplateFiles(fastConfig, config.template as string, true, config.name as string);
     const fastAddComponent: FastAddComponent = await getFastAddComponent(
         path.resolve(
             cliPath,
-            `dist/esm/components/${options.template}`
+            `dist/esm/components/${config.template}`
         )
     );
 
@@ -592,10 +607,14 @@ async function addFoundationComponent(
 /**
  * Configure a FAST project
  */
-async function config(options: ConfigOptions, messages: FastConfigOptionMessages): Promise<void> {
-    const config: ConfigOptions = options;
+async function config(options: ConfigOptions, messages: FastConfigOptionMessages, defaults: Partial<ConfigOptions>): Promise<void> {
+    let config: ConfigOptions = options;
 
-    if (!options.componentPath) {
+    if (config.useDefaults) {
+        config = { ...defaults, ...options };
+    }
+
+    if (!config.componentPath) {
         /**
          * Collect information for the fast.config.json file
          */
@@ -609,7 +628,7 @@ async function config(options: ConfigOptions, messages: FastConfigOptionMessages
         ]).componentPath;
     }
 
-    if (!options.rootDir) {
+    if (!config.rootDir) {
         config.rootDir = await prompts([
             {
                 type: "text",
@@ -619,7 +638,7 @@ async function config(options: ConfigOptions, messages: FastConfigOptionMessages
         ]).rootDir;
     }
 
-    if (!options.prefix) {
+    if (!config.prefix) {
         config.prefix = await prompts([
             {
                 type: "text",
@@ -647,14 +666,18 @@ async function isTemplateRemotePackage(pathToTemplatePackage: string): Promise<b
 /**
  * Initialize a FAST project
  */
-async function init(options: InitOptions, messages: FastInitOptionMessages): Promise<void> {
-    let pathToTemplatePackage = options.template;
+async function init(options: InitOptions, messages: FastInitOptionMessages, defaults: Partial<InitOptions>): Promise<void> {
+    let config = options;
 
-    if (!options.template) {
+    if (options.useDefaults) {
+        config = { ...defaults, ...options };
+    }
+
+    if (!config.template) {
         /**
          * Collect information for the package.json file
          */
-        pathToTemplatePackage = await prompts([
+         config.template = await prompts([
             {
                 type: "text",
                 name: "template",
@@ -664,29 +687,39 @@ async function init(options: InitOptions, messages: FastInitOptionMessages): Pro
         ]).template;
     }
 
-    if (!await isTemplateRemotePackage(pathToTemplatePackage)) {
-        pathToTemplatePackage = path.resolve(__dirname, options.template);
+    if (!await isTemplateRemotePackage(config.template)) {
+        config.template = path.resolve(__dirname, options.template);
     }
 
-    const initFile: FastInit = getFastInit(pathToTemplatePackage);
-    await installTemplate(pathToTemplatePackage);
+    const initFile: FastInit = getFastInit(config.template);
+    await installTemplate(config.template);
     createConfigFile(initFile.fastConfig);
-    const packageName: string = copyTemplateToProject(pathToTemplatePackage, initFile.packageJson, path.resolve(__dirname));
+    const packageName: string = copyTemplateToProject(config.template, initFile.packageJson, path.resolve(__dirname));
     await installDependencies();
     await installPlaywrightBrowsers();
     await uninstallTemplate(packageName);
 }
 
+const yesToAllDefaultsMessage: string = "Use all defaults";
+
 const initTemplateMessage: string = "Project template";
+const initDefaults: Partial<InitOptions> = {
+    template: defaultTemplatePath
+}
 
 program
     .command("init")
     .description("Initialize a new project")
-    .option("-t, --template <template>", initTemplateMessage)
+    .option("-t, --template <template>", initTemplateMessage, initDefaults.template)
+    .option("-y, --yes-all", yesToAllDefaultsMessage)
     .action(async (options): Promise<void> => {
-        await init(options, {
-            template: initTemplateMessage
-        }).catch((reason) => {
+        await init(
+            options,
+            {
+                template: initTemplateMessage
+            },
+            initDefaults
+        ).catch((reason) => {
             throw reason;
         });
     });
@@ -694,31 +727,49 @@ program
 const configComponentPathMessage: string = "Path to component folder";
 const configRootDirMessage: string = "Root directory";
 const configPrefixMessage: string = "The web component prefix";
+const configDefaults: Partial<ConfigOptions> = {
+    prefix: "fast",
+    componentPath: "./components",
+    rootDir: "./src",
+}
 
 program.command("config")
     .description("Configure a project")
-    .option("-n, --prefix <prefix>", configPrefixMessage)
-    .option("-p, --component-path <path/to/components>", configComponentPathMessage)
-    .option("-r, --root-dir <path/to/root>", configRootDirMessage)
+    .option("-n, --prefix <prefix>", configPrefixMessage, configDefaults.prefix)
+    .option("-p, --component-path <path/to/components>", configComponentPathMessage, configDefaults.componentPath)
+    .option("-r, --root-dir <path/to/root>", configRootDirMessage, configDefaults.rootDir)
+    .option("-y, --yes-all", yesToAllDefaultsMessage)
     .action(async (options): Promise<void> => {
-        await config(options, {
-            prefix: configPrefixMessage,
-            componentPath: configComponentPathMessage,
-            rootDir: configRootDirMessage
-        }).catch((reason) => {
+        await config(
+            options,
+            {
+                prefix: configPrefixMessage,
+                componentPath: configComponentPathMessage,
+                rootDir: configRootDirMessage
+            },
+            configDefaults
+        ).catch((reason) => {
             throw reason;
         });
     });
 
 const addDesignSystemShadowRootModeMessage: string = "The shadowroot mode";
+const addDesignSystemDefaults: Partial<AddDesignSystemOptions> = {
+    shadowRootMode: "open"
+}
 
 program.command("add-design-system")
     .description("Add a design system")
-    .option("-s, --shadow-root-mode <mode>", addDesignSystemShadowRootModeMessage)
+    .option("-s, --shadow-root-mode <mode>", addDesignSystemShadowRootModeMessage, addDesignSystemDefaults.shadowRootMode)
+    .option("-y, --yes-all", yesToAllDefaultsMessage)
     .action(async (options): Promise<void> => {
-        await addDesignSystem(options, {
-            shadowRootMode: addDesignSystemShadowRootModeMessage,
-        }).catch((reason) => {
+        await addDesignSystem(
+            options,
+            {
+                shadowRootMode: addDesignSystemShadowRootModeMessage
+            },
+            addDesignSystemDefaults
+        ).catch((reason) => {
             throw reason;
         });
     });
@@ -746,6 +797,7 @@ program.command("add-foundation-component")
     .description("Add a foundation component")
     .option("-t, --template <template>", addFoundationComponentTemplateMessage)
     .option("-n, --name <name>", addFoundationComponentNameMessage)
+    .option("-y, --yes-all", yesToAllDefaultsMessage)
     .action(async (options): Promise<void> => {
         await addFoundationComponent(options, {
             template: addFoundationComponentTemplateMessage,

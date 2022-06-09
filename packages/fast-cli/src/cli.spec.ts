@@ -40,6 +40,27 @@ function setupBlankAsTemplate() {
     );
 }
 
+function configTests() {
+    test("should create a fast.config.json file", () => {
+        expect(() => {
+            JSON.parse(
+                fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
+                    encoding: "utf8",
+                })
+            )
+        }).not.toThrow();
+    });
+    test("should contain a custom component path", () => {
+        const config = JSON.parse(
+            fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
+                encoding: "utf8",
+            })
+        );
+
+        expect(config.componentPath).toEqual("./components");
+    });
+}
+
 /**
  * TODO: update these tests when the npm CLI has been updated and added it to
  * the github validation workflow.
@@ -120,24 +141,17 @@ test.describe("CLI", () => {
         test.afterAll(() => {
             teardown(tempDir, tempComponentDir);
         });
-        test("should create a fast.config.json file", () => {
-            expect(() => {
-                JSON.parse(
-                    fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
-                        encoding: "utf8",
-                    })
-                )
-            }).not.toThrow();
+        configTests();
+    });
+    test.describe("config with defaults", () => {
+        test.beforeAll(() => {
+            setup(tempDir, tempComponentDir);
+            execSync(`cd ${tempDir} && npm run fast:config:default`);
         });
-        test("should contain a custom component path", () => {
-            const config = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
-                    encoding: "utf8",
-                })
-            );
-
-            expect(config.componentPath).toEqual("./components");
+        test.afterAll(() => {
+            teardown(tempDir, tempComponentDir);
         });
+        configTests();
     });
     test.describe("add-design-system", () => {
         test.beforeAll(() => {
@@ -169,7 +183,42 @@ test.describe("CLI", () => {
             // The contents of this file have to be read as this is expected to work in browser and therefore will throw errors if imported
             const designSystemFileContents = fs.readFileSync(path.resolve(tempDir, "./src/design-system.ts"), { encoding: "utf8" });
             
-
+    
+            expect(designSystemFileContents).toContain(`prefix: "test"`);
+            expect(designSystemFileContents).toContain(`shadowRootMode: "open"`);
+        });
+    });
+    test.describe("add-design-system with defaults", () => {
+        test.beforeAll(() => {
+            setup(tempDir, tempComponentDir);
+        });
+        test.afterAll(() => {
+            teardown(tempDir, tempComponentDir);
+        });
+        test("should throw if there is no fast.config.json file", () => {
+            expect(() => {
+                execSync(`cd ${tempDir} && npm run fast:add-design-system:default`);
+            }).toThrow();
+        });
+        test("should throw if the fast.config.json file does not contain a component path", () => {
+            execSync(`cd ${tempDir} && npm run fast:config`);
+    
+            fs.writeFileSync(path.resolve(tempDir, "fast.config.json"), "{}");
+    
+            expect(() => {
+                execSync(`cd ${tempDir} && npm run fast:add-design-system:default`);
+            }).toThrow();
+        });
+        test("should create a design-system.ts file relative to a component path", async () => {
+            execSync(`cd ${tempDir} && npm run fast:config && npm run fast:add-design-system:default`);
+    
+            expect(await fs.pathExists(path.resolve(tempDir, "src"))).toBeTruthy();
+        });
+        test("should contain a design system export with the provided options", async () => {
+            // The contents of this file have to be read as this is expected to work in browser and therefore will throw errors if imported
+            const designSystemFileContents = fs.readFileSync(path.resolve(tempDir, "./src/design-system.ts"), { encoding: "utf8" });
+            
+    
             expect(designSystemFileContents).toContain(`prefix: "test"`);
             expect(designSystemFileContents).toContain(`shadowRootMode: "open"`);
         });

@@ -12,9 +12,9 @@ $ fast config
 
 Argument | Shorthand | Description | Required | Default |
 ---------|-----------|-------------|----------|---------|
-`--component-path <path/to/components>` | `-p <path/to/components>` | The relative path of the FAST components folder | Yes | |
-`--root-dir <path/to/directory>` | `-r <path/to/directory` | The root directory of the code where the design system may be found. | Yes | |
-`--prefix <name>` | `-n <name>` | The components prefix | Yes | |
+`--component-path <path/to/components>` | `-p <path/to/components>` | The relative path of the FAST components folder | Yes | `./components` |
+`--root-dir <path/to/directory>` | `-r <path/to/directory` | The root directory of the code where the design system may be found. | Yes | `./src` |
+`--prefix <name>` | `-n <name>` | The components prefix | Yes | `fast` |
 
 ## Generated files
 
