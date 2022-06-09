@@ -2,6 +2,7 @@ import type { PlaywrightTestConfig } from "@playwright/test";
 
 const config: PlaywrightTestConfig = {
     testDir: "dist",
+    retries: process.env.CI ? 2 : 0,
     testMatch: "**/?(*.)+(spec).+(js)",
     webServer: {
         command: "npm run serve:storybook",
