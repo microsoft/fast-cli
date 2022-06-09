@@ -34,6 +34,31 @@ export const suggestedTemplates = [
 ];
 
 /**
+ * The disallowed names for templates to prevent
+ * naming conflicts
+ */
+export const disallowedTemplateNames = [
+    "foundation-accordion",
+    "foundation-avatar",
+    "foundation-badge",
+    "foundation-calendar",
+    "foundation-card",
+    "foundation-checkbox",
+    "foundation-dialog",
+    "foundation-disclosure",
+    "foundation-divider",
+    "foundation-flipper",
+    "foundation-number-field",
+    "base-progress",
+    "foundation-search",
+    "foundation-switch",
+    "foundation-text-area",
+    "foundation-text-field",
+    "foundation-toolbar",
+    "foundation-tooltip"
+]
+
+/**
  * All available templates
  */
 export const availableTemplates = suggestedTemplates.concat(companionTemplates);

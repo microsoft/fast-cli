@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { execSync } from "child_process";
 import {
-    expectedGeneratedComponentTemplateFiles,
+    getExpectedGeneratedComponentTemplateFiles,
     setupComponent,
     teardown,
     getGeneratedComponentFiles,
@@ -21,7 +21,7 @@ test.describe(`CLI add-foundation-component ${uuid}`, () => {
         teardown(tempDir, tempComponentDir);
     });
     test("should copy files from the template", () => {
-        expect(getGeneratedComponentFiles(tempDir)).toEqual(expectedGeneratedComponentTemplateFiles);
+        expect(getGeneratedComponentFiles(tempDir, uuid).sort()).toEqual(getExpectedGeneratedComponentTemplateFiles(uuid).sort());
     });
     test("should be able to run the build", () => {
         expect(

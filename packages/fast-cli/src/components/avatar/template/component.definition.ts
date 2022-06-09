@@ -5,11 +5,11 @@ export default (config: ComponentTemplateConfig): string =>
 import { styles } from "./${config.tagName}.styles.js";
 import type { ${config.className} } from "./${config.tagName}.js";
 import { html, when } from "@microsoft/fast-element";
-import { Avatar } from "@microsoft/fast-foundation";
+import { Avatar as FoundationAvatar } from "@microsoft/fast-foundation";
 
 export const definition = {
     baseName: "${config.tagName}",
-    baseClass: Avatar,
+    baseClass: FoundationAvatar,
     template,
     styles,
     media: html<${config.className}>\`
