@@ -51,6 +51,7 @@ export interface FastInitOptionMessages {
 }
 
 export interface AddDesignSystemOptions {
+    useDefaults: boolean;
     shadowRootMode?: "open" | "closed";
 }
 
@@ -71,6 +72,7 @@ export interface AddComponentOptionMessages {
 export interface AddFoundationComponentOptions {
     name?: string;
     template?: string;
+    useDefaults?: boolean;
 }
 
 export interface AddFoundationComponentOptionMessages {

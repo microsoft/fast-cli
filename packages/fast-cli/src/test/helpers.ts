@@ -12,6 +12,24 @@ export const getTempComponentDir = function(uuid: string): string {
 }
 export const fastCliDir = path.resolve(dirname, "fast-cli");
 
+function getPackageScripts(tempComponentDir: string): any {
+    return {
+        "fast:init": `fast init -t ${path.resolve(dirname, "cfp-template")}`,
+        "fast:init:default": `fast init -y`,
+        "fast:config": `fast config -p ./components -r ./src -n test`,
+        "fast:config:default": `fast config -y`,
+        "fast:add-design-system": `fast add-design-system -s open`,
+        "fast:add-design-system:default": `fast add-design-system -y`,
+        "fast:add-component:template": `fast add-component -n test-component -t ${tempComponentDir}`,
+        ...availableTemplates.reduce((prevValue, currValue: string) => {
+            return {
+                ...prevValue,
+                [`fast:add-foundation-component:${currValue}`]: `fast add-foundation-component -n ${currValue} -t ${currValue}`
+            }
+        }, {}),
+    }
+}
+
 export function setup(tempDir: string, tempComponentDir: string): void {
     fs.ensureDirSync(tempDir);
 
@@ -26,16 +44,7 @@ export function setup(tempDir: string, tempComponentDir: string): void {
     const packageJson = JSON.parse(packageJsonString);
     packageJson.scripts = {
         ...packageJson.scripts,
-        "fast:init": `fast init -t ${path.resolve(dirname, "cfp-template")}`,
-        "fast:config": `fast config -p ./components -r ./src -n test`,
-        "fast:add-design-system": `fast add-design-system -s open`,
-        "fast:add-component:template": `fast add-component -n test-component -t ${tempComponentDir}`,
-        ...availableTemplates.reduce((prevValue, currValue: string) => {
-            return {
-                ...prevValue,
-                [`fast:add-foundation-component:${currValue}`]: `fast add-foundation-component -n ${currValue} -t ${currValue}`
-            }
-        }, {}),
+        ...getPackageScripts(tempComponentDir)
     };
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
 }
