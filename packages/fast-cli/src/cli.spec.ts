@@ -11,6 +11,7 @@ import {
     fastCliDir,
     packagesDir,
 } from "./test/helpers.js";
+import { availableTemplates } from "./components/options.js";
 
 const uuid: string = "cli";
 const tempDir: string = getTempDir(uuid);
@@ -247,6 +248,32 @@ test.describe("CLI", () => {
             
             testGeneratedFiles("");
             expect(files.sort()).toEqual(getExpectedGeneratedComponentTemplateFiles("test-component").sort());
+        });
+        test("should be able to run the build", () => {
+            expect(
+                () => {
+                    execSync(`cd ${tempDir} && npm run build`);
+                }
+            ).not.toThrow();
+        });
+    });
+    // Skip these tests while adaptive UI is sym-linked from a private package
+    test.describe.skip("add-foundation-component --all", () => {
+        test.beforeAll(() => {
+            setup(tempDir, tempComponentDir);
+            execSync(`cd ${tempDir} && npm run fast:init`);
+            setup(tempDir, tempComponentDir);
+            execSync(`cd ${tempDir} && npm run fast:add-foundation-component:all`);
+        });
+        test.afterAll(() => {
+            teardown(tempDir, tempComponentDir);
+        });
+        test("should have copied all foundation components", () => {
+            const tempDirComponentContents = fs.readdirSync(path.resolve(tempDir, "./src/components"));
+
+            availableTemplates.forEach((template) => {
+                expect(tempDirComponentContents.includes(template)).toBeTruthy();
+            });
         });
         test("should be able to run the build", () => {
             expect(

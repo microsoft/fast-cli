@@ -10,7 +10,7 @@ import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastAddComponentRequiredComponentMissingNameModificatierMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { XOR } from "./cli.types.js";
 import type { ComponentTemplateConfig } from "./utilities/template.js";
-import { disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
+import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
@@ -562,71 +562,81 @@ async function addFoundationComponent(
 ): Promise<void> {
     const config: AddFoundationComponentOptions = options;
 
-    if (!config.template) {
-        config.template = await prompts([
-            {
-                type: "autocomplete",
-                name: "template",
-                message: messages.template,
-                choices: suggestedTemplates.map((suggestedTemplate) => {
-                    return {
-                        title: suggestedTemplate
-                    };
-                })
-            }
-        ]).template;
-    }
+    if (options.all) {
+        suggestedTemplates.forEach(async (template: string) => {
+            await addFoundationComponent({
+                template,
+                name: template,
+            },
+            messages)
+        });
+    } else {
+        if (!config.template) {
+            config.template = await prompts([
+                {
+                    type: "autocomplete",
+                    name: "template",
+                    message: messages.template,
+                    choices: suggestedTemplates.map((suggestedTemplate) => {
+                        return {
+                            title: suggestedTemplate
+                        };
+                    })
+                }
+            ]).template;
+        }
+    
+        if (options.useDefaults) {
+            // the foundation templates names are used as defaults
+            config.name = config.template
+        }
+    
+        if (!config.name) {
+            config.name = await prompts([
+                {
+                    type: "text",
+                    name: "name",
+                    message: messages.name,
+                    initial: config.template
+                }
+            ]).name;
+        }
+    
+        if (disallowedTemplateNames.includes(config.name as string)) {
+            config.name = await getAllowedFoundationComponentName(
+                config.name as string,
+                config.template as string
+            );
+        }
 
-    if (options.useDefaults) {
-        // the foundation templates names are used as defaults
-        config.name = config.template
-    }
+        const fastConfig: FastConfig = await getFastConfig();
+        await writeTemplateFiles(fastConfig, config.template as string, true, config.name as string);
+        const fastAddComponent: FastAddComponent = await getFastAddComponent(
+            path.resolve(
+                cliPath,
+                `dist/esm/components/${config.template}`
+            )
+        );
 
-    if (!config.name) {
-        config.name = await prompts([
-            {
-                type: "text",
-                name: "name",
-                message: messages.name,
-                initial: config.template
-            }
-        ]).name;
-    }
+        if (Array.isArray(fastAddComponent.requiredComponents)) {
+            fastAddComponent.requiredComponents.forEach(async (requiredComponent: RequiredComponents) => {
+                await addFoundationComponent({
+                    ...options,
+                    name: modifyName(config.name as string, requiredComponent.nameModifier),
+                    template: requiredComponent.template,
+                }, messages);
+            });
+        }
 
-    if (disallowedTemplateNames.includes(config.name as string)) {
-        config.name = await getAllowedFoundationComponentName(
-            config.name as string,
-            config.template as string
+        await installEnumeratedDependencies(
+            Object.entries(fastAddComponent?.packageJson?.dependencies || {}).map(([key, value]: [string, string]): string => {
+                return `${key}@${value}`;
+            }),
+            Object.entries(fastAddComponent?.packageJson?.devDependencies || {}).map(([key, value]: [string, string]): string => {
+                return `${key}@${value}`;
+            }),
         );
     }
-
-    const fastConfig: FastConfig = await getFastConfig();
-    await writeTemplateFiles(fastConfig, config.template as string, true, config.name as string);
-    const fastAddComponent: FastAddComponent = await getFastAddComponent(
-        path.resolve(
-            cliPath,
-            `dist/esm/components/${config.template}`
-        )
-    );
-
-    if (Array.isArray(fastAddComponent.requiredComponents)) {
-        fastAddComponent.requiredComponents.forEach((requiredComponent: RequiredComponents) => {
-            addFoundationComponent({
-                ...options,
-                name: modifyName(config.name as string, requiredComponent.nameModifier),
-                template: requiredComponent.template,
-            }, messages);
-        });
-    }
-
-    await installEnumeratedDependencies(
-        Object.entries(fastAddComponent?.packageJson?.dependencies || {}).map(([key, value]: [string, string]): string => {
-            return `${key}@${value}`;
-        }),
-        Object.entries(fastAddComponent?.packageJson?.devDependencies || {}).map(([key, value]: [string, string]): string => {
-            return `${key}@${value}`;
-        }),
-    );
 }
 
 /**
@@ -817,16 +827,18 @@ program.command("add-component")
 
 const addFoundationComponentTemplateMessage = "The name of the foundation component template";
 const addFoundationComponentNameMessage = "The name of the component";
+const addFoundationComponentAllMessage = "Add all available foundation components"
 
 program.command("add-foundation-component")
     .description("Add a foundation component")
     .option("-t, --template <template>", addFoundationComponentTemplateMessage)
     .option("-n, --name <name>", addFoundationComponentNameMessage)
+    .option("-a, --all", addFoundationComponentAllMessage)
     .option("-y, --yes-all", yesToAllDefaultsMessage)
     .action(async (options): Promise<void> => {
         await addFoundationComponent(options, {
             template: addFoundationComponentTemplateMessage,
-            name: addFoundationComponentNameMessage,
+            name: addFoundationComponentNameMessage
         }).catch((reason) => {
             throw reason;
         })
