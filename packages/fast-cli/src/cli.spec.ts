@@ -72,14 +72,14 @@ function configTests() {
  * npx clear-npx-cache
  */
 test.describe("CLI", () => {
-    test.describe("init", () => {
+    test.describe.only("init", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:init`);
         });
-        test.afterAll(() => {
-            teardown(tempDir, tempComponentDir);
-        });
+        // test.afterAll(() => {
+        //     teardown(tempDir, tempComponentDir);
+        // });
         test("should create a package.json file with contents from the fast init", () => {
             const packageJsonFile = JSON.parse(
                 fs.readFileSync(path.resolve(tempDir, "package.json"), {
@@ -135,7 +135,7 @@ test.describe("CLI", () => {
     });
     test.describe("config", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:config`);
         });
         test.afterAll(() => {
@@ -145,7 +145,7 @@ test.describe("CLI", () => {
     });
     test.describe("config with defaults", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:config:default`);
         });
         test.afterAll(() => {
@@ -155,7 +155,7 @@ test.describe("CLI", () => {
     });
     test.describe("add-design-system", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
         });
         test.afterAll(() => {
             teardown(tempDir, tempComponentDir);
@@ -190,7 +190,7 @@ test.describe("CLI", () => {
     });
     test.describe("add-design-system with defaults", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
         });
         test.afterAll(() => {
             teardown(tempDir, tempComponentDir);
@@ -225,9 +225,9 @@ test.describe("CLI", () => {
     });
     test.describe("add-component", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:init`);
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             setupBlankAsTemplate();
             execSync(`cd ${tempDir} && npm run fast:add-component:template`);
         });

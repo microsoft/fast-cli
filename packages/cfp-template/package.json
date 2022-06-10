@@ -29,7 +29,6 @@
     "@microsoft/fast-element": "^1.7.0"
   },
   "devDependencies": {
-    "@microsoft/fast-cli": "^0.1.0",
     "@playwright/test": "^1.21.0",
     "@storybook/builder-webpack5": "6.4.22",
     "@storybook/html": "6.4.22",

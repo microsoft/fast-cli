@@ -250,15 +250,13 @@ function installTemplate(pathToTemplate: string): Promise<unknown> {
         const child = spawn("npm", args, { stdio: "inherit" });
         child.on("close", code => {
             if (code !== 0) {
-                reject({
-                    command: "npm install",
-                });
+                reject("npm install");
                 return;
             }
             resolve(void 0);
         });
     }).catch((reason) => {
-        throw reason;
+        throw new Error(reason);
     });
 }
 

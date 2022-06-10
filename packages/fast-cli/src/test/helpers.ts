@@ -3,9 +3,12 @@ import path from "path";
 import fs from "fs-extra";
 import { availableTemplates } from "../components/options.js";
 
-export const dirname = path.resolve(process.cwd(), "../"); // should point to "packages"
+export const dirname = path.resolve(process.cwd(), "./packages"); // should point to "packages"
+const getTempDirFolder = function(uuid: string): string {
+    return `temp--${uuid}`
+};
 export const getTempDir = function(uuid: string): string {
-    return path.resolve(dirname, `temp--${uuid}`);
+    return path.resolve(dirname, getTempDirFolder(uuid));
 }
 export const getTempComponentDir = function(uuid: string): string {
     return path.resolve(dirname, `temp-component--${uuid}`);
@@ -30,14 +33,11 @@ function getPackageScripts(tempComponentDir: string): any {
     }
 }
 
-export function setup(tempDir: string, tempComponentDir: string): void {
+export function setup(tempDir: string, tempComponentDir: string, uuid: string): void {
     fs.ensureDirSync(tempDir);
 
     // Create a temp project
     execSync(`cd ${tempDir} && npm init -y`);
-
-    // Install the FAST CLI
-    execSync(`cd ${tempDir} && npm install --save-dev ${fastCliDir}`);
 
     // Update the scripts for testable CLI commands
     const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
@@ -47,12 +47,15 @@ export function setup(tempDir: string, tempComponentDir: string): void {
         ...getPackageScripts(tempComponentDir)
     };
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
+
+    // Install the FAST CLI
+    execSync(`cd ${tempDir} && npm install ${fastCliDir}`);
 }
 
 export function setupComponent(uuid: string, tempDir: string, tempComponentDir: string): void {
-    setup(tempDir, tempComponentDir);
+    setup(tempDir, tempComponentDir, uuid);
     execSync(`cd ${tempDir} && npm run fast:init`);
-    setup(tempDir, tempComponentDir);
+    setup(tempDir, tempComponentDir, uuid);
     execSync(`cd ${tempDir} && npm run fast:add-foundation-component:${uuid}`);
 }
 

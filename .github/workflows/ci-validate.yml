@@ -56,6 +56,9 @@ jobs:
     - name: Install Playwright
       run: npx playwright install
 
+    - name: Check for untracked files
+      run: npm run diff
+
     - name: Test
       run: npm run test --if-present
         
