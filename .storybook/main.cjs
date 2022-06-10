@@ -4,7 +4,7 @@ module.exports = {
     features: {
         postcss: false,
     },
-    stories: ["../src/**/*.stories.ts"],
+    stories: ["../packages/fast-cli/src/**/*.stories.ts"],
     core: {
         builder: "webpack5"
     },
