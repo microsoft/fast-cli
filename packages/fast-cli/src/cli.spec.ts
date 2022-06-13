@@ -3,19 +3,19 @@ import { execSync } from "child_process";
 import path from "path";
 import fs from "fs-extra";
 import {
-    dirname,
     getExpectedGeneratedComponentTemplateFiles,
     getTempDir,
     getTempComponentDir,
     setup,
     teardown,
     fastCliDir,
+    packagesDir,
 } from "./test/helpers.js";
 
 const uuid: string = "cli";
 const tempDir: string = getTempDir(uuid);
 const tempComponentDir: string = getTempComponentDir(uuid);
-const templateDir = path.resolve(dirname, "./cfp-template/template");
+const templateDir = path.resolve(packagesDir, "./cfp-template/template");
 
 function setupBlankAsTemplate() {
     fs.ensureDirSync(tempComponentDir);
@@ -72,14 +72,14 @@ function configTests() {
  * npx clear-npx-cache
  */
 test.describe("CLI", () => {
-    test.describe.only("init", () => {
+    test.describe("init", () => {
         test.beforeAll(() => {
             setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:init`);
         });
-        // test.afterAll(() => {
-        //     teardown(tempDir, tempComponentDir);
-        // });
+        test.afterAll(() => {
+            teardown(tempDir, tempComponentDir);
+        });
         test("should create a package.json file with contents from the fast init", () => {
             const packageJsonFile = JSON.parse(
                 fs.readFileSync(path.resolve(tempDir, "package.json"), {

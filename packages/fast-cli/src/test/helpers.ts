@@ -3,7 +3,8 @@ import path from "path";
 import fs from "fs-extra";
 import { availableTemplates } from "../components/options.js";
 
-export const dirname = path.resolve(process.cwd(), "./packages"); // should point to "packages"
+export const dirname = path.resolve(process.cwd()); // should point to root
+export const packagesDir = path.resolve(process.cwd(), "packages");
 const getTempDirFolder = function(uuid: string): string {
     return `temp--${uuid}`
 };
@@ -13,11 +14,11 @@ export const getTempDir = function(uuid: string): string {
 export const getTempComponentDir = function(uuid: string): string {
     return path.resolve(dirname, `temp-component--${uuid}`);
 }
-export const fastCliDir = path.resolve(dirname, "fast-cli");
+export const fastCliDir = path.resolve(packagesDir, "fast-cli");
 
 function getPackageScripts(tempComponentDir: string): any {
     return {
-        "fast:init": `fast init -t ${path.resolve(dirname, "cfp-template")}`,
+        "fast:init": `fast init -t ${path.resolve(packagesDir, "cfp-template")}`,
         "fast:init:default": `fast init -y`,
         "fast:config": `fast config -p ./components -r ./src -n test`,
         "fast:config:default": `fast config -y`,
