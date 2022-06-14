@@ -3,19 +3,19 @@ import { execSync } from "child_process";
 import path from "path";
 import fs from "fs-extra";
 import {
-    dirname,
     getExpectedGeneratedComponentTemplateFiles,
     getTempDir,
     getTempComponentDir,
     setup,
     teardown,
     fastCliDir,
+    packagesDir,
 } from "./test/helpers.js";
 
 const uuid: string = "cli";
 const tempDir: string = getTempDir(uuid);
 const tempComponentDir: string = getTempComponentDir(uuid);
-const templateDir = path.resolve(dirname, "./cfp-template/template");
+const templateDir = path.resolve(packagesDir, "./cfp-template/template");
 
 function setupBlankAsTemplate() {
     fs.ensureDirSync(tempComponentDir);
@@ -61,20 +61,10 @@ function configTests() {
     });
 }
 
-/**
- * TODO: update these tests when the npm CLI has been updated and added it to
- * the github validation workflow.
- * 
- * Due to issues with npm versions these test should only be run locally
- * https://github.com/npm/cli/issues/3847 for details. Use npm version 7.18.1.
- * 
- * When switching between npm versions if you recieve a permissions error, try
- * npx clear-npx-cache
- */
 test.describe("CLI", () => {
     test.describe("init", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:init`);
         });
         test.afterAll(() => {
@@ -135,7 +125,7 @@ test.describe("CLI", () => {
     });
     test.describe("config", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:config`);
         });
         test.afterAll(() => {
@@ -145,7 +135,7 @@ test.describe("CLI", () => {
     });
     test.describe("config with defaults", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:config:default`);
         });
         test.afterAll(() => {
@@ -155,7 +145,7 @@ test.describe("CLI", () => {
     });
     test.describe("add-design-system", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
         });
         test.afterAll(() => {
             teardown(tempDir, tempComponentDir);
@@ -190,7 +180,7 @@ test.describe("CLI", () => {
     });
     test.describe("add-design-system with defaults", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
         });
         test.afterAll(() => {
             teardown(tempDir, tempComponentDir);
@@ -225,9 +215,9 @@ test.describe("CLI", () => {
     });
     test.describe("add-component", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:init`);
-            setup(tempDir, tempComponentDir);
+            setup(tempDir, tempComponentDir, uuid);
             setupBlankAsTemplate();
             execSync(`cd ${tempDir} && npm run fast:add-component:template`);
         });
