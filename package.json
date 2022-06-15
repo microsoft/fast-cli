@@ -10,7 +10,8 @@
   "private": true,
   "workspaces": [
     "./packages/*",
-    "./website"
+    "./website",
+    "./temp/*"
   ],
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
+    "build:storybook-project": "node ./build/storybook.mjs",
     "build:storybook": "build-storybook",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
