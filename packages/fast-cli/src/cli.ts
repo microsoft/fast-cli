@@ -10,7 +10,7 @@ import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastAddComponentRequiredComponentMissingNameModificatierMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { XOR } from "./cli.types.js";
 import type { ComponentTemplateConfig } from "./utilities/template.js";
-import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
+import { disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
