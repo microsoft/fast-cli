@@ -771,7 +771,7 @@ const configDefaults: Partial<ConfigOptions> = {
 
 program.command("config")
     .description("Configure a project")
-    .option("-n, --prefix <prefix>", configPrefixMessage, configDefaults.componentPrefix)
+    .option("-n, --component-prefix <component-prefix>", configPrefixMessage, configDefaults.componentPrefix)
     .option("-p, --component-path <path/to/components>", configComponentPathMessage, configDefaults.componentPath)
     .option("-r, --root-dir <path/to/root>", configRootDirMessage, configDefaults.rootDir)
     .option("-y, --yes-all", yesToAllDefaultsMessage)
