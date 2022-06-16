@@ -1,7 +1,7 @@
 {
     "packageJson": {
         "dependencies": {
-            "@microsoft/adaptive-ui": "../adaptive-ui",
+            "@microsoft/adaptive-ui": "1.0.0-alpha.2",
             "@microsoft/fast-foundation": "^2.46.2"
         }
     }
