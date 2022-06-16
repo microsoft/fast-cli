@@ -26,7 +26,8 @@
     "serve": "node ./template/server.cjs"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^1.10.2"
+    "@microsoft/fast-element": "2.0.0-beta.2",
+    "@microsoft/fast-foundation": "3.0.0-alpha.3"
   },
   "devDependencies": {
     "@playwright/test": "^1.21.0",
