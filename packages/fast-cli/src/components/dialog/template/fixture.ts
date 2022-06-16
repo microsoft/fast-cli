@@ -6,7 +6,7 @@ Show ${config.className}
 </button>
 <p>tab queue detected automatically</p>
 
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName}
     id="dialog1"
     aria-label="Simple dialog"
     modal="true"
@@ -16,5 +16,5 @@ Show ${config.className}
 <h2>Dialog queue detected automatically</h2>
 <button>Button</button>
 <p>(esc to close)</p>
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 `;

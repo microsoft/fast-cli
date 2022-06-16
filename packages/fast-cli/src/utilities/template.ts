@@ -18,4 +18,9 @@ export interface ComponentTemplateConfig {
      * e.g. myComponent
      */
     definitionName: string;
+
+    /**
+     * The prefix used by the component
+     */
+    componentPrefix: string;
 }

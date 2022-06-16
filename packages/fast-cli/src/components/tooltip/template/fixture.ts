@@ -5,9 +5,9 @@ export default (config: ComponentTemplateConfig): string =>
 
 <h2>Default</h2>
 <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <${config.tagName} anchor="anchor-default">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-default">
         Helpful text is helpful
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
     <button id="anchor-default" style="margin: 200px; height: 150px; width: 150px;">
         anchor
     </button>
@@ -15,7 +15,7 @@ export default (config: ComponentTemplateConfig): string =>
 
 <h2>Show/Hide with auto updating and lock to viewport</h2>
 <div style="height: 400px; width: 100%; background: lightgray; overflow: scroll;">
-    <${config.tagName}
+    <${config.componentPrefix}-${config.tagName}
         id="tooltip-show-1"
         anchor="anchor-show"
         position="top"
@@ -24,8 +24,8 @@ export default (config: ComponentTemplateConfig): string =>
         horizontal-viewport-lock="true"
     >
         Helpful text is helpful
-    </${config.tagName}>
-    <${config.tagName}
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}
         id="tooltip-show-2"
         anchor="anchor-show"
         position="right"
@@ -34,8 +34,8 @@ export default (config: ComponentTemplateConfig): string =>
         horizontal-viewport-lock="true"
     >
         Helpful text is helpful
-    </${config.tagName}>
-    <${config.tagName}
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}
         id="tooltip-show-3"
         anchor="anchor-show"
         position="bottom"
@@ -44,8 +44,8 @@ export default (config: ComponentTemplateConfig): string =>
         horizontal-viewport-lock="true"
     >
         Helpful text is helpful
-    </${config.tagName}>
-    <${config.tagName}
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}
         id="tooltip-show-4"
         anchor="anchor-show"
         position="left"
@@ -54,7 +54,7 @@ export default (config: ComponentTemplateConfig): string =>
         horizontal-viewport-lock="true"
     >
         Helpful text is helpful
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
     <button id="anchor-show" style="margin: 600px 600px 600px 600px;">
         Toggle tooltips
     </button>
@@ -62,7 +62,7 @@ export default (config: ComponentTemplateConfig): string =>
 
 <h2>Show/Hide with auto updating and lock to viewport for Corner Positions</h2>
 <div style="height: 400px; width: 100%; background: lightgray; overflow: scroll;">
-    <${config.tagName}
+    <${config.componentPrefix}-${config.tagName}
         id="tooltip-show-corners-1"
         anchor="anchor-show-corners"
         position="top-left"
@@ -71,8 +71,8 @@ export default (config: ComponentTemplateConfig): string =>
         horizontal-viewport-lock="true"
     >
         Helpful text is helpful
-    </${config.tagName}>
-    <${config.tagName}
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}
         id="tooltip-show-corners-2"
         anchor="anchor-show-corners"
         position="top-right"
@@ -81,8 +81,8 @@ export default (config: ComponentTemplateConfig): string =>
         horizontal-viewport-lock="true"
     >
         Helpful text is helpful
-    </${config.tagName}>
-    <${config.tagName}
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}
         id="tooltip-show-corners-3"
         anchor="anchor-show-corners"
         position="bottom-left"
@@ -91,8 +91,8 @@ export default (config: ComponentTemplateConfig): string =>
         horizontal-viewport-lock="true"
     >
         Helpful text is helpful
-    </${config.tagName}>
-    <${config.tagName}
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}
         id="tooltip-show-corners-4"
         anchor="anchor-show-corners"
         position="bottom-right"
@@ -101,7 +101,7 @@ export default (config: ComponentTemplateConfig): string =>
         horizontal-viewport-lock="true"
     >
         Helpful text is helpful
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
     <button id="anchor-show-corners" style="margin: 600px 600px 600px 600px;">
         Toggle tooltips
     </button>
@@ -109,53 +109,53 @@ export default (config: ComponentTemplateConfig): string =>
 
 <h2>Fixed positions</h2>
 <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <${config.tagName} anchor="anchor-positions" position="top" style="position: absolute;">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-positions" position="top" style="position: absolute;">
         Top
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-positions" position="right" style="position: absolute;">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-positions" position="right" style="position: absolute;">
         Right
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-positions" position="bottom" style="position: absolute;">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-positions" position="bottom" style="position: absolute;">
         Bottom
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-positions" position="left" style="position: absolute;">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-positions" position="left" style="position: absolute;">
         Left
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName}
+    <${config.componentPrefix}-${config.tagName}
         anchor="anchor-positions"
         position="top-left"
         style="position: absolute;"
     >
         Top Left
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName}
+    <${config.componentPrefix}-${config.tagName}
         anchor="anchor-positions"
         position="top-right"
         style="position: absolute;"
     >
         Top Right
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName}
+    <${config.componentPrefix}-${config.tagName}
         anchor="anchor-positions"
         position="bottom-left"
         style="position: absolute;"
     >
         Bottom Left
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName}
+    <${config.componentPrefix}-${config.tagName}
         anchor="anchor-positions"
         position="bottom-right"
         style="position: absolute;"
     >
         Bottom Right
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
     <button id="anchor-positions" style="margin: 200px;">
         anchor
@@ -181,37 +181,37 @@ export default (config: ComponentTemplateConfig): string =>
     </button>
     <div style="height: 40px; width: 40px; background-color: orange;"></div>
     <div style="height: 40px; width: 40px; background-color: yellow;"></div>
-    <${config.tagName} anchor="anchor-flex" position="top">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-flex" position="top">
         Tooltip
-    </${config.tagName}>
-    <${config.tagName} anchor="anchor-flex" position="bottom">
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-flex" position="bottom">
         Tooltip
-    </${config.tagName}>
-    <${config.tagName} anchor="anchor-flex" position="left">
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-flex" position="left">
         Tooltip
-    </${config.tagName}>
-    <${config.tagName} anchor="anchor-flex" position="right">
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-flex" position="right">
         Tooltip
-    </${config.tagName}>
-    <${config.tagName} anchor="anchor-flex" position="top-left">
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-flex" position="top-left">
         Tooltip
-    </${config.tagName}>
-    <${config.tagName} anchor="anchor-flex" position="top-right">
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-flex" position="top-right">
         Tooltip
-    </${config.tagName}>
-    <${config.tagName} anchor="anchor-flex" position="bottom-left">
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-flex" position="bottom-left">
         Tooltip
-    </${config.tagName}>
-    <${config.tagName} anchor="anchor-flex" position="bottom-right">
+    </${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-flex" position="bottom-right">
         Tooltip
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 </div>
 
 <h2>Switch anchors</h2>
 <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <${config.tagName} id="tooltip-anchor-switch">
+    <${config.componentPrefix}-${config.tagName} id="tooltip-anchor-switch">
         Helpful text is helpful
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
     <button id="anchor-anchor-switch-prop-1" style="margin: 40px;">
         anchor
@@ -255,13 +255,13 @@ export default (config: ComponentTemplateConfig): string =>
         anchor
     </button>
 
-    <${config.tagName} anchor="anchor-rtl" position="left">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-rtl" position="left">
         Left
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-rtl" position="right">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-rtl" position="right">
         Right
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 </div>
 
 <h2>start/end</h2>
@@ -270,29 +270,29 @@ export default (config: ComponentTemplateConfig): string =>
         anchor
     </button>
 
-    <${config.tagName} anchor="anchor-se" position="start">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-se" position="start">
         Start
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-se" position="end">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-se" position="end">
         End
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-se" position="top-start">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-se" position="top-start">
         Top Start
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-se" position="top-end">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-se" position="top-end">
         Top End
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-se" position="bottom-start">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-se" position="bottom-start">
         Bottom Start
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-se" position="bottom-end">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-se" position="bottom-end">
         Bottom End
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 </div>
 
 <h2>start/end RTL</h2>
@@ -304,27 +304,27 @@ export default (config: ComponentTemplateConfig): string =>
         anchor
     </button>
 
-    <${config.tagName} anchor="anchor-sertl" position="start">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-sertl" position="start">
         Start
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-sertl" position="end">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-sertl" position="end">
         End
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-sertl" position="top-start">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-sertl" position="top-start">
         Top Start
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-sertl" position="top-end">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-sertl" position="top-end">
         Top End
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-sertl" position="bottom-start">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-sertl" position="bottom-start">
         Bottom Start
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 
-    <${config.tagName} anchor="anchor-sertl" position="bottom-end">
+    <${config.componentPrefix}-${config.tagName} anchor="anchor-sertl" position="bottom-end">
         Bottom End
-    </${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}>
 </div>`;

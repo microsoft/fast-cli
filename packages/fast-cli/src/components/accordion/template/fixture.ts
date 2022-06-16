@@ -10,8 +10,8 @@ export default (config: ComponentTemplateConfig): string =>
 <h1>${config.className}Item</h1>
 
 <h2>Default</h2>
-<${config.tagName}>
-    <${config.tagName}-item expanded>
+<${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}-item expanded>
         <div slot="start">
             <button>1</button>
         </div>
@@ -20,21 +20,21 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Panel one</span>
         Panel one content
-    </${config.tagName}-item>
-    <${config.tagName}-item expanded>
+    </${config.componentPrefix}-${config.tagName}-item>
+    <${config.componentPrefix}-${config.tagName}-item expanded>
         <span slot="heading">Panel two</span>
         <fast-button tabindex="0">Button</fast-button>
         <fast-button tabindex="0">Button</fast-button>
-    </${config.tagName}-item>
-    <${config.tagName}-item expanded>
+    </${config.componentPrefix}-${config.tagName}-item>
+    <${config.componentPrefix}-${config.tagName}-item expanded>
         <span slot="heading">Panel three</span>
         Panel three content
-    </${config.tagName}-item>
-</${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}-item>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>Single expand</h2>
-<${config.tagName} expand-mode="single">
-    <${config.tagName}-item>
+<${config.componentPrefix}-${config.tagName} expand-mode="single">
+    <${config.componentPrefix}-${config.tagName}-item>
         <div slot="start">
             <button>1</button>
         </div>
@@ -43,20 +43,20 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Panel one</span>
         Panel one content
-    </${config.tagName}-item>
-    <${config.tagName}-item class="disabled">
+    </${config.componentPrefix}-${config.tagName}-item>
+    <${config.componentPrefix}-${config.tagName}-item class="disabled">
         <span slot="heading">Panel Two</span>
         Panel two content
-    </${config.tagName}-item>
-    <${config.tagName}-item>
+    </${config.componentPrefix}-${config.tagName}-item>
+    <${config.componentPrefix}-${config.tagName}-item>
         <span slot="heading">Panel three</span>
         Panel three content
-    </${config.tagName}-item>
-</${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}-item>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>With disabled item</h2>
-<${config.tagName}>
-    <${config.tagName}-item>
+<${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}-item>
         <div slot="start">
             <button>1</button>
         </div>
@@ -65,8 +65,8 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Panel two</span>
         Panel one content
-    </${config.tagName}-item>
-    <${config.tagName}-item class="disabled">
+    </${config.componentPrefix}-${config.tagName}-item>
+    <${config.componentPrefix}-${config.tagName}-item class="disabled">
         <div slot="start">
             <button>1</button>
         </div>
@@ -75,8 +75,8 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Disabled</span>
         Disabled content
-    </${config.tagName}-item>
-    <${config.tagName}-item expanded>
+    </${config.componentPrefix}-${config.tagName}-item>
+    <${config.componentPrefix}-${config.tagName}-item expanded>
         <div slot="start">
             <button>1</button>
         </div>
@@ -85,12 +85,12 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Panel three</span>
         Panel three content
-    </${config.tagName}-item>
-</${config.tagName}>
+    </${config.componentPrefix}-${config.tagName}-item>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>Custom expanded and collapsed icons</h2>
-<${config.tagName}>
-    <${config.tagName}-item expanded>
+<${config.componentPrefix}-${config.tagName}>
+    <${config.componentPrefix}-${config.tagName}-item expanded>
         <span slot="heading">Panel one</span>
         <svg
             slot="collapsed-icon"
@@ -115,5 +115,5 @@ export default (config: ComponentTemplateConfig): string =>
             />
         </svg>
         Panel one content
-    </${config.tagName}-item>
-</${config.tagName}>`;
+    </${config.componentPrefix}-${config.tagName}-item>
+</${config.componentPrefix}-${config.tagName}>`;

@@ -10,13 +10,13 @@ export default (config: ComponentTemplateConfig): string =>
 <h1>${config.className}</h1>
 
 <h2>Default</h2>
-<${config.tagName}>
+<${config.componentPrefix}-${config.tagName}>
     <span slot="heading">Panel one</span>
     Panel one content
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>Expanded</h2>
-<${config.tagName} expanded>
+<${config.componentPrefix}-${config.tagName} expanded>
     <div slot="start">
         <button>1</button>
     </div>
@@ -25,10 +25,10 @@ export default (config: ComponentTemplateConfig): string =>
     </div>
     <span slot="heading">Panel one</span>
     Panel one content
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>Disabled</h2>
-<${config.tagName} class="disabled">
+<${config.componentPrefix}-${config.tagName} class="disabled">
     <div slot="start">
         <button>1</button>
     </div>
@@ -37,10 +37,10 @@ export default (config: ComponentTemplateConfig): string =>
     </div>
     <span slot="heading">Disabled</span>
     Disabled content
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>Custom expanded and collapsed icons</h2>
-<${config.tagName} expanded>
+<${config.componentPrefix}-${config.tagName} expanded>
     <span slot="heading">Panel one</span>
     <svg
         slot="collapsed-icon"
@@ -65,4 +65,4 @@ export default (config: ComponentTemplateConfig): string =>
         />
     </svg>
     Panel one content
-</${config.tagName}>`;
+</${config.componentPrefix}-${config.tagName}>`;

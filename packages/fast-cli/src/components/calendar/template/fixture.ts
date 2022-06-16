@@ -2,7 +2,7 @@ import type { ComponentTemplateConfig } from "../../../utilities/template";
 
 export default (config: ComponentTemplateConfig): string =>
 `<style>
-    ${config.tagName} {
+    ${config.componentPrefix}-${config.tagName} {
         width: 304px;
         font-family: "Segoe UI", sans-serif;
         padding: 20px;
@@ -320,54 +320,54 @@ export default (config: ComponentTemplateConfig): string =>
         max-width: 1300px;
     }
 
-    #year ${config.tagName} {
+    #year ${config.componentPrefix}-${config.tagName} {
         --inactive-day-color: transparent;
         display: inline-block;
         color: #aaa;
     }
 
-    #year ${config.tagName}::part(week-day) {
+    #year ${config.componentPrefix}-${config.tagName}::part(week-day) {
         color: #fff;
     }
 
-    #year ${config.tagName}::part(title) {
+    #year ${config.componentPrefix}-${config.tagName}::part(title) {
         color: #fff;
     }
 </style>
 <h1>${config.className}</h1>
 
 <h2>Default</h2>
-<${config.tagName}></${config.tagName}>
+<${config.componentPrefix}-${config.tagName}></${config.componentPrefix}-${config.tagName}>
 
 <h2>${config.className} with readonly</h2>
-<${config.tagName} readonly="true"></${config.tagName}>
+<${config.componentPrefix}-${config.tagName} readonly="true"></${config.componentPrefix}-${config.tagName}>
 
 <h2>${config.className} for April 2020</h2>
-<${config.tagName} month="4" year="2020"></${config.tagName}>
+<${config.componentPrefix}-${config.tagName} month="4" year="2020"></${config.componentPrefix}-${config.tagName}>
 
 <h2>Expanded weekday labels</h2>
-<${config.tagName} class="long-days" weekday-format="long"></${config.tagName}>
+<${config.componentPrefix}-${config.tagName} class="long-days" weekday-format="long"></${config.componentPrefix}-${config.tagName}>
 
 <h2>Shortened month and weekday labels</h2>
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName}
 class="compact"
 month="12"
 month-format="short"
 weekday-format="narrow"
-></${config.tagName}>
+></${config.componentPrefix}-${config.tagName}>
 
 <h2>Styling for borders, font colors and background colors</h2>
-<${config.tagName} class="borders"></${config.tagName}>
-<${config.tagName} class="borders2" weekday-format="narrow"></${config.tagName}>
-<${config.tagName} class="borders3" weekday-format="narrow"></${config.tagName}>
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName} class="borders"></${config.componentPrefix}-${config.tagName}>
+<${config.componentPrefix}-${config.tagName} class="borders2" weekday-format="narrow"></${config.componentPrefix}-${config.tagName}>
+<${config.componentPrefix}-${config.tagName} class="borders3" weekday-format="narrow"></${config.componentPrefix}-${config.tagName}>
+<${config.componentPrefix}-${config.tagName}
 class="borders4"
 weekday-format="narrow"
 day-format="2-digit"
-></${config.tagName}>
+></${config.componentPrefix}-${config.tagName}>
 
 <h2>${config.className} with events</h2>
-<${config.tagName} class="events light-borders" month="1" year="2021">
+<${config.componentPrefix}-${config.tagName} class="events light-borders" month="1" year="2021">
     <div slot="1-1-2021">New Year's Day</div>
     <div slot="1-1-2021">Hangover Day</div>
     <div slot="1-5-2021">National Bird Day</div>
@@ -375,29 +375,29 @@ day-format="2-digit"
     <div slot="1-13-2021">National Take the Stairs Day</div>
     <div slot="1-18-2021">Martin Luther King Jr. Birthday</div>
     <div slot="1-26-2021">Spouse's Day</div>
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>Disabled dates</h2>
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName}
 month="12"
 year="2021"
 disabled-dates="12-2-2021,12-3-2021,12-4-2021,12-10-2021,12-11-2021,12-14-2021,12-15-2021,12-16-2021,12-17-2021,12-19-2021,12-22-2021,12-28-2021,12-29-2021,12-30-2021"
-></${config.tagName}>
+></${config.componentPrefix}-${config.tagName}>
 
 <h2>Selected dates</h2>
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName}
 month="12"
 year="2021"
 selected-dates="12-2-2021,12-3-2021,12-4-2021,12-10-2021,12-11-2021,12-14-2021,12-15-2021,12-16-2021,12-17-2021,12-19-2021,12-22-2021,12-28-2021,12-29-2021,12-30-2021"
-></${config.tagName}>
+></${config.componentPrefix}-${config.tagName}>
 
 <h2>${config.className} with click handler</h2>
-<${config.tagName} class="events light-borders" id="click" month="1" year="2021">
+<${config.componentPrefix}-${config.tagName} class="events light-borders" id="click" month="1" year="2021">
     <div slot="1-13-2021">Another test slot</div>
     <div slot="1-4-2021">Test slot</div>
     <div slot="1-29-2021">Test slot</div>
     <div slot="1-29-2021">Second slot</div>
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 <div class="click-out">
     <h3>Selected:</h3>
     <div id="click-output"></div>
@@ -429,7 +429,7 @@ if (!window.calendarSelect) {
 </script>
 
 <h2>Changing ${config.className}</h2>
-<${config.tagName} class="light-borders calendar-change" min-weeks="6">
+<${config.componentPrefix}-${config.tagName} class="light-borders calendar-change" min-weeks="6">
 <button id="previous" class="calendar-control" tabindex="-1">
     <fast-flipper
         id="previous-flipper"
@@ -441,7 +441,7 @@ if (!window.calendarSelect) {
 <button id="next" class="calendar-control" tabindex="-1">
     <fast-flipper id="next-flipper" slot="end" aria-hidden="false"></fast-flipper>
 </button>
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 
 <script>
 if (!window.changeCalendar) {
@@ -464,21 +464,21 @@ if (!window.changeCalendar) {
 </script>
 
 <h2>German ${config.className}</h2>
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName}
 class="long-days"
 weekday-format="long"
 locale="de-DE"
 style="text-align: center;"
-></${config.tagName}>
+></${config.componentPrefix}-${config.tagName}>
 
 <h2>Thai Buddhist ${config.className}</h2>
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName}
 locale="th-TH-u-ca-buddhist-nu-thai"
 style="text-align: center;"
-></${config.tagName}>
+></${config.componentPrefix}-${config.tagName}>
 
 <h2>Arabic ${config.className}</h2>
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName}
 style="direction: rtl; text-align: center;"
 class="events"
 locale="ar-XE-u-ca-islamic-nu-arab"
@@ -487,7 +487,7 @@ year="2021"
 >
 <div slot="1-1-2021">January 1</div>
 <div slot="1-2-2021">January 2</div>
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>Year ${config.className} view</h2>
 <div id="year"></div>
@@ -495,7 +495,7 @@ year="2021"
 (year => {
     const container = document.getElementById("year");
     const addMonth = (_, index) => {
-        const monthCalendar = document.createElement("${config.tagName}");
+        const monthCalendar = document.createElement("${config.componentPrefix}-${config.tagName}");
         monthCalendar.className = "compact";
         monthCalendar.readonly = true;
         monthCalendar.weekdayFormat = "narrow";

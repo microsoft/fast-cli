@@ -2,7 +2,7 @@ import type { ComponentTemplateConfig } from "../../../utilities/template";
 
 export default (config: ComponentTemplateConfig): string =>
 `<style>
-    ${config.tagName} {
+    ${config.componentPrefix}-${config.tagName} {
         --badge-fill-primary: #d223cb;
         --badge-fill-secondary: #3278cd;
         --badge-fill-tertiary: #dfdfdf;
@@ -21,7 +21,7 @@ export default (config: ComponentTemplateConfig): string =>
         margin: 12px;
     }
 
-    .icon-${config.tagName} {
+    .icon-${config.componentPrefix}-${config.tagName} {
         position: absolute;
         right: -6px;
         top: -6px;
@@ -32,7 +32,7 @@ export default (config: ComponentTemplateConfig): string =>
         display: inline-flex;
     }
 
-    .image-${config.tagName} {
+    .image-${config.componentPrefix}-${config.tagName} {
         position: absolute;
         right: 6px;
         top: 6px;
@@ -40,71 +40,71 @@ export default (config: ComponentTemplateConfig): string =>
 </style>
 <h1>${config.className}</h1>
 <h2>Default</h2>
-<${config.tagName}>Accent</${config.tagName}>
+<${config.componentPrefix}-${config.tagName}>Accent</${config.componentPrefix}-${config.tagName}>
 <h2>Default with color map</h2>
-<${config.tagName}
+<${config.componentPrefix}-${config.tagName}
     fill="primary"
     style="font-size: 10px; line-height: 16px;"
     color="foo"
     id="foo"
 >
     Badge
-</${config.tagName}>
-<${config.tagName} fill="secondary" color="foo" id="foo">
+</${config.componentPrefix}-${config.tagName}>
+<${config.componentPrefix}-${config.tagName} fill="secondary" color="foo" id="foo">
     Badge
-</${config.tagName}>
-<${config.tagName}
+</${config.componentPrefix}-${config.tagName}>
+<${config.componentPrefix}-${config.tagName}
     fill="tertiary"
     style="font-size: 14px; line-height: 20px;"
     color="bar"
     id="foo"
 >
     Badge
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 <h2>Circular</h2>
-<${config.tagName} fill="primary" color="foo" id="foo" circular="true">
+<${config.componentPrefix}-${config.tagName} fill="primary" color="foo" id="foo" circular="true">
     9
-</${config.tagName}>
-<${config.tagName} fill="secondary" color="foo" id="foo" circular="true">
+</${config.componentPrefix}-${config.tagName}>
+<${config.componentPrefix}-${config.tagName} fill="secondary" color="foo" id="foo" circular="true">
     99
-</${config.tagName}>
-<${config.tagName} fill="tertiary" color="bar" id="foo" circular="true">
+</${config.componentPrefix}-${config.tagName}>
+<${config.componentPrefix}-${config.tagName} fill="tertiary" color="bar" id="foo" circular="true">
     9999999
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 <h2>Examples</h2>
 <div>
     <div class="image-container">
         <img src="https://via.placeholder.com/120x140/DFDFDF/171717" />
-        <${config.tagName} class="image-${config.tagName}" fill="foo" color="foo" id="foo">
+        <${config.componentPrefix}-${config.tagName} class="image-${config.componentPrefix}-${config.tagName}" fill="foo" color="foo" id="foo">
             Sale
-        </${config.tagName}>
+        </${config.componentPrefix}-${config.tagName}>
     </div>
     <div class="image-container">
         <img src="https://via.placeholder.com/140x140/DFDFDF/171717" />
-        <${config.tagName} class="image-${config.tagName}" fill="secondary" color="foo" id="foo">
+        <${config.componentPrefix}-${config.tagName} class="image-${config.componentPrefix}-${config.tagName}" fill="secondary" color="foo" id="foo">
             App of the day
-        </${config.tagName}>
+        </${config.componentPrefix}-${config.tagName}>
     </div>
 </div>
 <div>
     <div class="icon">
-        <${config.tagName} class="icon-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
+        <${config.componentPrefix}-${config.tagName} class="icon-${config.componentPrefix}-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
             3
-        </${config.tagName}>
+        </${config.componentPrefix}-${config.tagName}>
     </div>
     <div class="icon">
-        <${config.tagName} class="icon-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
+        <${config.componentPrefix}-${config.tagName} class="icon-${config.componentPrefix}-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
             35000
-        </${config.tagName}>
+        </${config.componentPrefix}-${config.tagName}>
     </div>
     <div class="icon">
-        <${config.tagName} class="icon-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
+        <${config.componentPrefix}-${config.tagName} class="icon-${config.componentPrefix}-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
             999
-        </${config.tagName}>
+        </${config.componentPrefix}-${config.tagName}>
     </div>
     <div class="icon">
-        <${config.tagName} class="icon-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
+        <${config.componentPrefix}-${config.tagName} class="icon-${config.componentPrefix}-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
             15
-        </${config.tagName}>
+        </${config.componentPrefix}-${config.tagName}>
     </div>
 </div>`;

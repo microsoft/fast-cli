@@ -26,11 +26,8 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "build:storybook-project": "node ./build/storybook.mjs",
-    "build:storybook": "build-storybook",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "serve:storybook": "node ./build/server.mjs",
-    "start:storybook": "start-storybook -p 3000 -h localhost",
     "bump": "beachball bump",
     "change": "beachball change",
     "check": "beachball check --changehint \"Run 'npm run change' to generate a change file\"",
