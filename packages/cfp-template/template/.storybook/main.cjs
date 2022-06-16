@@ -1,22 +1,38 @@
 const ResolveTypescriptPlugin = require("resolve-typescript-plugin");
+const path = require("path");
 
 module.exports = {
     features: {
-        postcss: false,
+        babelModeV7: true,
     },
+    framework: "@storybook/html",
     stories: ["../src/**/*.stories.ts"],
     core: {
-        builder: "webpack5"
+        disableTelemetry: true,
+        builder: "webpack5",
     },
     webpackFinal: async config => {
-        Array.isArray(config.resolve.plugins)
-            ? config.resolve.plugins.push(new ResolveTypescriptPlugin())
-            : [new ResolveTypescriptPlugin()];
-        config.module.rules.push({
-            test: /\.ts$/,
-            sideEffects: true,
-            use: "ts-loader",
-        });
+        config.resolve.plugins = [
+            ...(config.resolve.plugins || []),
+            new ResolveTypescriptPlugin({
+                includeNodeModules: true,
+            }),
+        ];
+        config.module.rules = [
+            {
+                test: /\.ts$/,
+                loader: "ts-loader",
+                sideEffects: true,
+                options: {
+                    configFile: path.resolve("./tsconfig.json"),
+                    transpileOnly: true,
+                },
+            },
+            {
+                test: /\.html$/,
+                use: "html-loader",
+            },
+        ];
 
         return config;
     },

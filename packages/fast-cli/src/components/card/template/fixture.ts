@@ -14,8 +14,8 @@ export default (config: ComponentTemplateConfig): string =>
     }
 
     .has-controls {
-        --${config.tagName}-height: 400px;
-        --${config.tagName}-width: 500px;
+        --${config.componentPrefix}-${config.tagName}-height: 400px;
+        --${config.componentPrefix}-${config.tagName}-width: 500px;
         display: flex;
         flex-direction: column;
         padding: 20px;
@@ -23,22 +23,22 @@ export default (config: ComponentTemplateConfig): string =>
 </style>
 
 <h2>Default</h2>
-<${config.tagName}>${config.className} with text</${config.tagName}>
+<${config.componentPrefix}-${config.tagName}>${config.className} with text</${config.componentPrefix}-${config.tagName}>
 
 <h2>Custom width and height</h2>
-<${config.tagName} style="--${config.tagName}-height: 400px; --${config.tagName}-width: 500px;"></${config.tagName}>
+<${config.componentPrefix}-${config.tagName} style="--${config.componentPrefix}-${config.tagName}-height: 400px; --${config.componentPrefix}-${config.tagName}-width: 500px;"></${config.componentPrefix}-${config.tagName}>
 
 <h2>Custom depth with class-based height/width</h2>
-<${config.tagName} class="class-override" style="--elevation: 12;"></${config.tagName}>
+<${config.componentPrefix}-${config.tagName} class="class-override" style="--elevation: 12;"></${config.componentPrefix}-${config.tagName}>
 
 <h2>Custom depth on hover using CSS</h2>
-<${config.tagName} class="class-override state-override">
+<${config.componentPrefix}-${config.tagName} class="class-override state-override">
     Custom depth on hover using CSS
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 
 <h2>Slotted controls</h2>
-<${config.tagName} class="has-controls">
+<${config.componentPrefix}-${config.tagName} class="has-controls">
     With controls
     <fast-button appearance="stealth">Test Button</fast-button>
-</${config.tagName}>
+</${config.componentPrefix}-${config.tagName}>
 `;

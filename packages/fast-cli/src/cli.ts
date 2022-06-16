@@ -10,7 +10,7 @@ import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastAddComponentRequiredComponentMissingNameModificatierMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { XOR } from "./cli.types.js";
 import type { ComponentTemplateConfig } from "./utilities/template.js";
-import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
+import { disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 
 const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
@@ -53,7 +53,7 @@ interface ConfigOptions {
     /**
      * Use defaults
      */
-     useDefaults: boolean;
+    useDefaults: boolean;
 
     /**
      * The component path
@@ -68,7 +68,7 @@ interface ConfigOptions {
     /**
      * The web components prefix
      */
-    prefix: string;
+     componentPrefix: string;
 }
 
 /**
@@ -336,7 +336,7 @@ async function createDesignSystemFile(
         `import { DesignSystem } from "@microsoft/fast-foundation";\n` +
         `import components from "${fastConfig.componentPath}/index.js";\n\n` +
         `export const designSystem = {\n` +
-        `    prefix: "${fastConfig.prefix}",\n` +
+        `    prefix: "${fastConfig.componentPrefix}",\n` +
         `    shadowRootMode: "${designSystemOptions.shadowRootMode}",\n` +
         `};\n\n` +
         `DesignSystem.getOrCreate().withPrefix(\n` +
@@ -459,7 +459,8 @@ async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage:
             template({
                 tagName: name,
                 className: toPascalCase(name),
-                definitionName: `${toCamelCase(name)}Definition`
+                definitionName: `${toCamelCase(name)}Definition`,
+                componentPrefix: fastConfig.componentPrefix,
             } as ComponentTemplateConfig)
         );
     }
@@ -673,17 +674,17 @@ async function config(options: ConfigOptions, messages: FastConfigOptionMessages
         ]).rootDir;
     }
 
-    if (!config.prefix) {
-        config.prefix = await prompts([
+    if (!config.componentPrefix) {
+        config.componentPrefix = await prompts([
             {
                 type: "text",
-                name: "prefix",
-                message: messages.prefix,
+                name: "componentPrefix",
+                message: messages.componentPrefix,
                 validate: (input): boolean => {
                     return input !== "";
                 }
             }
-        ]).prefix;
+        ]).componentPrefix;
     }
 
     createConfigFile(config);
@@ -763,14 +764,14 @@ const configComponentPathMessage: string = "Path to component folder";
 const configRootDirMessage: string = "Root directory";
 const configPrefixMessage: string = "The web component prefix";
 const configDefaults: Partial<ConfigOptions> = {
-    prefix: "fast",
+    componentPrefix: "fast",
     componentPath: "./components",
     rootDir: "./src",
 }
 
 program.command("config")
     .description("Configure a project")
-    .option("-n, --prefix <prefix>", configPrefixMessage, configDefaults.prefix)
+    .option("-n, --component-prefix <component-prefix>", configPrefixMessage, configDefaults.componentPrefix)
     .option("-p, --component-path <path/to/components>", configComponentPathMessage, configDefaults.componentPath)
     .option("-r, --root-dir <path/to/root>", configRootDirMessage, configDefaults.rootDir)
     .option("-y, --yes-all", yesToAllDefaultsMessage)
@@ -778,7 +779,7 @@ program.command("config")
         await config(
             options,
             {
-                prefix: configPrefixMessage,
+                componentPrefix: configPrefixMessage,
                 componentPath: configComponentPathMessage,
                 rootDir: configRootDirMessage
             },
