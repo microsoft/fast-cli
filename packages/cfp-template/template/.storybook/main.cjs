@@ -1,4 +1,5 @@
 const ResolveTypescriptPlugin = require("resolve-typescript-plugin");
+const path = require("path");
 
 module.exports = {
     features: {
@@ -7,29 +8,31 @@ module.exports = {
     framework: "@storybook/html",
     stories: ["../src/**/*.stories.ts"],
     core: {
-        builder: "webpack5"
+        disableTelemetry: true,
+        builder: "webpack5",
     },
     webpackFinal: async config => {
-        config.resolve.alias["@storybook/html"] = require.resolve("@storybook/html");
-        Array.isArray(config.resolve.plugins)
-            ? config.resolve.plugins.push(new ResolveTypescriptPlugin({
+        config.resolve.plugins = [
+            ...(config.resolve.plugins || []),
+            new ResolveTypescriptPlugin({
                 includeNodeModules: true,
-            }))
-            : [new ResolveTypescriptPlugin({
-                includeNodeModules: true,
-            })];
-        config.module.rules.push({
-            test: /\.ts$/,
-            sideEffects: true,
-            loader: "ts-loader",
-            options: {
-                transpileOnly: true,
+            }),
+        ];
+        config.module.rules = [
+            {
+                test: /\.ts$/,
+                loader: "ts-loader",
+                sideEffects: true,
+                options: {
+                    configFile: path.resolve("./tsconfig.json"),
+                    transpileOnly: true,
+                },
             },
-        });
-        config.module.rules.push({
-            test: /\.html$/,
-            use: "html-loader",
-        });
+            {
+                test: /\.html$/,
+                use: "html-loader",
+            },
+        ];
 
         return config;
     },
