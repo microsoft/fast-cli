@@ -7,12 +7,9 @@ import {
     FoundationElementTemplate
 } from "@microsoft/fast-foundation";
 import {
-    bodyFont,
+    designUnit,
     neutralForegroundRest,
-    neutralStrokeDividerRest,
-    strokeWidth,
-    typeRampMinus1FontSize,
-    typeRampMinus1LineHeight,
+    typeRampBase,
 } from "@microsoft/adaptive-ui";
 
 /**
@@ -24,12 +21,10 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) =>
     css\`
-        \${display("flex")} :host {
+        \${display('flex')} :host {
             box-sizing: border-box;
             flex-direction: column;
-            font-family: \${bodyFont};
-            font-size: \${typeRampMinus1FontSize};
-            line-height: \${typeRampMinus1LineHeight};
+            \${typeRampBase}
             color: \${neutralForegroundRest};
-            border-top: calc(\${strokeWidth} * 1px) solid \${neutralStrokeDividerRest};
-        }\``
+            gap: calc(\${designUnit} * 1px);
+        }\``;

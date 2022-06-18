@@ -3,26 +3,45 @@ import type { ComponentTemplateConfig } from "../../../utilities/template";
 export default (config: ComponentTemplateConfig): string =>
 `import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    disabledCursor,
     display,
     FoundationElementTemplate,
-    forcedColorsStylesheetBehavior
+    forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundActive,
-    bodyFont,
+    accentFillRest,
+    // baseHeightMultiplier,
+    controlCornerRadius,
+    // density,
     designUnit,
-    disabledOpacity,
-    foregroundOnAccentActive,
-    heightNumber,
-    neutralFillRest,
+    // DirectionalStyleSheetBehavior,
+    fillColor,
+    foregroundOnAccentRest,
+    neutralForegroundHint,
     neutralForegroundRest,
-    typeRampBaseFontSize,
-    typeRampBaseLineHeight,
-    typeRampPlus3FontSize,
-    typeRampPlus3LineHeight,
+    strokeWidth,
+    typeRampBase,
 } from "@microsoft/adaptive-ui";
+
+/**
+ * LTR styles for calendar
+ * @internal
+ */
+const ltrStyles = css\`
+    .day.disabled::before {
+        transform: translate(-50%, 0) rotate(45deg);
+    }
+\`;
+
+/**
+ * RTL styles for calendar
+ * @internal
+ */
+const rtlStyles = css\`
+    .day.disabled::before {
+        transform: translate(50%, 0) rotate(-45deg);
+    }
+\`;
 
 /**
  * Styles for ${config.className}
@@ -33,111 +52,99 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) =>
     css\`
-        \${display("block")} :host {
-            --cell-border: none;
-            --cell-height: calc(\${heightNumber} * 1px);
-            --selected-day-outline: 1px solid \${accentForegroundActive};
-            --selected-day-color: \${accentForegroundActive};
-            --selected-day-background: \${neutralFillRest};
-            --cell-padding: calc(\${designUnit} * 1px);
-            --disabled-day-opacity: \${disabledOpacity};
-            --inactive-day-opacity: \${disabledOpacity};
-            font-family: \${bodyFont};
-            font-size: \${typeRampBaseFontSize};
-            line-height: \${typeRampBaseLineHeight};
+        \${display("inline-block")} :host {
+            ${
+                // --calendar-cell-size: calc((${baseHeightMultiplier} + 2 + ${density}) * ${designUnit} * 1px);
+                ""
+            }
+            --calendar-gap: 2px;
+            \${typeRampBase}
             color: \${neutralForegroundRest};
         }
         .title {
-            font-size: \${typeRampPlus3FontSize};
-            line-height: \${typeRampPlus3LineHeight};
-            padding: var(--cell-padding);
+            padding: calc(\${designUnit} * 2px);
+            font-weight: 600;
+        }
+        .days {
             text-align: center;
         }
         .week-days,
         .week {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            border-left: var(--cell-border, none);
-            border-bottom: none;
+            grid-gap: var(--calendar-gap);
+            border: 0;
             padding: 0;
-        }
-        .interact .week {
-            grid-gap: calc(\${designUnit} * 1px);
-            margin-top: calc(\${designUnit} * 1px);
         }
         .day,
         .week-day {
-            border-bottom: var(--cell-border);
-            border-right: var(--cell-border);
-            padding: var(--cell-padding);
+            border: 0;
+            width: var(--calendar-cell-size);
+            height: var(--calendar-cell-size);
+            line-height: var(--calendar-cell-size);
+            padding: 0;
+            box-sizing: initial;
         }
         .week-day {
-            text-align: center;
-            border-radius: 0;
-            border-top: var(--cell-border);
+            font-weight: 600;
         }
         .day {
-            box-sizing: border-box;
-            vertical-align: top;
-            outline-offset: -1px;
-            line-height: var(--cell-line-height);
-            white-space: normal;
+            border: calc(\${strokeWidth} * 1px) solid transparent;
+            border-radius: calc(\${controlCornerRadius} * 1px);
         }
         .interact .day {
-            background: \${neutralFillRest};
             cursor: pointer;
         }
-        .day.inactive {
-            background: var(--inactive-day-background);
-            color: var(--inactive-day-color);
-            opacity: var(--inactive-day-opacity);
-            outline: var(--inactive-day-outline);
-        }
-        .day.disabled {
-            background: var(--disabled-day-background);
-            color: var(--disabled-day-color);
-            cursor: \${disabledCursor};
-            opacity: var(--disabled-day-opacity);
-            outline: var(--disabled-day-outline);
-        }
-        .day.selected {
-            color: var(--selected-day-color);
-            background: var(--selected-day-background);
-            outline: var(--selected-day-outline);
-        }
         .date {
-            padding: var(--cell-padding);
-            text-align: center;
+            height: 100%;
         }
-        .interact .today,
-        .today {
-            color: \${foregroundOnAccentActive};
-            background: \${accentForegroundActive};
+        .inactive .date,
+        .inactive.disabled::before {
+            color: \${neutralForegroundHint};
         }
-        .today.inactive .date {
-            background: transparent;
-            color: inherit;
-            width: auto;
+        .disabled::before {
+            content: '';
+            display: inline-block;
+            width: calc(var(--calendar-cell-size) * .8);
+            height: calc(\${strokeWidth} * 1px);
+            background: currentColor;
+            position: absolute;
+            margin-top: calc(var(--calendar-cell-size) / 2);
+            transform-origin: center;
+            z-index: 1;
         }
-        \`.withBehaviors(
-            forcedColorsStylesheetBehavior(
-                css\`
-                    :host {
-                        --selected-day-outline: 1px solid \${SystemColors.Highlight};
-                    }
-                    .day,
-                    .week-day {
-                        background: \${SystemColors.Canvas};
-                        color: \${SystemColors.CanvasText};
-                        fill: currentcolor;
-                    }
-                    .day.selected {
-                        color: \${SystemColors.Highlight};
-                    }
-                    .today .date {
-                        background: \${SystemColors.Highlight};
-                        color: \${SystemColors.HighlightText};
-                    }
-                \`
-            )
-        );`
+        .selected {
+            color: \${accentFillRest};
+            border: 1px solid \${accentFillRest};
+            background: \${fillColor};
+        }
+        .selected + .selected {
+            border-start-start-radius: 0;
+            border-end-start-radius: 0;
+            border-inline-start-width: 0;
+            padding-inline-start: calc(var(--calendar-gap) + (\${strokeWidth} + \${controlCornerRadius}) * 1px);
+            margin-inline-start: calc((\${controlCornerRadius} * -1px) - var(--calendar-gap));
+        }
+        .today.disabled::before {
+            color: \${foregroundOnAccentRest};
+        }
+        .today .date {
+            color: \${foregroundOnAccentRest};
+            background: \${accentFillRest};
+            border-radius: 50%;
+            position: relative;
+        }
+    \`.withBehaviors(
+        forcedColorsStylesheetBehavior(
+            css\`
+                .day.selected {
+                    color: \${SystemColors.Highlight};
+                }
+                .today .date {
+                    background: \${SystemColors.Highlight};
+                    color: \${SystemColors.HighlightText};
+                }
+            \`
+        ),
+        // new DirectionalStyleSheetBehavior(ltrStyles, rtlStyles)
+    );`

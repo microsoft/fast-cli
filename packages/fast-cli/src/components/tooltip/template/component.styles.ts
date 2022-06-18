@@ -3,20 +3,16 @@ import type { ComponentTemplateConfig } from "../../../utilities/template";
 export default (config: ComponentTemplateConfig): string =>
 `import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    AnchoredRegion,
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import {
-    bodyFont,
     controlCornerRadius,
-    focusStrokeOuter,
-    neutralFillRest,
+    fillColor,
     neutralForegroundRest,
-    strokeWidth,
-    typeRampBaseFontSize,
-    typeRampBaseLineHeight,
+    // neutralStrokeLayerRest,
+    typeRampBase,
 } from "@microsoft/adaptive-ui";
 
 /**
@@ -29,79 +25,107 @@ export const styles: (
 ) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
-) => {
-    const anchoredRegionTag = context.tagFor(AnchoredRegion);
-    return css\`
-            :host {
-                contain: size;
-                overflow: visible;
-                height: 0;
-                width: 0;
+) => 
+    css\`
+        :host {
+            position: relative;
+            contain: layout;
+            overflow: visible;
+            height: 0;
+            width: 0;
+            z-index: 10000;
+        }
+        .tooltip {
+            box-sizing: border-box;
+            border-radius: calc(\${controlCornerRadius} * 1px);
+            ${
+                // border: calc(${strokeWidth} * 1px) solid ${neutralStrokeLayerRest};
+                ""
             }
-            .tooltip {
-                box-sizing: border-box;
-                border-radius: calc(\${controlCornerRadius} * 1px);
-                border: calc(\${strokeWidth} * 1px) solid \${focusStrokeOuter};
-                box-shadow: 0 0 0 1px \${focusStrokeOuter} inset;
-                background: \${neutralFillRest};
-                color: \${neutralForegroundRest};
-                padding: 4px;
-                height: fit-content;
-                width: fit-content;
-                font-family: \${bodyFont};
-                font-size: \${typeRampBaseFontSize};
-                line-height: \${typeRampBaseLineHeight};
-                white-space: nowrap;
-                /* TODO: a mechanism to manage z-index across components
-                    https://github.com/microsoft/fast/issues/3813 */
-                z-index: 10000;
+            background: \${fillColor};
+            color: \${neutralForegroundRest};
+            padding: 4px 12px;
+            height: fit-content;
+            width: fit-content;
+            \${typeRampBase}
+            white-space: nowrap;
+            ${
+                // box-shadow: ${elevationShadowTooltip};
+                ""
             }
-            \${anchoredRegionTag} {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                overflow: visible;
-                flex-direction: row;
+        }
+        fluent-anchored-region {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: visible;
+            flex-direction: row;
+        }
+        fluent-anchored-region.right,
+        fluent-anchored-region.left {
+            flex-direction: column;
+        }
+        fluent-anchored-region.top .tooltip::after,
+        fluent-anchored-region.bottom .tooltip::after,
+        fluent-anchored-region.left .tooltip::after,
+        fluent-anchored-region.right .tooltip::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: \${fillColor};
+            ${
+                // border-top: calc(${strokeWidth} * 1px) solid ${neutralStrokeLayerRest};
+                // border-left: calc(${strokeWidth} * 1px) solid ${neutralStrokeLayerRest};
+                ""
             }
-            \${anchoredRegionTag}.right,
-            \${anchoredRegionTag}.left {
-                flex-direction: column;
-            }
-            \${anchoredRegionTag}.top .tooltip {
-                margin-bottom: 4px;
-            }
-            \${anchoredRegionTag}.bottom .tooltip {
-                margin-top: 4px;
-            }
-            \${anchoredRegionTag}.left .tooltip {
-                margin-right: 4px;
-            }
-            \${anchoredRegionTag}.right .tooltip {
-                margin-left: 4px;
-            }
-            \${anchoredRegionTag}.top.left .tooltip,
-            \${anchoredRegionTag}.top.right .tooltip {
-                margin-bottom: 0px;
-            }
-            \${anchoredRegionTag}.bottom.left .tooltip,
-            \${anchoredRegionTag}.bottom.right .tooltip {
-                margin-top: 0px;
-            }
-            \${anchoredRegionTag}.top.left .tooltip,
-            \${anchoredRegionTag}.bottom.left .tooltip {
-                margin-right: 0px;
-            }
-            \${anchoredRegionTag}.top.right .tooltip,
-            \${anchoredRegionTag}.bottom.right .tooltip {
-                margin-left: 0px;
-            }
-        \`.withBehaviors(
-            forcedColorsStylesheetBehavior(
-                css\`
-                    :host([disabled]) {
-                        opacity: 1;
-                    }
-                \`
-            )
-        );
-    };`;
+            position: absolute;
+        }
+        fluent-anchored-region.top .tooltip::after {
+        transform: translateX(-50%) rotate(225deg);
+            bottom: 5px;
+            left: 50%;
+        }
+        fluent-anchored-region.top .tooltip {
+            margin-bottom: 12px;
+        }
+        fluent-anchored-region.bottom .tooltip::after {
+            transform: translateX(-50%) rotate(45deg);
+            top: 5px;
+            left: 50%;
+        }
+        fluent-anchored-region.bottom .tooltip {
+            margin-top: 12px;
+        }
+        fluent-anchored-region.left .tooltip::after {
+            transform: translateY(-50%) rotate(135deg);
+            top: 50%;
+            right: 5px;
+        }
+        fluent-anchored-region.left .tooltip {
+            margin-right: 12px;
+        }
+        fluent-anchored-region.right .tooltip::after {
+            transform: translateY(-50%) rotate(-45deg);
+            top: 50%;
+            left: 5px;
+        }
+        fluent-anchored-region.right .tooltip {
+            margin-left: 12px;
+        }
+    \`.withBehaviors(
+        forcedColorsStylesheetBehavior(
+            css\`
+                :host([disabled]) {
+                    opacity: 1;
+                }
+                fluent-anchored-region.top .tooltip::after,
+                fluent-anchored-region.bottom .tooltip::after,
+                fluent-anchored-region.left .tooltip::after,
+                fluent-anchored-region.right .tooltip::after {
+                    content: '';
+                    width: unset;
+                    height: unset;
+                }
+            \`,
+        ),
+    );`;

@@ -8,7 +8,14 @@ import {
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { controlCornerRadius, elevation, fillColor } from "@microsoft/adaptive-ui";
+import {
+    // elevationShadowCardRest,
+    fillColor,
+    layerCornerRadius,
+    neutralForegroundRest,
+    // neutralStrokeLayerRest,
+    strokeWidth,
+} from "@microsoft/adaptive-ui";
 
 /**
  * Styles for ${config.className}
@@ -19,25 +26,31 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) =>
     css\`
-        \${display("block")} :host {
-            --elevation: 4;
+        \${display('block')} :host {
             display: block;
             contain: content;
-            height: var(--${config.tagName}-height, 100%);
-            width: var(--${config.tagName}-width, 100%);
+            height: var(--card-height, 100%);
+            width: var(--card-width, 100%);
             box-sizing: border-box;
             background: \${fillColor};
-            border-radius: calc(\${controlCornerRadius} * 1px);
-            \${elevation}
+            color: \${neutralForegroundRest};
+            ${
+                // border: calc(${strokeWidth} * 1px) solid ${neutralStrokeLayerRest};
+                // box-shadow: ${elevationShadowCardRest};
+                ""
+            }
+            border-radius: calc(\${layerCornerRadius} * 1px);
+        }
+        :host {
+            content-visibility: auto;
         }
     \`.withBehaviors(
         forcedColorsStylesheetBehavior(
             css\`
                 :host {
-                    forced-color-adjust: none;
                     background: \${SystemColors.Canvas};
-                    box-shadow: 0 0 0 1px \${SystemColors.CanvasText};
+                    color: \${SystemColors.CanvasText};
                 }
-            \`
-        )
+            \`,
+        ),
     );`;

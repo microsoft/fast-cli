@@ -3,35 +3,35 @@ import type { ComponentTemplateConfig } from "../../../utilities/template";
 export default (config: ComponentTemplateConfig): string =>
 `import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    disabledCursor,
     display,
-    focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
     NumberFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
-    bodyFont,
-    controlCornerRadius,
+    // appearanceBehavior,
     designUnit,
-    disabledOpacity,
-    focusStrokeOuter,
-    focusStrokeWidth,
-    heightNumber,
-    neutralFillHover,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralForegroundRest,
-    neutralStrokeRest,
-    strokeWidth,
-    typeRampBaseFontSize,
-    typeRampBaseLineHeight,
+    // inputFilledForcedColorStyles,
+    // inputFilledStyles,
+    // inputForcedColorStyles,
+    // inputStateStyles,
+    // inputStyles,
 } from "@microsoft/adaptive-ui";
+
+// export const numberFieldFilledStyles: (
+//     context: ElementDefinitionContext,
+//     definition: NumberFieldOptions,
+// ) => ElementStyles = (context: ElementDefinitionContext, definition: NumberFieldOptions) =>
+//     css\`
+//         \${inputFilledStyles(context, definition, '.root')}
+//     \`.withBehaviors(
+//         forcedColorsStylesheetBehavior(
+//         css\`
+//             \${inputFilledForcedColorStyles(context, definition, '.root')}
+//         \`,
+//     ),
+// );
 
 /**
  * Styles for ${config.className}
@@ -42,167 +42,71 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) =>
     css\`
-        \${display("inline-block")} :host {
-            font-family: \${bodyFont};
-            outline: none;
-            user-select: none;
+        \${display('inline-block')}
+        ${
+            // ${inputStyles(context, definition, '.root')}
+            // ${inputStateStyles(context, definition, '.root')}
+            ""
         }
+
         .root {
-            box-sizing: border-box;
-            position: relative;
             display: flex;
             flex-direction: row;
-            color: \${neutralForegroundRest};
-            background: \${neutralFillInputRest};
-            border-radius: calc(\${controlCornerRadius} * 1px);
-            border: calc(\${strokeWidth} * 1px) solid \${accentFillRest};
-            height: calc(\${heightNumber} * 1px);
-            align-items: baseline;
         }
         .control {
             -webkit-appearance: none;
-            font: inherit;
+            color: inherit;
             background: transparent;
             border: 0;
-            color: inherit;
             height: calc(100% - 4px);
-            width: 100%;
             margin-top: auto;
             margin-bottom: auto;
-            border: none;
             padding: 0 calc(\${designUnit} * 2px + 1px);
-            font-size: \${typeRampBaseFontSize};
-            line-height: \${typeRampBaseLineHeight};
-        }
-        .control:hover,
-        .control:\${focusVisible},
-        .control:disabled,
-        .control:active {
-            outline: none;
-        }
-        .controls {
-            opacity: 0;
-        }
-        .label {
-            display: block;
-            color: \${neutralForegroundRest};
-            cursor: pointer;
-            font-size: \${typeRampBaseFontSize};
-            line-height: \${typeRampBaseLineHeight};
-            margin-bottom: 4px;
-        }
-        .label__hidden {
-            display: none;
-            visibility: hidden;
-        }
-        .start,
-        .control,
-        .controls,
-        .end {
-            align-self: center;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
         }
         .start,
         .end {
             margin: auto;
             fill: currentcolor;
         }
-        .step-up-glyph,
-        .step-down-glyph {
-            display: block;
-            padding: 4px 10px;
-            cursor: pointer;
-        }
-        .step-up-glyph:before,
-        .step-down-glyph:before {
-            content: '';
-            display: block;
-            border: solid transparent 6px;
-        }
-        .step-up-glyph:before {
-            border-bottom-color: \${neutralForegroundRest};
-        }
-        .step-down-glyph:before {
-            border-top-color: \${neutralForegroundRest};
-        }
-        ::slotted(svg) {
-            /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
-            width: 16px;
-            height: 16px;
-        }
         .start {
+            display: flex;
             margin-inline-start: 11px;
         }
         .end {
+            display: flex;
             margin-inline-end: 11px;
         }
-        :host(:hover:not([disabled])) .root {
-            background: \${neutralFillInputHover};
-            border-color: \${accentFillHover};
-        }
-        :host(:active:not([disabled])) .root {
-            background: \${neutralFillInputHover};
-            border-color: \${accentFillActive};
-        }
-        :host(:focus-within:not([disabled])) .root {
-            border-color: \${focusStrokeOuter};
-            box-shadow: 0 0 0 calc(\${focusStrokeWidth} * 1px) \${focusStrokeOuter} inset;
+        .controls {
+            opacity: 0;
+            position: relative;
+            top: -1px;
+            z-index: 3;
         }
         :host(:hover:not([disabled])) .controls,
         :host(:focus-within:not([disabled])) .controls {
             opacity: 1;
         }
-        :host([appearance="filled"]) .root {
-            background: \${neutralFillRest};
+        .step-up,
+        .step-down {
+            display: flex;
+            padding: 0 8px;
+            cursor: pointer;
         }
-        :host([appearance="filled"]:hover:not([disabled])) .root {
-            background: \${neutralFillHover};
-        }
-        :host([disabled]) .label,
-        :host([readonly]) .label,
-        :host([readonly]) .control,
-        :host([disabled]) .control {
-            cursor: \${disabledCursor};
-        }
-        :host([disabled]) {
-            opacity: \${disabledOpacity};
-        }
-        :host([disabled]) .control {
-            border-color: \${neutralStrokeRest};
+        .step-up {
+            padding-top: 3px;
         }
     \`.withBehaviors(
-        forcedColorsStylesheetBehavior(
-            css\`
-                .root,
-                :host([appearance="filled"]) .root {
-                    forced-color-adjust: none;
-                    background: \${SystemColors.Field};
-                    border-color: \${SystemColors.FieldText};
-                }
-                :host(:hover:not([disabled])) .root,
-                :host([appearance="filled"]:hover:not([disabled])) .root,
-                :host([appearance="filled"]:hover) .root {
-                    background: \${SystemColors.Field};
-                    border-color: \${SystemColors.Highlight};
-                }
-                .start,
-                .end {
-                    fill: currentcolor;
-                }
-                :host([disabled]) {
-                    opacity: 1;
-                }
-                :host([disabled]) .root,
-                :host([appearance="filled"]:hover[disabled]) .root {
-                    border-color: \${SystemColors.GrayText};
-                    background: \${SystemColors.Field};
-                }
-                :host(:focus-within:enabled) .root {
-                    border-color: \${SystemColors.Highlight};
-                    box-shadow: 0 0 0 1px \${SystemColors.Highlight} inset;
-                }
-                input::placeholder {
-                    color: \${SystemColors.GrayText};
-                }
-            \`
-        )
+        // appearanceBehavior('filled', numberFieldFilledStyles(context, definition)),
+        // forcedColorsStylesheetBehavior(
+        //     css\`
+        //         \${inputForcedColorStyles(context, definition, '.root')}
+        //         .step-up,
+        //         .step-down {
+        //             fill: \${SystemColors.FieldText};
+        //         }
+        //     \`,
+        // ),
     );`;

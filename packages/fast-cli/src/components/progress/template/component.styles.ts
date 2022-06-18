@@ -10,10 +10,11 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundRest,
+    accentFillRest,
     designUnit,
-    neutralFillRest,
     neutralForegroundHint,
+    neutralStrokeStrongRest,
+    strokeWidth,
 } from "@microsoft/adaptive-ui";
 
 /**
@@ -25,30 +26,29 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) =>
     css\`
-        \${display("flex")} :host {
+        \${display('flex')} :host {
             align-items: center;
             outline: none;
-            height: calc(\${designUnit} * 1px);
-            margin: calc(\${designUnit} * 1px) 0;
+            height: calc((\${strokeWidth} * 3) * 1px);
         }
         .progress {
-            background-color: \${neutralFillRest};
+            background-color: \${neutralStrokeStrongRest};
             border-radius: calc(\${designUnit} * 1px);
             width: 100%;
-            height: 100%;
+            height: calc(\${strokeWidth} * 1px);
             display: flex;
             align-items: center;
             position: relative;
         }
         .determinate {
-            background-color: \${accentForegroundRest};
+            background-color: \${accentFillRest};
             border-radius: calc(\${designUnit} * 1px);
-            height: 100%;
+            height: calc((\${strokeWidth} * 3) * 1px);
             transition: all 0.2s ease-in-out;
             display: flex;
         }
         .indeterminate {
-            height: 100%;
+            height: calc((\${strokeWidth} * 3) * 1px);
             border-radius: calc(\${designUnit} * 1px);
             display: flex;
             width: 100%;
@@ -59,7 +59,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             position: absolute;
             opacity: 0;
             height: 100%;
-            background-color: \${accentForegroundRest};
+            background-color: \${accentFillRest};
             border-radius: calc(\${designUnit} * 1px);
             animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
             width: 40%;
@@ -69,73 +69,70 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             position: absolute;
             opacity: 0;
             height: 100%;
-            background-color: \${accentForegroundRest};
+            background-color: \${accentFillRest};
             border-radius: calc(\${designUnit} * 1px);
             animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
             width: 60%;
             animation: indeterminate-2 2s infinite;
         }
-        :host([paused]) .indeterminate-indicator-1,
-        :host([paused]) .indeterminate-indicator-2 {
-            animation-play-state: paused;
-            background-color: \${neutralFillRest};
+        :host(.paused) .indeterminate-indicator-1,
+        :host(.paused) .indeterminate-indicator-2 {
+            animation: none;
+            background-color: \${neutralForegroundHint};
+            width: 100%;
+            opacity: 1;
         }
-        :host([paused]) .determinate {
+        :host(.paused) .determinate {
             background-color: \${neutralForegroundHint};
         }
         @keyframes indeterminate-1 {
-            0% {
-                opacity: 1;
-                transform: translateX(-100%);
-            }
-            70% {
-                opacity: 1;
-                transform: translateX(300%);
-            }
-            70.01% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 0;
-                transform: translateX(300%);
-            }
+        0% {
+            opacity: 1;
+            transform: translateX(-100%);
+        }
+        70% {
+            opacity: 1;
+            transform: translateX(300%);
+        }
+        70.01% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(300%);
+        }
         }
         @keyframes indeterminate-2 {
-            0% {
-                opacity: 0;
-                transform: translateX(-150%);
-            }
-            29.99% {
-                opacity: 0;
-            }
-            30% {
-                opacity: 1;
-                transform: translateX(-150%);
-            }
-            100% {
-                transform: translateX(166.66%);
-                opacity: 1;
-            }
+        0% {
+            opacity: 0;
+            transform: translateX(-150%);
+        }
+        29.99% {
+            opacity: 0;
+        }
+        30% {
+            opacity: 1;
+            transform: translateX(-150%);
+        }
+        100% {
+            transform: translateX(166.66%);
+            opacity: 1;
+        }
         }
     \`.withBehaviors(
         forcedColorsStylesheetBehavior(
             css\`
-                .progress {
-                    forced-color-adjust: none;
-                    background-color: \${SystemColors.Field};
-                    box-shadow: 0 0 0 1px inset \${SystemColors.FieldText};
-                }
-                .determinate,
                 .indeterminate-indicator-1,
-                .indeterminate-indicator-2 {
-                    forced-color-adjust: none;
-                    background-color: \${SystemColors.FieldText};
+                .indeterminate-indicator-2,
+                .determinate,
+                .progress {
+                    background-color: \${SystemColors.ButtonText};
                 }
-                :host([paused]) .determinate,
-                :host([paused]) .indeterminate-indicator-1,
-                :host([paused]) .indeterminate-indicator-2 {
+                :host(.paused) .indeterminate-indicator-1,
+                :host(.paused) .indeterminate-indicator-2,
+                :host(.paused) .determinate {
                     background-color: \${SystemColors.GrayText};
                 }
-            \`
-        )
+            \`,
+        ),
     );`;
