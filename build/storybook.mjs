@@ -16,9 +16,7 @@ fs.ensureDirSync(tempDir);
 
 // Initialize the temp repository and install the FAST CLI
 execSync(
-    `cd ${tempDir} &&
-    npm init -y &&
-    npm install --save-dev ${fastCliDir}`
+    `cd ${tempDir} && npm init -y && npm install --save-dev ${fastCliDir}`
 );
 
 // Update the scripts for CLI init command
@@ -31,8 +29,7 @@ fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJs
 
 // Run the FAST CLI to initialize the project
 execSync(
-    `cd ${tempDir} &&
-    npm run fast:init`
+    `cd ${tempDir} && npm run fast:init`
 );
 
 // Update the scripts for CLI to add all foundation components
@@ -47,18 +44,15 @@ fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJs
 
 // re-install the FAST CLI
 execSync(
-    `cd ${tempDir} &&\
-    npm install --save-dev ${fastCliDir}`
+    `cd ${tempDir} && npm install --save-dev ${fastCliDir}`
 );
 
 // Run the FAST CLI to add the foundation components
 execSync(
-    `cd ${tempDir} &&
-    npm run add-components`
+    `cd ${tempDir} && npm run add-components`
 );
 
 // Build the js files
 execSync(
-    `cd ${tempDir} &&
-    npm run build:tsc`
+    `cd ${tempDir} && npm run build:tsc`
 );
