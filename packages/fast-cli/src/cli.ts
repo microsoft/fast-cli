@@ -440,7 +440,7 @@ function toCamelCase(kabobCase: string): string {
 async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage: string, cliTemplate: boolean, name: string): Promise<void> {
     const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
     const normalizedPathToTemplatePackage: string = cliTemplate
-        ? path.resolve(
+        ? path.join(
             "components",
             pathToTemplatePackage
         )
@@ -452,7 +452,7 @@ async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage:
     // Create an array of template items based on the files.ts
     for (const [templateName, fileName] of Object.entries(requiredComponentTemplateFiles)) {
         const { default: template } = await import(
-            path.resolve(
+            path.join(
                 normalizedPathToTemplatePackage,
                 "template",
                 templateName
