@@ -441,9 +441,6 @@ async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage:
     const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
     const normalizedPathToTemplatePackage: string = cliTemplate
         ? path.resolve(
-            cliPath,
-            "dist",
-            "esm",
             "components",
             pathToTemplatePackage
         )
