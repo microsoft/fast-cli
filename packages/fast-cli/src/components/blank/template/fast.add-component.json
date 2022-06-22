@@ -1,7 +1,7 @@
 {
     "packageJson": {
         "dependencies": {
-            "@microsoft/fast-foundation": "3.0.0-alpha.3"
+            "@microsoft/fast-foundation": "3.0.0-alpha.4"
         }
     }
 }
