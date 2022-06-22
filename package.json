@@ -25,7 +25,7 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
-    "build:storybook-project": "node ./build/storybook.mjs",
+    "build:foundation-project": "node ./build/foundation.mjs",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "bump": "beachball bump",
