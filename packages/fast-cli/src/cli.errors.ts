@@ -13,3 +13,6 @@ export function componentTemplateFileNotFoundMessage(): string {
 export function fastAddComponentRequiredComponentMissingNameModificatierMessage(name: string): string {
     return `The ${name} has a required component that does not supply a prepend or append modification`
 }
+export function componentExportFileNotFound(): string {
+    return "Component export file not found.";
+}

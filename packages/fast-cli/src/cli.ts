@@ -2,74 +2,20 @@
 
 import path from "path";
 import * as commander from "commander";
-import prompts from "prompts";
 import spawn from "cross-spawn";
-import fs from "fs-extra";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, PackageJsonAddComponent, PackageJsonInit, RequiredComponents, RequiredComponentsNameModifierConfig } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, PackageJsonAddComponent, PackageJsonInit, RequiredComponents } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
-import { componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastAddComponentRequiredComponentMissingNameModificatierMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
-import type { XOR } from "./cli.types.js";
+import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
+import type { WriteFileConfig, XOR } from "./cli.types.js";
 import type { ComponentTemplateConfig } from "./utilities/template.js";
 import { disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
+import { copyFiles, createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
+import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
+import { __dirname, ascii, cliPath, defaultTemplatePath, folderMatches, templateFolderName } from "./cli.globals.js";
+import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
+import designSystemTemplate from "./templates/design-system.js";
 
-const __dirname = path.resolve(path.dirname(""));
 const program = new commander.Command();
-const defaultTemplatePath = "@microsoft/cfp-template";
-const cliPath = path.resolve(__dirname, "node_modules", "@microsoft/fast-cli");
-const templateFolderName = "template";
-/* eslint-disable no-useless-escape */
-const folderMatches = __dirname.match(/[^(\\|\/)]+(?=$)/);
-const ascii = `
-
-  ███████╗ █████╗ ███████╗████████╗     ██████╗██╗     ██╗
-  ██╔════╝██╔══██╗██╔════╝╚══██╔══╝    ██╔════╝██║     ██║
-  █████╗  ███████║███████╗   ██║       ██║     ██║     ██║
-  ██╔══╝  ██╔══██║╚════██║   ██║       ██║     ██║     ██║
-  ██║     ██║  ██║███████║   ██║       ╚██████╗███████╗██║
-  ╚═╝     ╚═╝  ╚═╝╚══════╝   ╚═╝        ╚═════╝╚══════╝╚═╝
-           A creation tool for FAST projects
-
-`;
-
-/**
- * Init command options
- */
-interface InitOptions {
-    /**
-     * Use defaults
-     */
-    useDefaults: boolean;
-
-    /**
-     * Path to template
-     */
-    template: string;
-}
-
-/**
- * Config command options
- */
-interface ConfigOptions {
-    /**
-     * Use defaults
-     */
-    useDefaults: boolean;
-
-    /**
-     * The component path
-     */
-    componentPath: string;
-
-    /**
-     * The root directory
-     */
-    rootDir: string;
-
-    /**
-     * The web components prefix
-     */
-     componentPrefix: string;
-}
 
 /**
  * Setup the CLI
@@ -89,19 +35,15 @@ function getFastInit(
         templateFolderName
     );
 
-    return JSON.parse(
-        fs.readFileSync(path.resolve(templateDir, "fast.init.json"), {
-            encoding: "utf8",
-        })
-    );
+    return readFile(path.resolve(templateDir, "fast.init.json"), true);
 }
 
 function getPackageName(packageJson: XOR<PackageJsonInit, PackageJsonAddComponent>): string {
     const packageName = folderMatches !== null
         ? folderMatches[0]
         : typeof packageJson.name === "string"
-        ? packageJson.name
-        : "";
+            ? packageJson.name
+            : "";
 
     return packageName;
 }
@@ -122,27 +64,22 @@ function copyTemplateToProject(
     );
 
     // Copy all files in the template folder
-    fs.copySync(
-        templateDir,
-        destDir,
-        {
-            overwrite: true,
-        },
-        (error: string) => {
-            if (error) {
-                throw new Error(error);
-            }
-        }
-    );
+    copyFiles(templateDir, destDir);
 
     // Update the package.json file
     const packageName = getPackageName(packageJson);
-    fs.writeJsonSync(path.resolve(destDir, "package.json"), {
-        ...packageJson,
-        name: packageName
-    }, {
-        spaces: 2,
-    });
+    writeFiles([{
+        name: "package.json",
+        directory: destDir,
+        contents: JSON.stringify(
+            {
+                ...packageJson,
+                name: packageName
+            },
+            null,
+            2
+        )
+    }])
 
     return packageName;
 }
@@ -263,11 +200,13 @@ function installTemplate(pathToTemplate: string): Promise<unknown> {
 function createConfigFile(
     fastConfig: FastConfig,
 ): void {
-    fs.writeJsonSync(path.resolve(__dirname, "fast.config.json"), {
-        ...fastConfig
-    }, {
-        spaces: 2,
-    });
+    writeFiles([
+        {
+            name: "fast.config.json",
+            directory: __dirname,
+            contents: JSON.stringify(fastConfig, null, 2)
+        }
+    ]);
 }
 
 /**
@@ -297,11 +236,11 @@ function uninstallTemplate(packageName: string): Promise<unknown> {
 async function getFastConfig(): Promise<FastConfig> {
     const fastConfigPath = path.resolve(__dirname, "fast.config.json");
 
-    if (!await fs.pathExists(fastConfigPath)) {
+    if (!await localPathExists(fastConfigPath)) {
         throw new Error(fastConfigDoesNotExistErrorMessage());
     }
 
-    const fastConfig = JSON.parse(fs.readFileSync(fastConfigPath, { encoding: "utf8" }));
+    const fastConfig = readFile<FastConfig>(fastConfigPath, true);
 
     if (typeof fastConfig.componentPath !== "string") {
         throw new Error(fastConfigDoesNotContainComponentPathMessage());
@@ -310,7 +249,7 @@ async function getFastConfig(): Promise<FastConfig> {
     return fastConfig;
 }
 
-async function getFastAddComponent(pathToTemplatePackage: string): Promise<FastAddComponent> {
+function getFastAddComponent(pathToTemplatePackage: string): FastAddComponent {
     const templateDir = path.resolve(
         __dirname,
         "node_modules",
@@ -318,53 +257,47 @@ async function getFastAddComponent(pathToTemplatePackage: string): Promise<FastA
         templateFolderName
     );
 
-    return JSON.parse(
-        fs.readFileSync(path.resolve(templateDir, "fast.add-component.json"), {
-            encoding: "utf8",
-        })
-    );
+    return readFile<FastAddComponent>(path.resolve(templateDir, "fast.add-component.json"), true);
 }
 
 async function createDesignSystemFile(
     designSystemOptions: AddDesignSystemOptions,
-): Promise<void> {
+): Promise<Array<WriteFileConfig>> {
     const fastConfig = await getFastConfig();
     const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
+    const files: Array<WriteFileConfig> = [
+        {
+            name: "design-system.ts",
+            directory: path.resolve(rootDir),
+            contents: designSystemTemplate(fastConfig, designSystemOptions),
+        }
+    ]
 
-    fs.ensureDirSync(path.resolve(rootDir, fastConfig.componentPath));
-    fs.writeFileSync(path.resolve(rootDir, "design-system.ts"),
-        `import { DesignSystem } from "@microsoft/fast-foundation";\n` +
-        `import components from "${fastConfig.componentPath}/index.js";\n\n` +
-        `export const designSystem = {\n` +
-        `    prefix: "${fastConfig.componentPrefix}",\n` +
-        `    shadowRootMode: "${designSystemOptions.shadowRootMode}",\n` +
-        `};\n\n` +
-        `DesignSystem.getOrCreate().withPrefix(\n` +
-        `    designSystem.prefix\n` +
-        `).register(\n` +
-        `    ...components\n` +
-        `);`
-    );
-
+    writeFiles(files);
     ensureComponentExportFile(fastConfig, rootDir);
+    return files;
 }
 
 function ensureComponentExportFile(fastConfig: FastConfig, rootDir: string): void {
-    const filePath: string = path.resolve(rootDir, fastConfig.componentPath, "index.ts");
+    const fileDirectory: string = path.resolve(rootDir, fastConfig.componentPath);
+    const fileName: string = "index.ts";
 
     try {
-        const fileContents = fs.readFileSync(filePath);
+        const fileContents = readFile(path.resolve(fileDirectory, fileName), false);
 
         if (!fileContents) {
-            throw new Error("Component export file not found.");
+            throw new Error(componentExportFileNotFound());
         }
     } catch (e) {
         console.warn(e);
 
-        fs.writeFileSync(
-            filePath,
-            `export default [];`
-        );
+        writeFiles([
+            {
+                name: fileName,
+                directory: fileDirectory,
+                contents: `export default [];`
+            }
+        ]);
     }
 }
 
@@ -376,24 +309,7 @@ async function addDesignSystem(
     messages: AddDesignSystemOptionMessages,
     defaults: Partial<AddDesignSystemOptions>,
 ): Promise<void> {
-    let config: AddDesignSystemOptions = options;
-
-    if (options.useDefaults) {
-        config = { ...defaults, ...options };
-    }
-
-    if (!config.shadowRootMode) {
-        config.shadowRootMode = await prompts([
-            {
-                type: "toggle",
-                name: "shadowRootMode",
-                message: messages.shadowRootMode,
-                initial: true,
-                active: "open",
-                inactive: "closed",
-            }
-        ]).shadowRootMode;
-    }
+    const config: AddDesignSystemOptions = await addDesignSystemPrompts(options, messages, defaults);
 
     await createDesignSystemFile(config).catch((reason) => {
         throw reason;
@@ -407,65 +323,51 @@ async function checkTemplateForFiles(pathToTemplatePackage: string): Promise<voi
         pathToTemplatePackage,
         templateFolderName
     );
-    const directoryContents = fs.readdirSync(templateDir);
+    const directoryContents = readDir(templateDir);
 
     if (!Array.isArray(directoryContents)) {
         throw new Error(componentTemplateFilesNotFoundMessage());
     }
 
     // Run through available template files and make sure all required files are accounted for
-    for (const [templateFile, ] of Object.entries(requiredComponentTemplateFiles)) {
+    for (const [templateFile,] of Object.entries(requiredComponentTemplateFiles)) {
         if (!directoryContents.includes(templateFile)) {
             throw new Error(`${componentTemplateFileNotFoundMessage}: ${templateFile}`);
         }
     }
 }
 
-function toPascalCase(kabobCase: string): string {
-    return `${kabobCase}`
-        .replace(new RegExp(/[-]+/, 'g'), ' ')
-        .replace(new RegExp(/[^\w\s]/, 'g'), '')
-        .replace(
-            new RegExp(/\s+(.)(\w*)/, 'g'),
-            ($1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`
-        )
-        .replace(new RegExp(/\w/), s => s.toUpperCase());
-}
-
-function toCamelCase(kabobCase: string): string {
-    const pascalCase: string = toPascalCase(kabobCase);
-    return pascalCase.charAt(0).toLowerCase() + pascalCase.slice(1);
-}
-
-async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage: string, cliTemplate: boolean, name: string): Promise<void> {
+export async function getTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage: string, cliTemplate: boolean, name: string): Promise<Array<WriteFileConfig>> {
     const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
     const normalizedPathToTemplatePackage: string = cliTemplate
         ? `./components/${
             pathToTemplatePackage
         }`
         : path.relative(cliPath, pathToTemplatePackage);
+    const files: Array<WriteFileConfig> = [];
 
     // Ensure there is an empty directory with the provided name
-    fs.emptydirSync(path.resolve(rootDir, fastConfig.componentPath, name));
+    createEmptyDir(path.resolve(rootDir, fastConfig.componentPath, name));
 
     // Create an array of template items based on the files.ts
     for (const [templateName, fileName] of Object.entries(requiredComponentTemplateFiles)) {
-        const { default: template } = await import(
-            `${normalizedPathToTemplatePackage}/template/${templateName}`
-        );
-        const filePath = path.resolve(rootDir, fastConfig.componentPath, name, fileName(name));
+        const { default: template } = await import(`${normalizedPathToTemplatePackage}/template/${templateName}`);
+        const basename = path.basename(fileName(name));
+        const fileDir = fileName(name).replace(basename, "");
 
-        fs.ensureFileSync(filePath);
-        fs.writeFileSync(
-            filePath,
-            template({
+        files.push({
+            name: basename,
+            directory: path.resolve(rootDir, fastConfig.componentPath, name, fileDir),
+            contents: template({
                 tagName: name,
                 className: toPascalCase(name),
                 definitionName: `${toCamelCase(name)}Definition`,
                 componentPrefix: fastConfig.componentPrefix,
             } as ComponentTemplateConfig)
-        );
+        });
     }
+
+    return files;
 }
 
 /**
@@ -475,35 +377,15 @@ async function addComponent(
     options: AddComponentOptions,
     messages: AddComponentOptionMessages,
 ): Promise<void> {
-    const config: AddComponentOptions = options;
-
-    if (!options.template) {
-        config.template = await prompts([
-            {
-                type: "text",
-                name: "template",
-                message: messages.template
-            }
-        ]).template;
-    }
-
-    if (!options.name) {
-        config.name = await prompts([
-            {
-                type: "text",
-                name: "name",
-                message: messages.name
-            }
-        ]).name;
-    }
-
+    const config: AddComponentOptions = await addComponentPrompts(options, messages);
     const fastConfig: FastConfig = await getFastConfig();
 
-    await installTemplate(options.template as string);
-    await checkTemplateForFiles(options.template as string);
-    await writeTemplateFiles(fastConfig, options.template as string, false, options.name as string);
-    const fastAddComponent: FastAddComponent = await getFastAddComponent(
-        options.template as string
+    await installTemplate(config.template as string);
+    await checkTemplateForFiles(config.template as string);
+    const files = await getTemplateFiles(fastConfig, config.template as string, false, config.name as string);
+    writeFiles(files);
+    const fastAddComponent: FastAddComponent = getFastAddComponent(
+        config.template as string
     );
     await installEnumeratedDependencies(
         Object.entries(fastAddComponent?.packageJson?.dependencies || {}).map(([key, value]: [string, string]): string => {
@@ -515,39 +397,11 @@ async function addComponent(
     );
 }
 
-function modifyName(
-    name: string,
-    modifierConfig: RequiredComponentsNameModifierConfig
-): string {
-    let updatedName = name;
-
-    if (modifierConfig.append) {
-        updatedName = updatedName + modifierConfig.append;
-    }
-
-    if (modifierConfig.prepend) {
-        updatedName = modifierConfig.prepend + updatedName;
-    }
-
-    if (name === updatedName) {
-        throw new Error(fastAddComponentRequiredComponentMissingNameModificatierMessage(name));
-    }
-
-    return updatedName;
-}
-
 /**
  * Gets a foundation component name that will not cause naming conflicts
  */
 async function getAllowedFoundationComponentName(name: string, template: string): Promise<string> {
-    const updatedName: string = await prompts([
-        {
-            type: "text",
-            name: "name",
-            message: `The name "${name}" is not allowed, choose a different name`,
-            initial: template
-        }
-    ]).name;
+    const updatedName: string = await allowedFoundationComponentNamePrompt(name, template);
 
     if (disallowedTemplateNames.includes(updatedName)) {
         return await getAllowedFoundationComponentName(updatedName, template);
@@ -563,48 +417,17 @@ async function addFoundationComponent(
     options: AddFoundationComponentOptions,
     messages: AddFoundationComponentOptionMessages,
 ): Promise<void> {
-    const config: AddFoundationComponentOptions = options;
-
     if (options.all) {
         suggestedTemplates.forEach(async (template: string) => {
             await addFoundationComponent({
                 template,
                 name: template,
             },
-            messages)
+                messages)
         });
     } else {
-        if (!config.template) {
-            config.template = await prompts([
-                {
-                    type: "autocomplete",
-                    name: "template",
-                    message: messages.template,
-                    choices: suggestedTemplates.map((suggestedTemplate) => {
-                        return {
-                            title: suggestedTemplate
-                        };
-                    })
-                }
-            ]).template;
-        }
-    
-        if (options.useDefaults) {
-            // the foundation templates names are used as defaults
-            config.name = config.template
-        }
-    
-        if (!config.name) {
-            config.name = await prompts([
-                {
-                    type: "text",
-                    name: "name",
-                    message: messages.name,
-                    initial: config.template
-                }
-            ]).name;
-        }
-    
+        const config = await addFoundationComponentPrompts(options, messages);
+
         if (disallowedTemplateNames.includes(config.name as string)) {
             config.name = await getAllowedFoundationComponentName(
                 config.name as string,
@@ -613,8 +436,10 @@ async function addFoundationComponent(
         }
 
         const fastConfig: FastConfig = await getFastConfig();
-        await writeTemplateFiles(fastConfig, config.template as string, true, config.name as string);
-        const fastAddComponent: FastAddComponent = await getFastAddComponent(
+        const files = await getTemplateFiles(fastConfig, config.template as string, true, config.name as string);
+
+        await writeFiles(files);
+        const fastAddComponent: FastAddComponent = getFastAddComponent(
             path.resolve(
                 cliPath,
                 "dist",
@@ -628,7 +453,7 @@ async function addFoundationComponent(
             fastAddComponent.requiredComponents.forEach(async (requiredComponent: RequiredComponents) => {
                 await addFoundationComponent({
                     ...options,
-                    name: modifyName(config.name as string, requiredComponent.nameModifier),
+                    name: stringModifier(config.name as string, requiredComponent.nameModifier),
                     template: requiredComponent.template,
                 }, messages);
             });
@@ -649,87 +474,23 @@ async function addFoundationComponent(
  * Configure a FAST project
  */
 async function config(options: ConfigOptions, messages: FastConfigOptionMessages, defaults: Partial<ConfigOptions>): Promise<void> {
-    let config: ConfigOptions = options;
-
-    if (config.useDefaults) {
-        config = { ...defaults, ...options };
-    }
-
-    if (!config.componentPath) {
-        /**
-         * Collect information for the fast.config.json file
-         */
-        config.componentPath = await prompts([
-            {
-                type: "text",
-                name: "componentPath",
-                message: messages.componentPath
-
-            }
-        ]).componentPath;
-    }
-
-    if (!config.rootDir) {
-        config.rootDir = await prompts([
-            {
-                type: "text",
-                name: "rootDir",
-                message: messages.rootDir
-            }
-        ]).rootDir;
-    }
-
-    if (!config.componentPrefix) {
-        config.componentPrefix = await prompts([
-            {
-                type: "text",
-                name: "componentPrefix",
-                message: messages.componentPrefix,
-                validate: (input): boolean => {
-                    return input !== "";
-                }
-            }
-        ]).componentPrefix;
-    }
+    const config = await configPrompts(options, messages, defaults);
 
     createConfigFile(config);
 }
 
 /**
- * Determine if the template is local or remote
- */
-async function isTemplateRemotePackage(pathToTemplatePackage: string): Promise<boolean> {
-    const localPath = path.resolve(__dirname, pathToTemplatePackage);
-
-    return await fs.pathExists(localPath)
-}
-
-/**
  * Initialize a FAST project
  */
-async function init(options: InitOptions, messages: FastInitOptionMessages, defaults: Partial<InitOptions>): Promise<void> {
-    let config = options;
+async function init(
+    options: InitOptions,
+    messages: FastInitOptionMessages,
+    defaults: Partial<InitOptions>
+): Promise<void> {
+    const config = await initPrompts(options, messages, defaults);
 
-    if (options.useDefaults) {
-        config = { ...defaults, ...options };
-    }
-
-    if (!config.template) {
-        /**
-         * Collect information for the package.json file
-         */
-         config.template = await prompts([
-            {
-                type: "text",
-                name: "template",
-                initial: defaultTemplatePath,
-                message: messages.template,
-            }
-        ]).template;
-    }
-
-    if (!await isTemplateRemotePackage(config.template)) {
-        config.template = path.resolve(__dirname, options.template);
+    if (!await localPathExists(path.resolve(__dirname, config.template))) {
+        config.template = path.resolve(__dirname, config.template);
     }
 
     const initFile: FastInit = getFastInit(config.template);

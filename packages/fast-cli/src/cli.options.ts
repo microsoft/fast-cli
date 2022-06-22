@@ -1,3 +1,5 @@
+import type { StringModifierConfig } from "./cli.types";
+
 export interface FastConfig {
     componentPath: string;
     rootDir: string;
@@ -31,14 +33,9 @@ export interface PackageJsonAddComponent {
     peerDependencies: { [key: string]: string };
 }
 
-export interface RequiredComponentsNameModifierConfig {
-    prepend: string;
-    append: string;
-}
-
 export interface RequiredComponents {
     template: string;
-    nameModifier: RequiredComponentsNameModifierConfig
+    nameModifier: StringModifierConfig
 }
 
 export interface FastAddComponent {
@@ -78,5 +75,45 @@ export interface AddFoundationComponentOptions {
 
 export interface AddFoundationComponentOptionMessages {
     name: string;
+    template: string;
+}
+
+/**
+ * Config command options
+ */
+ export interface ConfigOptions {
+    /**
+     * Use defaults
+     */
+    useDefaults: boolean;
+
+    /**
+     * The component path
+     */
+    componentPath: string;
+
+    /**
+     * The root directory
+     */
+    rootDir: string;
+
+    /**
+     * The web components prefix
+     */
+    componentPrefix: string;
+}
+
+/**
+ * Init command options
+ */
+export interface InitOptions {
+    /**
+     * Use defaults
+     */
+    useDefaults: boolean;
+
+    /**
+     * Path to template
+     */
     template: string;
 }
