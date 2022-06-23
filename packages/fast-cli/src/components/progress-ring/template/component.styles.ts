@@ -13,6 +13,7 @@ import {
     // heightNumber,
     neutralForegroundHint,
 } from "@microsoft/adaptive-ui";
+import { heightNumber } from "../../design-system.js";
 
 /**
  * Styles for ${config.className}
@@ -26,11 +27,8 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
         \${display('flex')} :host {
             align-items: center;
             outline: none;
-            ${
-                // height: calc(${heightNumber} * 1px);
-                // width: calc(${heightNumber} * 1px);
-                ""
-            }
+            height: calc(\${heightNumber} * 1px);
+            width: calc(\${heightNumber} * 1px);
         }
         .progress {
             height: 100%;

@@ -19,6 +19,7 @@ import {
     // inputStateStyles,
     // inputStyles,
 } from "@microsoft/adaptive-ui";
+import { heightNumber } from "../../design-system.js";
 
 // export const textAreaFilledStyles: (
 //     context: ElementDefinitionContext,
@@ -54,10 +55,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             vertical-align: bottom;
         }
         .control {
-            ${
-                // height: calc((${heightNumber} * 2) * 1px);
-                ""
-            }
+            height: calc((\${heightNumber} * 2) * 1px);
             padding: calc(\${designUnit} * 1.5px) calc(\${designUnit} * 2px + 1px);
         }
         :host .control {

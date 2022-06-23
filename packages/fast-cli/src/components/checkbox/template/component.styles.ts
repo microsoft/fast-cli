@@ -16,15 +16,13 @@ import {
     accentFillRest,
     controlCornerRadius,
     designUnit,
-    // disabledOpacity,
     fillColor,
     focusStrokeOuter,
     foregroundOnAccentRest,
-    // heightNumber,
-    // neutralFillInputAltActive,
-    // neutralFillInputAltFocus,
-    // neutralFillInputAltHover,
-    // neutralFillInputAltRest,
+    neutralFillInputActive,
+    neutralFillInputFocus,
+    neutralFillInputHover,
+    neutralFillInputRest,
     neutralForegroundRest,
     neutralStrokeStrongActive,
     neutralStrokeStrongHover,
@@ -32,6 +30,7 @@ import {
     strokeWidth,
     typeRampBase,
 } from "@microsoft/adaptive-ui";
+import { disabledOpacity, heightNumber } from "../../design-system.js";
 
 /**
  * Styles for ${config.className}
@@ -54,12 +53,9 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
         }
         .control {
             position: relative;
-            ${
-                // width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-                // height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-                // background: ${neutralFillInputAltRest};
-                ""
-            }
+            width: calc((\${heightNumber} / 2 + \${designUnit}) * 1px);
+            height: calc((\${heightNumber} / 2 + \${designUnit}) * 1px);
+            background: \${neutralFillInputRest};
             box-sizing: border-box;
             border-radius: calc(\${controlCornerRadius} * 1px);
             border: calc(\${strokeWidth} * 1px) solid \${neutralStrokeStrongRest};
@@ -99,25 +95,16 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             fill: \${foregroundOnAccentRest};
         }
         :host(:not(.disabled):hover) .control {
-            ${
-                // background: ${neutralFillInputAltHover};
-                ""
-            }
+            background: \${neutralFillInputHover};
             border-color: \${neutralStrokeStrongHover};
         }
         :host(:not(.disabled):active) .control {
-            ${
-                // background: ${neutralFillInputAltActive};
-                ""
-            }
+            background: \${neutralFillInputActive};
             border-color: \${neutralStrokeStrongActive};
         }
         :host(:\${focusVisible}) .control {
             box-shadow: 0 0 0 1px \${fillColor}, 0 0 0 3px \${focusStrokeOuter};
-            ${
-                // background: ${neutralFillInputAltFocus};
-                ""
-            }
+            background: \${neutralFillInputFocus};
             border-color: \${focusStrokeOuter};
         }
         :host(.checked) .control {
@@ -143,10 +130,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             opacity: 1;
         }
         :host(.disabled) {
-            ${
-                // opacity: ${disabledOpacity};
-                ""
-            }
+            opacity: \${disabledOpacity};
         }
     \`.withBehaviors(
         forcedColorsStylesheetBehavior(

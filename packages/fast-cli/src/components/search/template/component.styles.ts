@@ -14,7 +14,6 @@ import {
     controlCornerRadius,
     // density,
     designUnit,
-    // heightNumber,
     // inputFilledForcedColorStyles,
     // inputFilledStyles,
     // inputForcedColorStyles,
@@ -23,9 +22,10 @@ import {
     neutralFillInputRecipe,
     neutralFillStealthRecipe,
     neutralForegroundRest,
+    Swatch,
     typeRampBase,
 } from "@microsoft/adaptive-ui";
-import type { Swatch } from "@microsoft/adaptive-ui/dist/dts/color/swatch.d.js"
+import { heightNumber } from "../../design-system.js";
 
 const clearButtonHover = DesignToken.create<Swatch>("clear-button-hover").withDefault(
     (target: HTMLElement) => {
@@ -100,10 +100,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             fill: currentcolor;
             border: none;
             border-radius: calc(\${controlCornerRadius} * 1px);
-            ${
-                // min-width: calc(${heightNumber} * 1px);
-                ""
-            }
+            min-width: calc(\${heightNumber} * 1px);
             \${typeRampBase}
             outline: none;
             ${

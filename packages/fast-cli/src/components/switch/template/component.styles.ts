@@ -18,17 +18,15 @@ import {
     bodyFont,
     // DirectionalStyleSheetBehavior,
     designUnit,
-    // disabledOpacity,
     fillColor,
     focusStrokeOuter,
     foregroundOnAccentActive,
     foregroundOnAccentHover,
     foregroundOnAccentRest,
-    // heightNumber,
-    // neutralFillInputAltActive,
-    // neutralFillInputAltFocus,
-    // neutralFillInputAltHover,
-    // neutralFillInputAltRest,
+    neutralFillInputActive,
+    neutralFillInputFocus,
+    neutralFillInputHover,
+    neutralFillInputRest,
     neutralForegroundRest,
     neutralStrokeStrongActive,
     neutralStrokeStrongHover,
@@ -36,6 +34,7 @@ import {
     strokeWidth,
     typeRampBase,
 } from "@microsoft/adaptive-ui";
+import { disabledOpacity, heightNumber } from "../../design-system.js";
 
 /**
  * Styles for ${config.className}
@@ -61,10 +60,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             } user-select: none;
         }
         :host(.disabled) {
-            ${
-                // opacity: ${disabledOpacity};
-                ""
-            }
+            opacity: \${disabledOpacity};
         }
         :host(.disabled) .label,
         :host(.readonly) .label,
@@ -78,36 +74,24 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             position: relative;
             outline: none;
             box-sizing: border-box;
-            ${
-                // width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
-                // height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
-                // background: ${neutralFillInputAltRest};
-                // border-radius: calc(${heightNumber} * 1px);
-                ""
-            }
+            width: calc(((\${heightNumber} / 2) + \${designUnit}) * 2px);
+            height: calc(((\${heightNumber} / 2) + \${designUnit}) * 1px);
+            background: \${neutralFillInputRest};
+            border-radius: calc(\${heightNumber} * 1px);
             border: calc(\${strokeWidth} * 1px) solid \${neutralStrokeStrongRest};
             cursor: pointer;
         }
         :host(:not(.disabled):hover) .switch {
-            ${
-                // background: ${neutralFillInputAltHover};
-                ""
-            }
+            background: \${neutralFillInputHover};
             border-color: \${neutralStrokeStrongHover};
         }
         :host(:not(.disabled):active) .switch {
-            ${
-                // background: ${neutralFillInputAltActive};
-                ""
-            }
+            background: \${neutralFillInputActive};
             border-color: \${neutralStrokeStrongActive};
         }
         :host(:\${focusVisible}) .switch {
             box-shadow: 0 0 0 1px \${fillColor}, 0 0 0 3px \${focusStrokeOuter};
-            ${
-                // background: ${neutralFillInputAltFocus};
-                ""
-            }
+            background: \${neutralFillInputFocus};
             border-color: \${focusStrokeOuter};
         }
         :host(.checked) .switch {
