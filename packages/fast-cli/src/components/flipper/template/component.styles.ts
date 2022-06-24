@@ -13,16 +13,15 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
     designUnit,
-    // disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
-    // heightNumber,
     neutralFillRest,
     neutralFillStrongActive,
     neutralFillStrongHover,
     neutralFillStrongRest,
     // neutralStrokeControlRest,
 } from "@microsoft/adaptive-ui";
+import { disabledOpacity, heightNumber } from "../../design-system.js";
 
 /**
  * Styles for ${config.className}
@@ -34,10 +33,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
 ) =>
     css\`
         \${display('inline-flex')} :host {
-            ${
-                // height: calc((${heightNumber} + ${designUnit}) * 1px);
-                ""
-            }
+            height: calc(\${heightNumber} * 1px);
             justify-content: center;
             align-items: center;
             fill: currentcolor;
@@ -54,10 +50,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             padding: 0;
         }
         :host(.disabled) {
-            ${
-                // opacity: ${disabledOpacity};
-                ""
-            }
+            opacity: \${disabledOpacity};
             cursor: \${disabledCursor};
             pointer-events: none;
         }

@@ -26,7 +26,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     css\`
         \${display('inline-block')} :host {
             box-sizing: border-box;
-            \${typeRampMinus1};
+            \${typeRampMinus1}
         }
         .control {
             border-radius: calc(\${controlCornerRadius} * 1px);

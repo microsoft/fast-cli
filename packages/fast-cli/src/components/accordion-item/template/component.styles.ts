@@ -15,7 +15,6 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    // heightNumber,
     layerCornerRadius,
     // neutralFillLayerAltRest,
     // neutralFillLayerRecipe,
@@ -27,6 +26,7 @@ import {
     Swatch,
     typeRampBase,
 } from "@microsoft/adaptive-ui";
+import { heightNumber } from "../../design-system.js";
 
 // const neutralFillStealthRestOnNeutralFillLayerRest = DesignToken.create<Swatch>(
 //     "neutral-fill-stealth-rest-on-neutral-fill-layer-rest",
@@ -63,7 +63,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     css\`
         \${display('flex')} :host {
             box-sizing: border-box;
-            \${typeRampBase};
+            \${typeRampBase}
             flex-direction: column;
             ${
                 // background: ${neutralFillLayerRest};
@@ -137,10 +137,10 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             pointer-events: none;
             ${
                 // background: ${neutralFillStealthRestOnNeutralFillLayerRest};
-                // width: calc(${heightNumber} * 1px);
-                // height: calc(${heightNumber} * 1px);
                 ""
             }
+            width: calc(\${heightNumber} * 1px);
+            height: calc(\${heightNumber} * 1px);
             border-radius: calc(\${controlCornerRadius} * 1px);
             fill: currentcolor;
             margin: calc(\${designUnit} * 2 * 1px);

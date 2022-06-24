@@ -10,13 +10,12 @@ import {
     accentForegroundActive,
     accentForegroundHover,
     accentForegroundRest,
-    bodyFont,
     controlCornerRadius,
     foregroundOnAccentActive,
     foregroundOnAccentHover,
     foregroundOnAccentRest,
     strokeWidth,
-    typeRampBaseFontSize,
+    typeRampBase,
 } from "@microsoft/adaptive-ui";
 
 /**
@@ -36,12 +35,11 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
         }
         .disclosure .invoker {
             list-style-type: none;
+            \${typeRampBase}
         }
         :host([appearance="accent"]) .invoker {
             background: \${accentFillRest};
             color: \${foregroundOnAccentRest};
-            font-family: \${bodyFont};
-            font-size: \${typeRampBaseFontSize};
             border-radius: calc(\${controlCornerRadius} * 1px);
             outline: none;
             cursor: pointer;
