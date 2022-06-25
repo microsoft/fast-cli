@@ -3,16 +3,15 @@ import type { ComponentTemplateConfig } from "../../../utilities/template";
 export default (config: ComponentTemplateConfig): string =>
 `import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    AvatarOptions,
     Badge,
     display,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
-    baseHeightMultiplier,
+    // baseHeightMultiplier,
     controlCornerRadius,
-    DirectionalStyleSheetBehavior,
-    density,
+    // DirectionalStyleSheetBehavior,
+    // density,
     designUnit,
     neutralForegroundRest,
     typeRampBaseFontSize,
@@ -43,12 +42,15 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             position: relative;
             height: var(--avatar-size, var(--avatar-size-default));
             max-width: var(--avatar-size, var(--avatar-size-default));
-            --avatar-size-default: calc(
-                (
-                        (\${baseHeightMultiplier} + \${density}) * \${designUnit} +
-                            ((\${designUnit} * 8) - 40)
-                    ) * 1px
-            );
+            ${
+                // --avatar-size-default: calc(
+                //     (
+                //             (${baseHeightMultiplier} + ${density}) * ${designUnit} +
+                //                 ((${designUnit} * 8) - 40)
+                //         ) * 1px
+                // );
+                ""
+            }
             --avatar-text-size: \${typeRampBaseFontSize};
             --avatar-text-ratio: \${designUnit};
         }
@@ -95,8 +97,8 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             display: block;
         }
         \`.withBehaviors(
-            new DirectionalStyleSheetBehavior(
-                ltr(context, definition),
-                rtl(context, definition)
-            )
+            // new DirectionalStyleSheetBehavior(
+            //     ltr(context, definition),
+            //     rtl(context, definition)
+            // )
         );`

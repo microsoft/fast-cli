@@ -216,10 +216,10 @@ test.describe("CLI", () => {
     });
     test.describe("add-component", () => {
         test.beforeAll(() => {
+            setupBlankAsTemplate();
             setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:init`);
             setup(tempDir, tempComponentDir, uuid);
-            setupBlankAsTemplate();
             execSync(`cd ${tempDir} && npm run fast:add-component:template`);
         });
         test.afterAll(() => {

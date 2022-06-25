@@ -7,15 +7,14 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
-    ToolbarOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    controlCornerRadius,
+    designUnit,
     fillColor,
     focusStrokeWidth,
     neutralStrokeFocus,
-    strokeWidth,
+    strokeWidth
 } from "@microsoft/adaptive-ui";
 
 /**
@@ -27,53 +26,64 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) =>
     css\`
-        \${display("inline-flex")} :host {
-            --toolbar-item-gap: calc(
-                (var(--design-unit) + calc(var(--density) + 2)) * 1px
-            );
-            background-color: \${fillColor};
-            border-radius: calc(\${controlCornerRadius} * 1px);
+        \${display('inline-flex')} :host {
+            --toolbar-item-gap: calc(\${designUnit} * 1px);
+            background: \${fillColor};
             fill: currentcolor;
             padding: var(--toolbar-item-gap);
+            box-sizing: border-box;
+            align-items: center;
         }
         :host(\${focusVisible}) {
             outline: calc(\${strokeWidth} * 1px) solid \${neutralStrokeFocus};
         }
         .positioning-region {
-            align-items: flex-start;
+            align-items: center;
             display: inline-flex;
             flex-flow: row wrap;
             justify-content: flex-start;
+            flex-grow: 1;
         }
-        :host([orientation="vertical"]) .positioning-region {
+        :host([orientation='vertical']) .positioning-region {
             flex-direction: column;
+            align-items: start;
         }
         ::slotted(:not([slot])) {
             flex: 0 0 auto;
             margin: 0 var(--toolbar-item-gap);
         }
-        :host([orientation="vertical"]) ::slotted(:not([slot])) {
+        :host([orientation='vertical']) ::slotted(:not([slot])) {
             margin: var(--toolbar-item-gap) 0;
+        }
+        :host([orientation='vertical']) {
+            display: inline-flex;
+            flex-direction: column;
         }
         .start,
         .end {
             display: flex;
-            margin: auto;
-            margin-inline: 0;
+            align-items: center;
+        }
+        .end {
+            margin-inline-start: auto;
+        }
+        .start__hidden,
+        .end__hidden {
+            display: none;
         }
         ::slotted(svg) {
-            /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+            \${/* Glyph size is temporary - replace when adaptive typography is figured out */ ''}
             width: 16px;
             height: 16px;
         }
-        \`.withBehaviors(
-            forcedColorsStylesheetBehavior(
-                css\`
-                    :host(:\${focusVisible}) {
-                        box-shadow: 0 0 0 calc(\${focusStrokeWidth} * 1px) \${SystemColors.Highlight};
-                        color: \${SystemColors.ButtonText};
-                        forced-color-adjust: none;
-                    }
-                \`
-            )
-        );`;
+    \`.withBehaviors(
+        forcedColorsStylesheetBehavior(
+            css\`
+                :host(:\${focusVisible}) {
+                    box-shadow: 0 0 0 calc(\${focusStrokeWidth} * 1px) \${SystemColors.Highlight};
+                    color: \${SystemColors.ButtonText};
+                    forced-color-adjust: none;
+                }
+            \`,
+        ),
+    );`;

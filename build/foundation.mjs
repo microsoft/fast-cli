@@ -9,7 +9,7 @@ import { availableTemplates } from "@microsoft/fast-cli/dist/esm/components/opti
  */
 
 const dirname = process.cwd();
-const tempDir = path.resolve(dirname, "temp/storybook");
+const tempDir = path.resolve(dirname, "temp/foundation");
 const cfpTemplateDir = path.resolve(dirname, "packages/cfp-template");
 const fastCliDir = path.resolve(dirname, "packages/fast-cli");
 
@@ -110,10 +110,10 @@ function runCommandArgs(indexOfCommandArgs) {
  * Commands may be passed by running this script.
  * 
  * Directly running the script:
- * node ./build/storybook.mjs -c avatar button
+ * node ./build/foundation.mjs -c avatar button
  * 
  * Using the npm scripts:
- * npm run build:storybook -- -c avatar button
+ * npm run build:foundation -- -c avatar button
  */
 if (commandLineArgs.length > 0) {
     const indexOfCommandArgs = getIndexOfCommandArgs(commandLineArgs);

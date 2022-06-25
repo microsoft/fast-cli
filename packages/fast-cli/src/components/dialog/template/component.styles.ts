@@ -3,7 +3,12 @@ import type { ComponentTemplateConfig } from "../../../utilities/template";
 export default (config: ComponentTemplateConfig): string =>
 `import { css, ElementStyles } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
-import { controlCornerRadius, elevation, fillColor, strokeWidth } from "@microsoft/adaptive-ui";
+import {
+    // elevationShadowDialog,
+    fillColor,
+    layerCornerRadius,
+    strokeWidth
+} from "@microsoft/adaptive-ui";
 
 /**
  * Styles for ${config.className}
@@ -18,9 +23,8 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             display: none;
         }
         :host {
-            --elevation: 14;
-            --${config.tagName}-height: 480px;
-            --${config.tagName}-width: 640px;
+            --dialog-height: 480px;
+            --dialog-width: 640px;
             display: block;
         }
         .overlay {
@@ -43,14 +47,17 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             overflow: auto;
         }
         .control {
-            \${elevation}
+            ${
+                // box-shadow: ${elevationShadowDialog};
+                ""
+            }
             margin-top: auto;
             margin-bottom: auto;
-            width: var(--${config.tagName}-width);
-            height: var(--${config.tagName}-height);
-            background-color: \${fillColor};
+            border-radius: calc(\${layerCornerRadius} * 1px);
+            width: var(--dialog-width);
+            height: var(--dialog-height);
+            background: \${fillColor};
             z-index: 1;
-            border-radius: calc(\${controlCornerRadius} * 1px);
             border: calc(\${strokeWidth} * 1px) solid transparent;
         }
     \`;`;

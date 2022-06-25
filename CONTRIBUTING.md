@@ -57,6 +57,10 @@ This command can also be run from within individual package folders to execute o
 Packages are located within the `packages` folder of the repository. Each package has a `package.json` file with a `scripts` section that defines the commands available to you for common tasks such as build, test, lint, etc.
 :::
 
+### Working on foundation components
+
+Foundation components, found within the `@microsoft/fast-cli` package `components`, will require occasional updates. To see these updates, run the `npm run build:foundation-project` at the root. This will generate a `temp/foundation` project which you can then use to run storybook using `npm run start:storybook`. Making edits inside this temporary project will not be recorded, so you will have to go back into the `@microsoft/fast-cli` package and edit the template files for the component you are editing. You should then build the `@microsoft/fast-cli` with `npm run build` and at the root of the project you can run `npm run build:foundation-project -- -c <component-being-edited-1> <component-being-edited-2>`.
+
 ### Submitting a pull request
 
 Prior to submitting a pull request please follow the following steps.

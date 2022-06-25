@@ -6,15 +6,14 @@ import {
     display,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
-    ProgressRingOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundRest,
-    heightNumber,
-    neutralFillRest,
+    accentFillRest,
+    // heightNumber,
     neutralForegroundHint,
 } from "@microsoft/adaptive-ui";
+import { heightNumber } from "../../design-system.js";
 
 /**
  * Styles for ${config.className}
@@ -25,24 +24,22 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) => 
     css\`
-        \${display("flex")} :host {
+        \${display('flex')} :host {
             align-items: center;
             outline: none;
             height: calc(\${heightNumber} * 1px);
             width: calc(\${heightNumber} * 1px);
-            margin: calc(\${heightNumber} * 1px) 0;
         }
         .progress {
             height: 100%;
             width: 100%;
         }
         .background {
-            stroke: \${neutralFillRest};
             fill: none;
             stroke-width: 2px;
         }
         .determinate {
-            stroke: \${accentForegroundRest};
+            stroke: \${accentFillRest};
             fill: none;
             stroke-width: 2px;
             stroke-linecap: round;
@@ -51,7 +48,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             transition: all 0.2s ease-in-out;
         }
         .indeterminate-indicator-1 {
-            stroke: \${accentForegroundRest};
+            stroke: \${accentFillRest};
             fill: none;
             stroke-width: 2px;
             stroke-linecap: round;
@@ -60,11 +57,11 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
             transition: all 0.2s ease-in-out;
             animation: spin-infinite 2s linear infinite;
         }
-        :host([paused]) .indeterminate-indicator-1 {
-            animation-play-state: paused;
-            stroke: \${neutralFillRest};
+        :host(.paused) .indeterminate-indicator-1 {
+            animation: none;
+            stroke: \${neutralForegroundHint};
         }
-        :host([paused]) .determinate {
+        :host(.paused) .determinate {
             stroke: \${neutralForegroundHint};
         }
         @keyframes spin-infinite {
@@ -84,20 +81,18 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
     \`.withBehaviors(
         forcedColorsStylesheetBehavior(
             css\`
-                .indeterminate-indicator-1,
-                .determinate {
-                    stroke: \${SystemColors.FieldText};
-                }
                 .background {
                     stroke: \${SystemColors.Field};
                 }
-                :host([paused]) .indeterminate-indicator-1 {
-                    stroke: \${SystemColors.Field};
+                .determinate,
+                .indeterminate-indicator-1 {
+                    stroke: \${SystemColors.ButtonText};
                 }
-                :host([paused]) .determinate {
+                :host(.paused) .determinate,
+                :host(.paused) .indeterminate-indicator-1 {
                     stroke: \${SystemColors.GrayText};
                 }
-            \`
-        )
-    );
+            \`,
+        ),
+    )
 `;

@@ -18,7 +18,7 @@ const defaultTemplatePath = "@microsoft/cfp-template";
 const cliPath = path.resolve(__dirname, "node_modules", "@microsoft/fast-cli");
 const templateFolderName = "template";
 /* eslint-disable no-useless-escape */
-const folderMatches = process.cwd().match(/[^(\\|\/)]+(?=$)/);
+const folderMatches = __dirname.match(/[^(\\|\/)]+(?=$)/);
 const ascii = `
 
   ███████╗ █████╗ ███████╗████████╗     ██████╗██╗     ██╗
@@ -263,7 +263,7 @@ function installTemplate(pathToTemplate: string): Promise<unknown> {
 function createConfigFile(
     fastConfig: FastConfig,
 ): void {
-    fs.writeJsonSync(path.resolve(process.cwd(), "fast.config.json"), {
+    fs.writeJsonSync(path.resolve(__dirname, "fast.config.json"), {
         ...fastConfig
     }, {
         spaces: 2,
@@ -295,7 +295,7 @@ function uninstallTemplate(packageName: string): Promise<unknown> {
 }
 
 async function getFastConfig(): Promise<FastConfig> {
-    const fastConfigPath = path.resolve(process.cwd(), "fast.config.json");
+    const fastConfigPath = path.resolve(__dirname, "fast.config.json");
 
     if (!await fs.pathExists(fastConfigPath)) {
         throw new Error(fastConfigDoesNotExistErrorMessage());
@@ -332,7 +332,7 @@ async function createDesignSystemFile(
     const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
 
     fs.ensureDirSync(path.resolve(rootDir, fastConfig.componentPath));
-    fs.writeFileSync(path.resolve(rootDir, "./design-system.ts"),
+    fs.writeFileSync(path.resolve(rootDir, "design-system.ts"),
         `import { DesignSystem } from "@microsoft/fast-foundation";\n` +
         `import components from "${fastConfig.componentPath}/index.js";\n\n` +
         `export const designSystem = {\n` +
@@ -440,17 +440,19 @@ function toCamelCase(kabobCase: string): string {
 async function writeTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage: string, cliTemplate: boolean, name: string): Promise<void> {
     const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
     const normalizedPathToTemplatePackage: string = cliTemplate
-        ? path.resolve(
-            cliPath,
-            `dist/esm/components/${pathToTemplatePackage}`)
-        : pathToTemplatePackage;
+        ? `./components/${
+            pathToTemplatePackage
+        }`
+        : path.relative(cliPath, pathToTemplatePackage);
 
     // Ensure there is an empty directory with the provided name
     fs.emptydirSync(path.resolve(rootDir, fastConfig.componentPath, name));
 
     // Create an array of template items based on the files.ts
     for (const [templateName, fileName] of Object.entries(requiredComponentTemplateFiles)) {
-        const { default: template } = await import(`${normalizedPathToTemplatePackage}/template/${templateName}`);
+        const { default: template } = await import(
+            `${normalizedPathToTemplatePackage}/template/${templateName}`
+        );
         const filePath = path.resolve(rootDir, fastConfig.componentPath, name, fileName(name));
 
         fs.ensureFileSync(filePath);
@@ -615,7 +617,10 @@ async function addFoundationComponent(
         const fastAddComponent: FastAddComponent = await getFastAddComponent(
             path.resolve(
                 cliPath,
-                `dist/esm/components/${config.template}`
+                "dist",
+                "esm",
+                "components",
+                config.template as string
             )
         );
 
