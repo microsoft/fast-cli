@@ -1,5 +1,6 @@
-import type { StringModifierConfig } from "./cli.types";
+import type { StringModifierConfig, XOR } from "./cli.types";
 import { fastAddComponentRequiredComponentMissingNameModificatierMessage } from "./cli.errors.js";
+import type { PackageJsonAddComponent, PackageJsonInit } from "./cli.options";
 
 export function toPascalCase(kabobCase: string): string {
     return `${kabobCase}`
@@ -36,4 +37,17 @@ export function stringModifier(
     }
 
     return updatedText;
+}
+
+export function getPackageName(
+    packageJson: XOR<PackageJsonInit, PackageJsonAddComponent>,
+    folderMatches: RegExpMatchArray | null
+): string {
+    const packageName = folderMatches !== null
+        ? folderMatches[0]
+        : typeof packageJson.name === "string"
+            ? packageJson.name
+            : "";
+
+    return packageName;
 }
