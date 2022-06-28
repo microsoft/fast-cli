@@ -1,10 +1,9 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { attr } from "@microsoft/fast-element";
+export default tsTemplate`import { attr } from "@microsoft/fast-element";
 import { Accordion as FoundationAccordion } from "@microsoft/fast-foundation";
 
 /**
  * A class derived from the Accordion foundation component
  */
-export class ${config.className} extends FoundationAccordion {};`
+export class ${c => c.className} extends FoundationAccordion {};`
