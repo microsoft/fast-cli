@@ -13,7 +13,7 @@ const uuid: string = "accordion";
 const tempDir: string = getTempDir(uuid);
 const tempComponentDir: string = getTempComponentDir(uuid);
 
-test.describe.only(`CLI add-foundation-component ${uuid}`, () => {
+test.describe(`CLI add-foundation-component ${uuid}`, () => {
     test.beforeAll(() => {
         setupComponent(uuid, tempDir, tempComponentDir);
     });
