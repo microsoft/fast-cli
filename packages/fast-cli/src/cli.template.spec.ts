@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { tsTemplate } from "./cli.template.js";
 
-test.describe("template", () => {
+test.describe.only("template", () => {
     test("tsTemplate", () => {
         const renderable1 = tsTemplate`foo${c => c.tagName}`;
         const renderable2 = tsTemplate`${c => c.tagName}foo`;
