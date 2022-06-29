@@ -1,12 +1,11 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => 
-`import { template } from "./${config.tagName}.template.js";
-import { styles } from "./${config.tagName}.styles.js";
+export default tsTemplate`import { template } from "./${c => c.tagName}.template.js";
+import { styles } from "./${c => c.tagName}.styles.js";
 import { CalendarTitleTemplate } from "@microsoft/fast-foundation";
 
 export const definition = {
-    baseName: "${config.tagName}",
+    baseName: "${c => c.tagName}",
     template,
     styles,
     title: CalendarTitleTemplate,

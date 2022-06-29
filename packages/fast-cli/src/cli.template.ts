@@ -30,7 +30,7 @@ export class RenderableTemplate {
 }
 
 /**
- * A template literal tag for typescript component templates
+ * A template literal tag function for typescript component templates
  */
 function tagTemplate(
     strings: TemplateStringsArray,
