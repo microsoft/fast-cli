@@ -1,17 +1,16 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { htmlTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`<style>
-    ${config.tagName}-item.disabled::part(button) {
+export default htmlTemplate`<style>
+    ${c => c.tagName}-item.disabled::part(button) {
         pointer-events: none;
     }
 </style>
 
-<h1>${config.className}Item</h1>
+<h1>${c => c.className}Item</h1>
 
 <h2>Default</h2>
-<${config.componentPrefix}-${config.tagName}>
-    <${config.componentPrefix}-${config.tagName}-item expanded>
+<${c => c.componentPrefix}-${c => c.tagName}>
+    <${c => c.componentPrefix}-${c => c.tagName}-item expanded>
         <div slot="start">
             <button>1</button>
         </div>
@@ -20,21 +19,21 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Panel one</span>
         Panel one content
-    </${config.componentPrefix}-${config.tagName}-item>
-    <${config.componentPrefix}-${config.tagName}-item expanded>
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+    <${c => c.componentPrefix}-${c => c.tagName}-item expanded>
         <span slot="heading">Panel two</span>
         <fast-button tabindex="0">Button</fast-button>
         <fast-button tabindex="0">Button</fast-button>
-    </${config.componentPrefix}-${config.tagName}-item>
-    <${config.componentPrefix}-${config.tagName}-item expanded>
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+    <${c => c.componentPrefix}-${c => c.tagName}-item expanded>
         <span slot="heading">Panel three</span>
         Panel three content
-    </${config.componentPrefix}-${config.tagName}-item>
-</${config.componentPrefix}-${config.tagName}>
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Single expand</h2>
-<${config.componentPrefix}-${config.tagName} expand-mode="single">
-    <${config.componentPrefix}-${config.tagName}-item>
+<${c => c.componentPrefix}-${c => c.tagName} expand-mode="single">
+    <${c => c.componentPrefix}-${c => c.tagName}-item>
         <div slot="start">
             <button>1</button>
         </div>
@@ -43,20 +42,20 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Panel one</span>
         Panel one content
-    </${config.componentPrefix}-${config.tagName}-item>
-    <${config.componentPrefix}-${config.tagName}-item class="disabled">
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+    <${c => c.componentPrefix}-${c => c.tagName}-item class="disabled">
         <span slot="heading">Panel Two</span>
         Panel two content
-    </${config.componentPrefix}-${config.tagName}-item>
-    <${config.componentPrefix}-${config.tagName}-item>
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+    <${c => c.componentPrefix}-${c => c.tagName}-item>
         <span slot="heading">Panel three</span>
         Panel three content
-    </${config.componentPrefix}-${config.tagName}-item>
-</${config.componentPrefix}-${config.tagName}>
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>With disabled item</h2>
-<${config.componentPrefix}-${config.tagName}>
-    <${config.componentPrefix}-${config.tagName}-item>
+<${c => c.componentPrefix}-${c => c.tagName}>
+    <${c => c.componentPrefix}-${c => c.tagName}-item>
         <div slot="start">
             <button>1</button>
         </div>
@@ -65,8 +64,8 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Panel two</span>
         Panel one content
-    </${config.componentPrefix}-${config.tagName}-item>
-    <${config.componentPrefix}-${config.tagName}-item class="disabled">
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+    <${c => c.componentPrefix}-${c => c.tagName}-item class="disabled">
         <div slot="start">
             <button>1</button>
         </div>
@@ -75,8 +74,8 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Disabled</span>
         Disabled content
-    </${config.componentPrefix}-${config.tagName}-item>
-    <${config.componentPrefix}-${config.tagName}-item expanded>
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+    <${c => c.componentPrefix}-${c => c.tagName}-item expanded>
         <div slot="start">
             <button>1</button>
         </div>
@@ -85,12 +84,12 @@ export default (config: ComponentTemplateConfig): string =>
         </div>
         <span slot="heading">Panel three</span>
         Panel three content
-    </${config.componentPrefix}-${config.tagName}-item>
-</${config.componentPrefix}-${config.tagName}>
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Custom expanded and collapsed icons</h2>
-<${config.componentPrefix}-${config.tagName}>
-    <${config.componentPrefix}-${config.tagName}-item expanded>
+<${c => c.componentPrefix}-${c => c.tagName}>
+    <${c => c.componentPrefix}-${c => c.tagName}-item expanded>
         <span slot="heading">Panel one</span>
         <svg
             slot="collapsed-icon"
@@ -115,5 +114,5 @@ export default (config: ComponentTemplateConfig): string =>
             />
         </svg>
         Panel one content
-    </${config.componentPrefix}-${config.tagName}-item>
-</${config.componentPrefix}-${config.tagName}>`;
+    </${c => c.componentPrefix}-${c => c.tagName}-item>
+</${c => c.componentPrefix}-${c => c.tagName}>`;

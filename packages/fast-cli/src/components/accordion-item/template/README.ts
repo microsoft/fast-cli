@@ -1,8 +1,7 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { mdTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-# ${config.className}
+export default mdTemplate`# ${c => c.className}
 
-The ${config.tagName} component is used in conjunction with ${config.tagName}.
+The ${c => c.tagName} component is used in conjunction with ${c => c.tagName}.
 
 For more information on the building blocks used to create this component, please refer to https://www.fast.design/docs/components/accordion`;

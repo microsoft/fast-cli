@@ -1,13 +1,12 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { attr } from "@microsoft/fast-element";
+export default tsTemplate`import { attr } from "@microsoft/fast-element";
 import { Avatar as FoundationAvatar } from "@microsoft/fast-foundation";
 
 /**
  * A class derived from the Avatar foundation component
  */
-export class ${config.className} extends FoundationAvatar {
+export class ${c => c.className} extends FoundationAvatar {
     /**
      * Indicates the Avatar should have an image source
      *

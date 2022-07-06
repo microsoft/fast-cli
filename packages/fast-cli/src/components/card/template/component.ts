@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { composedParent, Card as FoundationCard } from "@microsoft/fast-foundation";
+export default tsTemplate`import { composedParent, Card as FoundationCard } from "@microsoft/fast-foundation";
 import type { Swatch } from "@microsoft/adaptive-ui/dist/dts/color/swatch.d.js"
 import {
     fillColor,
@@ -14,7 +13,7 @@ import { parseColorHexRGB } from '@microsoft/fast-colors';
 /**
  * A class derived from the Card foundation component
  */
-export class ${config.className} extends FoundationCard {
+export class ${c => c.className} extends FoundationCard {
     @attr({
         attribute: 'card-fill-color',
         mode: 'fromView',

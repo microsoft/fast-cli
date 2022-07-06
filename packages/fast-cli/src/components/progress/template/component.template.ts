@@ -1,11 +1,10 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-import { BaseProgress, progressTemplate, FoundationElementTemplate } from "@microsoft/fast-foundation";
+export default tsTemplate`import { BaseProgress, progressTemplate, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import type { ViewTemplate } from "@microsoft/fast-element";
 
 /**
- * The template for ${config.className} component.
+ * The template for ${c => c.className} component.
  * @public
  */
 export const template: FoundationElementTemplate<ViewTemplate<BaseProgress>> = progressTemplate;

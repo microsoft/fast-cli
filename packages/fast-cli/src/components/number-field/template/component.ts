@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { NumberField as FoundationNumberField } from "@microsoft/fast-foundation";
+export default tsTemplate`import { NumberField as FoundationNumberField } from "@microsoft/fast-foundation";
 import { attr } from "@microsoft/fast-element";
 
 /**
@@ -13,7 +12,7 @@ export type NumberFieldAppearance = "filled" | "outline";
 /**
  * A class derived from the NumberField foundation component
  */
-export class ${config.className} extends FoundationNumberField {
+export class ${c => c.className} extends FoundationNumberField {
     /**
      * The appearance of the element.
      *

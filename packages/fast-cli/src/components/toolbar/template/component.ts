@@ -1,9 +1,8 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { composedParent, Toolbar as FoundationToolbar } from "@microsoft/fast-foundation";
+export default tsTemplate`import { composedParent, Toolbar as FoundationToolbar } from "@microsoft/fast-foundation";
 
 /**
  * A class derived from the Toolbar foundation component
  */
-export class ${config.className} extends FoundationToolbar {};`
+export class ${c => c.className} extends FoundationToolbar {};`
