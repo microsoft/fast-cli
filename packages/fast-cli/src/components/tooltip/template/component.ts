@@ -1,9 +1,8 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { Tooltip as FoundationTooltip } from "@microsoft/fast-foundation";
+export default tsTemplate`import { Tooltip as FoundationTooltip } from "@microsoft/fast-foundation";
 
 /**
  * A class derived from the Tooltip foundation component
  */
-export class ${config.className} extends FoundationTooltip {};`
+export class ${c => c.className} extends FoundationTooltip {};`

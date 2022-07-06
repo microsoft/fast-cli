@@ -1,12 +1,11 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { htmlTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`<button id="button1">
-Show ${config.className}
+export default htmlTemplate`<button id="button1">
+Show ${c => c.className}
 </button>
 <p>tab queue detected automatically</p>
 
-<${config.componentPrefix}-${config.tagName}
+<${c => c.componentPrefix}-${c => c.tagName}
     id="dialog1"
     aria-label="Simple dialog"
     modal="true"
@@ -16,5 +15,5 @@ Show ${config.className}
 <h2>Dialog queue detected automatically</h2>
 <button>Button</button>
 <p>(esc to close)</p>
-</${config.componentPrefix}-${config.tagName}>
+</${c => c.componentPrefix}-${c => c.tagName}>
 `;

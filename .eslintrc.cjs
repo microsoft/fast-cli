@@ -37,7 +37,6 @@ module.exports = {
                 variableDeclaration: false,
             },
         ],
-        "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/naming-convention": [
             "error",

@@ -1,9 +1,8 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { Divider as FoundationDivider } from "@microsoft/fast-foundation";
+export default tsTemplate`import { Divider as FoundationDivider } from "@microsoft/fast-foundation";
 
 /**
  * A class derived from the Divider foundation component
  */
-export class ${config.className} extends FoundationDivider {};`
+export class ${c => c.className} extends FoundationDivider {};`

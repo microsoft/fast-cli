@@ -1,3 +1,3 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { htmlTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `<${config.componentPrefix}-${config.tagName}></${config.componentPrefix}-${config.tagName}>`;
+export default htmlTemplate`<${c => c.componentPrefix}-${c => c.tagName}></${c => c.componentPrefix}-${c => c.tagName}>`;

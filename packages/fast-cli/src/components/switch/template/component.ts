@@ -1,9 +1,8 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { Switch as FoundationSwitch } from "@microsoft/fast-foundation";
+export default tsTemplate`import { Switch as FoundationSwitch } from "@microsoft/fast-foundation";
 
 /**
  * A class derived from the Switch foundation component
  */
-export class ${config.className} extends FoundationSwitch {};`
+export class ${c => c.className} extends FoundationSwitch {};`

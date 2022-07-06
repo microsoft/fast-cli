@@ -1,16 +1,15 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-import { html } from "@microsoft/fast-element";
+export default tsTemplate`import { html } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ${config.className} } from "./${config.tagName}.js";
+import type { ${c => c.className} } from "./${c => c.tagName}.js";
 
 /**
- * The template for ${config.className} component.
+ * The template for ${c => c.className} component.
  * @public
  */
-export const template: FoundationElementTemplate<ViewTemplate<${config.className}>> = (
+export const template: FoundationElementTemplate<ViewTemplate<${c => c.className}>> = (
     context,
     definition
 ) => html\`

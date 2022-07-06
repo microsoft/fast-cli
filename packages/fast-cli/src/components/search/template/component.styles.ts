@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { css, ElementStyles } from "@microsoft/fast-element";
+export default tsTemplate`import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     Button,
     DesignToken,
@@ -58,7 +57,7 @@ const clearButtonHover = DesignToken.create<Swatch>("clear-button-hover").withDe
 //     );
 
 /**
- * Styles for ${config.className}
+ * Styles for ${c => c.className}
  * @public
  */
 export const styles: FoundationElementTemplate<ElementStyles> = (

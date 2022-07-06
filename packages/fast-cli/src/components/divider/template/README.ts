@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { mdTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-# ${config.className}
+export default mdTemplate`# ${c => c.className}
 
 A web component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).
 

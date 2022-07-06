@@ -1,18 +1,17 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => 
-`import { template } from "./${config.tagName}.template.js";
-import { styles } from "./${config.tagName}.styles.js";
-import type { ${config.className} } from "./${config.tagName}.js";
+export default tsTemplate`import { template } from "./${c => c.tagName}.template.js";
+import { styles } from "./${c => c.tagName}.styles.js";
+import type { ${c => c.className} } from "./${c => c.tagName}.js";
 import { html, when } from "@microsoft/fast-element";
 import { Avatar as FoundationAvatar } from "@microsoft/fast-foundation";
 
 export const definition = {
-    baseName: "${config.tagName}",
+    baseName: "${c => c.tagName}",
     baseClass: FoundationAvatar,
     template,
     styles,
-    media: html<${config.className}>\`
+    media: html<${c => c.className}>\`
         \${when(
             x => x.imgSrc,
             html\`
