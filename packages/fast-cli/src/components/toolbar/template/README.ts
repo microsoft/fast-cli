@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { mdTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-# ${config.className}
+export default mdTemplate`# ${c => c.className}
 
 An implementation of a [toolbar](https://w3c.github.io/aria-practices/#toolbar) as a web-component.
 

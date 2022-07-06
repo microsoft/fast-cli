@@ -1,8 +1,7 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { mdTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-# ${config.className}
+export default mdTemplate`# ${c => c.className}
 
-${config.tagName} is a web component implementation of an [Accordion](https://w3c.github.io/aria-practices/#accordion).
+${c => c.tagName} is a web component implementation of an [Accordion](https://w3c.github.io/aria-practices/#accordion).
 
 For more information on the building blocks used to create this component, please refer to https://www.fast.design/docs/components/accordion`;

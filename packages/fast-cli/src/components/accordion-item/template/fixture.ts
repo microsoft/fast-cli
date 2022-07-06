@@ -1,22 +1,21 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { htmlTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`<style>
-    ${config.tagName}.disabled::part(button) {
+export default htmlTemplate`<style>
+    ${c => c.tagName}.disabled::part(button) {
         pointer-events: none;
     }
 </style>
 
-<h1>${config.className}</h1>
+<h1>${c => c.className}</h1>
 
 <h2>Default</h2>
-<${config.componentPrefix}-${config.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName}>
     <span slot="heading">Panel one</span>
     Panel one content
-</${config.componentPrefix}-${config.tagName}>
+</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Expanded</h2>
-<${config.componentPrefix}-${config.tagName} expanded>
+<${c => c.componentPrefix}-${c => c.tagName} expanded>
     <div slot="start">
         <button>1</button>
     </div>
@@ -25,10 +24,10 @@ export default (config: ComponentTemplateConfig): string =>
     </div>
     <span slot="heading">Panel one</span>
     Panel one content
-</${config.componentPrefix}-${config.tagName}>
+</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Disabled</h2>
-<${config.componentPrefix}-${config.tagName} class="disabled">
+<${c => c.componentPrefix}-${c => c.tagName} class="disabled">
     <div slot="start">
         <button>1</button>
     </div>
@@ -37,10 +36,10 @@ export default (config: ComponentTemplateConfig): string =>
     </div>
     <span slot="heading">Disabled</span>
     Disabled content
-</${config.componentPrefix}-${config.tagName}>
+</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Custom expanded and collapsed icons</h2>
-<${config.componentPrefix}-${config.tagName} expanded>
+<${c => c.componentPrefix}-${c => c.tagName} expanded>
     <span slot="heading">Panel one</span>
     <svg
         slot="collapsed-icon"
@@ -65,4 +64,4 @@ export default (config: ComponentTemplateConfig): string =>
         />
     </svg>
     Panel one content
-</${config.componentPrefix}-${config.tagName}>`;
+</${c => c.componentPrefix}-${c => c.tagName}>`;

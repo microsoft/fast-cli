@@ -14,6 +14,7 @@ import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentProm
 import { __dirname, ascii, cliPath, defaultTemplatePath, folderMatches, templateFolderName } from "./cli.globals.js";
 import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
+import type { RenderableTemplate } from "./cli.template.js";
 
 const program = new commander.Command();
 
@@ -358,12 +359,12 @@ export async function getTemplateFiles(fastConfig: FastConfig, pathToTemplatePac
         files.push({
             name: basename,
             directory: path.resolve(rootDir, fastConfig.componentPath, name, fileDir),
-            contents: template({
+            contents: (template as RenderableTemplate).render({
                 tagName: name,
                 className: toPascalCase(name),
                 definitionName: `${toCamelCase(name)}Definition`,
                 componentPrefix: fastConfig.componentPrefix,
-            } as ComponentTemplateConfig)
+            })
         });
     }
 
@@ -614,3 +615,4 @@ program.command("add-foundation-component")
 program.parse(process.argv);
 
 export { ComponentTemplateConfig };
+export { htmlTemplate, mdTemplate, tsTemplate } from "./cli.template.js";

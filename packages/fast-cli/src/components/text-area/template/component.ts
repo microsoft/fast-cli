@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { attr } from "@microsoft/fast-element";
+export default tsTemplate`import { attr } from "@microsoft/fast-element";
 import { TextArea as FoundationTextArea } from "@microsoft/fast-foundation";
 
 /**
@@ -13,7 +12,7 @@ export type TextAreaAppearance = "filled" | "outline";
 /**
  * A class derived from the TextArea foundation component
  */
-export class ${config.className} extends FoundationTextArea {
+export class ${c => c.className} extends FoundationTextArea {
     /**
      * The appearance of the element.
      *
