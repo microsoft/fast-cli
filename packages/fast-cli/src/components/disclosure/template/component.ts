@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { Disclosure as FoundationDisclosure } from "@microsoft/fast-foundation";
+export default tsTemplate`import { Disclosure as FoundationDisclosure } from "@microsoft/fast-foundation";
 import { attr } from "@microsoft/fast-element";
 
 /**
@@ -13,7 +12,7 @@ export type DisclosureAppearance = "accent" | "lightweight";
 /**
  * A class derived from the Disclosure foundation component
  */
-export class ${config.className} extends FoundationDisclosure {
+export class ${c => c.className} extends FoundationDisclosure {
     /**
      * Disclosure default height
      */

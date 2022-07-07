@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { mdTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-# ${config.className}
+export default mdTemplate`# ${c => c.className}
 
 An implementation of an [HTML textarea element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) as a form-connected web-component.
 

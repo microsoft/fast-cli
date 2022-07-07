@@ -1,11 +1,10 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-import { expect, test } from "@playwright/test";
+export default tsTemplate`import { expect, test } from "@playwright/test";
 import { fixtureURL } from "@microsoft/fast-cli/dist/esm/utilities/playwright.js";
 
-test.describe("${config.tagName}", () => {
-    const fixture = fixtureURL("${config.tagName}");
+test.describe("${c => c.tagName}", () => {
+    const fixture = fixtureURL("${c => c.tagName}");
     test.beforeEach(async ({ page }) => {
         await page.goto(fixture);
     });
@@ -14,7 +13,7 @@ test.describe("${config.tagName}", () => {
         expect(pageUrl).toBe(\`http://localhost:3000/\${fixture}\`);
     });
     test("should contain the component in the URL", async ({ page }) => {
-        const element = page.locator("${config.tagName}");
+        const element = page.locator("${c => c.tagName}");
         await expect(element).not.toBeNull();
     });
 });

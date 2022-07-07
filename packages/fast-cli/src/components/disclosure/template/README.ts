@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { mdTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-# ${config.className}
+export default mdTemplate`# ${c => c.className}
 
 This web component is based on [Disclosure](https://w3c.github.io/aria-practices/#disclosure) specification. The component has a button or invoker which reveals the extra content on the click.
 

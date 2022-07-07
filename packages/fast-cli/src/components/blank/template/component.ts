@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { FoundationElement } from "@microsoft/fast-foundation";
+export default tsTemplate`import { FoundationElement } from "@microsoft/fast-foundation";
 
 /**
  * A Custom HTML Element.
@@ -11,4 +10,4 @@ export default (config: ComponentTemplateConfig): string =>
  /**
   * A class derived from the FoundationElement
   */
- export class ${config.className} extends FoundationElement {};`;
+ export class ${c => c.className} extends FoundationElement {};`;

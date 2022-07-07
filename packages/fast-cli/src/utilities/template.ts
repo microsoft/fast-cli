@@ -24,3 +24,10 @@ export interface ComponentTemplateConfig {
      */
     componentPrefix: string;
 }
+
+/**
+ * Template callback for ts templates
+ */
+export type CliConfigCallback = (
+    config: ComponentTemplateConfig
+) => string;

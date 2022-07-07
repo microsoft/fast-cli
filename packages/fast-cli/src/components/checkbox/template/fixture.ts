@@ -1,51 +1,50 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { htmlTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`<h1>${config.className}</h1>
+export default htmlTemplate`<h1>${c => c.className}</h1>
 <h2>Default</h2>
-<${config.componentPrefix}-${config.tagName}></${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName}>label</${config.componentPrefix}-${config.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName}></${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName}>label</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Checked</h2>
-<${config.componentPrefix}-${config.tagName} checked></${config.componentPrefix}-${config.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} checked></${c => c.componentPrefix}-${c => c.tagName}>
 
 <!-- Required -->
 <h2>Required</h2>
-<${config.componentPrefix}-${config.tagName} required></${config.componentPrefix}-${config.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} required></${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Indeterminate</h2>
-<${config.componentPrefix}-${config.tagName} class="flag-indeterminate">Unchecked</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} checked class="flag-indeterminate">Checked</${config.componentPrefix}-${config.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} class="flag-indeterminate">Unchecked</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} checked class="flag-indeterminate">Checked</${c => c.componentPrefix}-${c => c.tagName}>
 
 <!-- Disabled -->
 <h2>Disabled</h2>
-<${config.componentPrefix}-${config.tagName} disabled></${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} disabled>label</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} disabled checked>checked</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} disabled checked class="flag-indeterminate">
+<${c => c.componentPrefix}-${c => c.tagName} disabled></${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} disabled>label</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} disabled checked>checked</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} disabled checked class="flag-indeterminate">
     Indeterminate checked
-</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} disabled class="flag-indeterminate">
+</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} disabled class="flag-indeterminate">
     Indeterminate unchecked
-</${config.componentPrefix}-${config.tagName}>
+</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Inline</h2>
-<${config.componentPrefix}-${config.tagName} checked>Apples</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} checked>Bananas</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName}>Honeydew</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} checked>Oranges</${config.componentPrefix}-${config.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} checked>Apples</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} checked>Bananas</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName}>Honeydew</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} checked>Oranges</${c => c.componentPrefix}-${c => c.tagName}>
 
 <h2>Vertical</h2>
 <fieldset style="display: flex; flex-direction: column; align-items: start;">
     <legend>Fruit</legend>
-    <${config.componentPrefix}-${config.tagName} checked>Apples</${config.componentPrefix}-${config.tagName}>
-    <${config.componentPrefix}-${config.tagName} checked>Bananas</${config.componentPrefix}-${config.tagName}>
-    <${config.componentPrefix}-${config.tagName}>Honeydew</${config.componentPrefix}-${config.tagName}>
-    <${config.componentPrefix}-${config.tagName} checked>Oranges</${config.componentPrefix}-${config.tagName}>
+    <${c => c.componentPrefix}-${c => c.tagName} checked>Apples</${c => c.componentPrefix}-${c => c.tagName}>
+    <${c => c.componentPrefix}-${c => c.tagName} checked>Bananas</${c => c.componentPrefix}-${c => c.tagName}>
+    <${c => c.componentPrefix}-${c => c.tagName}>Honeydew</${c => c.componentPrefix}-${c => c.tagName}>
+    <${c => c.componentPrefix}-${c => c.tagName} checked>Oranges</${c => c.componentPrefix}-${c => c.tagName}>
 </fieldset>
 
 <h2>Visual vs audio label</h2>
-<${config.componentPrefix}-${config.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName}>
     <span aria-label="Audio label">Visible label</span>
-</${config.componentPrefix}-${config.tagName}>
+</${c => c.componentPrefix}-${c => c.tagName}>
 `;
