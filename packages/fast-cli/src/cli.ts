@@ -12,7 +12,7 @@ import { disallowedTemplateNames, suggestedTemplates } from "./components/option
 import { copyFiles, createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
 import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
 import { __dirname, ascii, cliPath, defaultTemplatePath, folderMatches, templateFolderName } from "./cli.globals.js";
-import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
+import { getPackageName, stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
 import type { RenderableTemplate } from "./cli.template.js";
 
@@ -39,16 +39,6 @@ function getFastInit(
     return readFile(path.resolve(templateDir, "fast.init.json"), true);
 }
 
-function getPackageName(packageJson: XOR<PackageJsonInit, PackageJsonAddComponent>): string {
-    const packageName = folderMatches !== null
-        ? folderMatches[0]
-        : typeof packageJson.name === "string"
-            ? packageJson.name
-            : "";
-
-    return packageName;
-}
-
 /**
  * Copy the template to the project
  */
@@ -66,7 +56,8 @@ function copyTemplateToProject(
     copyFiles(templateDir, config.destDir);
 
     // Update the package.json file
-    const packageName = getPackageName(config.packageJson);
+    const packageName = getPackageName(config.packageJson, folderMatches);
+
     writeFiles([{
         name: "package.json",
         directory: config.destDir,
