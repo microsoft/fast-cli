@@ -3,10 +3,10 @@
 import path from "path";
 import * as commander from "commander";
 import spawn from "cross-spawn";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, CopyTemplateConfig, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, PackageJsonAddComponent, PackageJsonInit, RequiredComponents, TemplateFileConfig } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, CopyTemplateConfig, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, RequiredComponents, TemplateFileConfig } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
-import type { WriteFileConfig, XOR } from "./cli.types.js";
+import type { WriteFileConfig } from "./cli.types.js";
 import type { ComponentTemplateConfig } from "./utilities/template.js";
 import { disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 import { copyFiles, createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
