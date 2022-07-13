@@ -14,7 +14,6 @@ import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentProm
 import { __dirname, ascii, cliPath, defaultTemplatePath, folderMatches, templateFolderName } from "./cli.globals.js";
 import { getPackageName, stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
-import type { RenderableTemplate } from "./cli.template.js";
 
 const program = new commander.Command();
 
@@ -82,6 +81,10 @@ export const installDependencies = (
     modifier?: string
 ): Promise<unknown> => {
     return new Promise((resolve, reject) => {
+        if (listOfDependencies.length === 0) {
+            resolve(void 0);
+        }
+
         const args = modifier
             ? [
                 "install",
@@ -110,27 +113,12 @@ export const installDependencies = (
 /**
  * Install an npm dependency
  */
-function installEnumeratedDependencies(
+async function installEnumeratedDependencies(
     dependencies?: Array<string>,
     devDependencies?: Array<string>
-): Promise<unknown> {
-    const installers: Array<Promise<unknown>> = [];
-
-    if (dependencies) {
-        installers.push(
-            installDependencies(dependencies)
-        );
-    }
-
-    if (devDependencies) {
-        installers.push(
-            installDependencies(devDependencies, "--save-dev")
-        );
-    }
-
-    return Promise.all(installers).then(() => {
-        Promise.resolve();
-    });
+): Promise<void> {
+    await installDependencies(dependencies || []);
+    await installDependencies(devDependencies || [], "--save-dev");
 }
 
 /**
@@ -425,11 +413,13 @@ async function addFoundationComponent(
 ): Promise<void> {
     if (options.all) {
         suggestedTemplates.forEach(async (template: string) => {
-            await addFoundationComponent({
-                template,
-                name: template,
-            },
-                messages)
+            await addFoundationComponent(
+                {
+                    template,
+                    name: template,
+                },
+                messages
+            )
         });
     } else {
         const config = await addFoundationComponentPrompts(options, messages);

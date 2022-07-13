@@ -265,8 +265,7 @@ test.describe("CLI", () => {
             ).not.toThrow();
         });
     });
-    // Skip these tests while adaptive UI is sym-linked from a private package
-    test.describe.skip("add-foundation-component --all", () => {
+    test.describe("add-foundation-component --all", () => {
         test.beforeAll(() => {
             setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:init`);
