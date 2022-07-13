@@ -1,7 +1,6 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { css, ElementStyles } from "@microsoft/fast-element";
+export default tsTemplate`import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     forcedColorsStylesheetBehavior,
@@ -18,7 +17,7 @@ import {
 } from "@microsoft/adaptive-ui";
 
 /**
- * Styles for ${config.className}
+ * Styles for ${c => c.className}
  * @public
  */
 export const styles: FoundationElementTemplate<ElementStyles> = (

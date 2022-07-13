@@ -3,7 +3,7 @@
 import path from "path";
 import * as commander from "commander";
 import spawn from "cross-spawn";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, PackageJsonAddComponent, PackageJsonInit, RequiredComponents } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, CopyTemplateConfig, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, PackageJsonAddComponent, PackageJsonInit, RequiredComponents, TemplateFileConfig } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { WriteFileConfig, XOR } from "./cli.types.js";
@@ -12,7 +12,7 @@ import { disallowedTemplateNames, suggestedTemplates } from "./components/option
 import { copyFiles, createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
 import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
 import { __dirname, ascii, cliPath, defaultTemplatePath, folderMatches, templateFolderName } from "./cli.globals.js";
-import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
+import { getPackageName, stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
 
 const program = new commander.Command();
@@ -38,58 +38,63 @@ function getFastInit(
     return readFile(path.resolve(templateDir, "fast.init.json"), true);
 }
 
-function getPackageName(packageJson: XOR<PackageJsonInit, PackageJsonAddComponent>): string {
-    const packageName = folderMatches !== null
-        ? folderMatches[0]
-        : typeof packageJson.name === "string"
-            ? packageJson.name
-            : "";
-
-    return packageName;
-}
-
 /**
  * Copy the template to the project
  */
 function copyTemplateToProject(
-    pathToTemplatePackage: string,
-    packageJson: XOR<PackageJsonInit, PackageJsonAddComponent>,
-    destDir: string
+    config: CopyTemplateConfig
 ): string {
     const templateDir = path.resolve(
         __dirname,
         "node_modules",
-        pathToTemplatePackage,
+        config.pathToTemplatePackage,
         templateFolderName
     );
 
     // Copy all files in the template folder
-    copyFiles(templateDir, destDir);
+    copyFiles(templateDir, config.destDir);
 
     // Update the package.json file
-    const packageName = getPackageName(packageJson);
+    const packageName = getPackageName(config.packageJson, folderMatches);
+
     writeFiles([{
         name: "package.json",
-        directory: destDir,
+        directory: config.destDir,
         contents: JSON.stringify(
             {
-                ...packageJson,
+                ...config.packageJson,
                 name: packageName
             },
             null,
             2
         )
-    }])
+    }]);
 
     return packageName;
 }
 
 /**
- * Install package dependencies for the template
+ * Install dependencies
  */
-function installDependencies(): Promise<unknown> {
+export const installDependencies = (
+    listOfDependencies: Array<string>,
+    modifier?: string
+): Promise<unknown> => {
     return new Promise((resolve, reject) => {
-        const args = ["install"];
+        if (listOfDependencies.length === 0) {
+            resolve(void 0);
+        }
+
+        const args = modifier
+            ? [
+                "install",
+                modifier,
+                ...listOfDependencies
+            ]
+            : [
+                "install",
+                ...listOfDependencies
+            ];
         const child = spawn("npm", args, { stdio: "inherit" });
         child.on("close", code => {
             if (code !== 0) {
@@ -108,50 +113,12 @@ function installDependencies(): Promise<unknown> {
 /**
  * Install an npm dependency
  */
-function installEnumeratedDependencies(dependencies?: Array<string>, devDependencies?: Array<string>): Promise<unknown> {
-    const getDependencyCommand = (listOfDependencies: Array<string>, modifier?: string): Promise<unknown> => {
-        return new Promise((resolve, reject) => {
-            const args = modifier
-                ? [
-                    "install",
-                    modifier,
-                    ...listOfDependencies
-                ]
-                : [
-                    "install",
-                    ...listOfDependencies
-                ];
-            const child = spawn("npm", args, { stdio: "inherit" });
-            child.on("close", code => {
-                if (code !== 0) {
-                    reject({
-                        command: "npm install",
-                    });
-                    return;
-                }
-                resolve(void 0);
-            });
-        }).catch((reason) => {
-            throw reason;
-        });
-    }
-    const installers: Array<Promise<unknown>> = [];
-
-    if (dependencies) {
-        installers.push(
-            getDependencyCommand(dependencies)
-        );
-    }
-
-    if (devDependencies) {
-        installers.push(
-            getDependencyCommand(devDependencies, "--save-dev")
-        );
-    }
-
-    return Promise.all(installers).then(() => {
-        Promise.resolve();
-    });
+async function installEnumeratedDependencies(
+    dependencies?: Array<string>,
+    devDependencies?: Array<string>
+): Promise<void> {
+    await installDependencies(dependencies || []);
+    await installDependencies(devDependencies || [], "--save-dev");
 }
 
 /**
@@ -197,6 +164,9 @@ function installTemplate(pathToTemplate: string): Promise<unknown> {
     });
 }
 
+/**
+ * Create the fast.config.json file
+ */
 function createConfigFile(
     fastConfig: FastConfig,
 ): void {
@@ -233,6 +203,9 @@ function uninstallTemplate(packageName: string): Promise<unknown> {
     });
 }
 
+/**
+ * Get the fast.config.json file
+ */
 async function getFastConfig(): Promise<FastConfig> {
     const fastConfigPath = path.resolve(__dirname, "fast.config.json");
 
@@ -249,6 +222,9 @@ async function getFastConfig(): Promise<FastConfig> {
     return fastConfig;
 }
 
+/**
+ * Get the fast.add-component.json file
+ */
 function getFastAddComponent(pathToTemplatePackage: string): FastAddComponent {
     const templateDir = path.resolve(
         __dirname,
@@ -260,6 +236,9 @@ function getFastAddComponent(pathToTemplatePackage: string): FastAddComponent {
     return readFile<FastAddComponent>(path.resolve(templateDir, "fast.add-component.json"), true);
 }
 
+/**
+ * Create the design-system.ts file
+ */
 async function createDesignSystemFile(
     designSystemOptions: AddDesignSystemOptions,
 ): Promise<Array<WriteFileConfig>> {
@@ -278,6 +257,9 @@ async function createDesignSystemFile(
     return files;
 }
 
+/**
+ * Ensure the file exporting the components exists
+ */
 function ensureComponentExportFile(fastConfig: FastConfig, rootDir: string): void {
     const fileDirectory: string = path.resolve(rootDir, fastConfig.componentPath);
     const fileName: string = "index.ts";
@@ -302,7 +284,7 @@ function ensureComponentExportFile(fastConfig: FastConfig, rootDir: string): voi
 }
 
 /**
- * Add a design system
+ * Add a design-system.ts file
  */
 async function addDesignSystem(
     options: AddDesignSystemOptions,
@@ -316,6 +298,9 @@ async function addDesignSystem(
     });
 }
 
+/**
+ * Check the template for files that should exist
+ */
 async function checkTemplateForFiles(pathToTemplatePackage: string): Promise<void> {
     const templateDir = path.resolve(
         __dirname,
@@ -337,33 +322,32 @@ async function checkTemplateForFiles(pathToTemplatePackage: string): Promise<voi
     }
 }
 
-export async function getTemplateFiles(fastConfig: FastConfig, pathToTemplatePackage: string, cliTemplate: boolean, name: string): Promise<Array<WriteFileConfig>> {
-    const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
-    const normalizedPathToTemplatePackage: string = cliTemplate
-        ? `./components/${
-            pathToTemplatePackage
-        }`
-        : path.relative(cliPath, pathToTemplatePackage);
+/**
+ * Get the template files to be written
+ */
+async function getTemplateFiles(
+    config: TemplateFileConfig
+    ): Promise<Array<WriteFileConfig>> {
+    const normalizedPathToTemplatePackage: string = config.cliTemplate
+        ? `./components/${config.pathToTemplatePackage}`
+        : path.relative(cliPath, config.pathToTemplatePackage);
     const files: Array<WriteFileConfig> = [];
-
-    // Ensure there is an empty directory with the provided name
-    createEmptyDir(path.resolve(rootDir, fastConfig.componentPath, name));
 
     // Create an array of template items based on the files.ts
     for (const [templateName, fileName] of Object.entries(requiredComponentTemplateFiles)) {
         const { default: template } = await import(`${normalizedPathToTemplatePackage}/template/${templateName}`);
-        const basename = path.basename(fileName(name));
-        const fileDir = fileName(name).replace(basename, "");
+        const basename = path.basename(fileName(config.name));
+        const fileDir = fileName(config.name).replace(basename, "");
 
         files.push({
             name: basename,
-            directory: path.resolve(rootDir, fastConfig.componentPath, name, fileDir),
-            contents: template({
-                tagName: name,
-                className: toPascalCase(name),
-                definitionName: `${toCamelCase(name)}Definition`,
-                componentPrefix: fastConfig.componentPrefix,
-            } as ComponentTemplateConfig)
+            directory: path.resolve(config.rootDir, config.fastConfig.componentPath, config.name, fileDir),
+            contents: template.render({
+                tagName: config.name,
+                className: toPascalCase(config.name),
+                definitionName: `${toCamelCase(config.name)}Definition`,
+                componentPrefix: config.fastConfig.componentPrefix,
+            })
         });
     }
 
@@ -382,7 +366,17 @@ async function addComponent(
 
     await installTemplate(config.template as string);
     await checkTemplateForFiles(config.template as string);
-    const files = await getTemplateFiles(fastConfig, config.template as string, false, config.name as string);
+
+    const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
+    const files = await getTemplateFiles({
+        rootDir,
+        fastConfig,
+        pathToTemplatePackage: config.template as string,
+        cliTemplate: false,
+        name: config.name as string
+    });
+    // Ensure there is an empty directory with the provided name
+    createEmptyDir(path.resolve(rootDir, fastConfig.componentPath, config.name as string));
     writeFiles(files);
     const fastAddComponent: FastAddComponent = getFastAddComponent(
         config.template as string
@@ -419,11 +413,13 @@ async function addFoundationComponent(
 ): Promise<void> {
     if (options.all) {
         suggestedTemplates.forEach(async (template: string) => {
-            await addFoundationComponent({
-                template,
-                name: template,
-            },
-                messages)
+            await addFoundationComponent(
+                {
+                    template,
+                    name: template,
+                },
+                messages
+            )
         });
     } else {
         const config = await addFoundationComponentPrompts(options, messages);
@@ -436,8 +432,17 @@ async function addFoundationComponent(
         }
 
         const fastConfig: FastConfig = await getFastConfig();
-        const files = await getTemplateFiles(fastConfig, config.template as string, true, config.name as string);
+        const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
+        const files = await getTemplateFiles({
+            rootDir,
+            fastConfig,
+            pathToTemplatePackage: config.template as string,
+            cliTemplate: true,
+            name: config.name as string
+        });
 
+        // Ensure there is an empty directory with the provided name
+        createEmptyDir(path.resolve(rootDir, fastConfig.componentPath, config.name as string));
         await writeFiles(files);
         const fastAddComponent: FastAddComponent = getFastAddComponent(
             path.resolve(
@@ -496,8 +501,12 @@ async function init(
     const initFile: FastInit = getFastInit(config.template);
     await installTemplate(config.template);
     createConfigFile(initFile.fastConfig);
-    const packageName: string = copyTemplateToProject(config.template, initFile.packageJson, path.resolve(__dirname));
-    await installDependencies();
+    const packageName: string = copyTemplateToProject({
+        pathToTemplatePackage: config.template,
+        packageJson: initFile.packageJson,
+        destDir: path.resolve(__dirname)
+    });
+    await installDependencies([]);
     await installPlaywrightBrowsers();
     await uninstallTemplate(packageName);
 }
@@ -614,3 +623,4 @@ program.command("add-foundation-component")
 program.parse(process.argv);
 
 export { ComponentTemplateConfig };
+export { htmlTemplate, mdTemplate, tsTemplate } from "./cli.template.js";

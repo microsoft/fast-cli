@@ -1,11 +1,10 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { css, ElementStyles } from "@microsoft/fast-element";
+export default tsTemplate`import { css, ElementStyles } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
 
 /**
- * ${config.className} styles
+ * ${c => c.className} styles
  * @public
  */
  export const styles: FoundationElementTemplate<ElementStyles> = (

@@ -12,6 +12,7 @@ import {
     packagesDir,
 } from "./test/helpers.js";
 import { availableTemplates } from "./components/options.js";
+import { requiredComponentTemplateFiles } from "./components/files.js";
 
 const uuid: string = "cli";
 const tempDir: string = getTempDir(uuid);
@@ -26,6 +27,13 @@ function setupBlankAsTemplate() {
 
     // Copy over the contents of the blank template
     fs.copySync(path.resolve(fastCliDir, "./dist/esm/components/blank"), tempComponentDir);
+    // Replace the tag template literal import
+    Object.keys(requiredComponentTemplateFiles).forEach((templateFileName) => {
+        const filePath = path.resolve(tempComponentDir, "template", templateFileName);
+        let fileContents = fs.readFileSync(filePath, { "encoding": "utf8" });
+        fs.writeFileSync(filePath, fileContents.replace("../../../cli.js", "@microsoft/fast-cli"));
+    });
+
     const packageJsonString = fs.readFileSync(
         path.resolve(tempComponentDir, "package.json"),
         { "encoding": "utf8" }
@@ -257,8 +265,7 @@ test.describe("CLI", () => {
             ).not.toThrow();
         });
     });
-    // Skip these tests while adaptive UI is sym-linked from a private package
-    test.describe.skip("add-foundation-component --all", () => {
+    test.describe("add-foundation-component --all", () => {
         test.beforeAll(() => {
             setup(tempDir, tempComponentDir, uuid);
             execSync(`cd ${tempDir} && npm run fast:init`);

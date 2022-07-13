@@ -1,4 +1,4 @@
-import type { StringModifierConfig } from "./cli.types";
+import type { StringModifierConfig, XOR } from "./cli.types";
 
 export interface FastConfig {
     componentPath: string;
@@ -116,4 +116,48 @@ export interface InitOptions {
      * Path to template
      */
     template: string;
+}
+
+export interface TemplateFileConfig {
+    /**
+     * The root directory of the project
+     */
+    rootDir: string;
+
+    /**
+     * The project config
+     */
+    fastConfig: FastConfig;
+
+    /**
+     * The user provided path to the template
+     */
+    pathToTemplatePackage: string;
+
+    /**
+     * Whether the template is a CLI provided named template
+     */
+    cliTemplate: boolean;
+
+    /**
+     * The name passed to the template files
+     */
+    name: string;
+}
+
+export interface CopyTemplateConfig {
+    /**
+     * The user provided path to the template
+     */
+    pathToTemplatePackage: string;
+
+    /**
+     * Contents of the package.json file
+     */
+    packageJson: XOR<PackageJsonInit, PackageJsonAddComponent>;
+
+    /**
+     * The template destination
+     */
+    destDir: string;
 }

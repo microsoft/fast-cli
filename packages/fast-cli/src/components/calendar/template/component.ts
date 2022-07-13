@@ -1,9 +1,8 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { Calendar as FoundationCalendar } from "@microsoft/fast-foundation";
+export default tsTemplate`import { Calendar as FoundationCalendar } from "@microsoft/fast-foundation";
 
 /**
  * A class derived from the Calendar foundation component
  */
-export class ${config.className} extends FoundationCalendar {};`
+export class ${c => c.className} extends FoundationCalendar {};`

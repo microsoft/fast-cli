@@ -1,19 +1,18 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string => `
-import Template from "./fixtures/base.html";
+export default tsTemplate`import Template from "./fixtures/base.html";
 import { DesignSystem } from "@microsoft/fast-foundation";
-import { ${config.definitionName} } from "./define.js";
+import { ${c => c.definitionName} } from "./define.js";
 
 DesignSystem.getOrCreate().withPrefix(
-    "${config.componentPrefix}"
+    "${c => c.componentPrefix}"
 ).register(
-    ${config.definitionName}()
+    ${c => c.definitionName}()
 );
 
 export default {
-    title: "${config.tagName}",
+    title: "${c => c.tagName}",
 };
 
-export const ${config.className}: () => "*.html" = () => Template;
+export const ${c => c.className}: () => "*.html" = () => Template;
 `;

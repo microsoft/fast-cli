@@ -1,8 +1,7 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { htmlTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`<style>
-    ${config.componentPrefix}-${config.tagName} {
+export default htmlTemplate`<style>
+    ${c => c.componentPrefix}-${c => c.tagName} {
         --badge-fill-primary: #d223cb;
         --badge-fill-secondary: #3278cd;
         --badge-fill-tertiary: #dfdfdf;
@@ -21,7 +20,7 @@ export default (config: ComponentTemplateConfig): string =>
         margin: 12px;
     }
 
-    .icon-${config.componentPrefix}-${config.tagName} {
+    .icon-${c => c.componentPrefix}-${c => c.tagName} {
         position: absolute;
         right: -6px;
         top: -6px;
@@ -32,79 +31,79 @@ export default (config: ComponentTemplateConfig): string =>
         display: inline-flex;
     }
 
-    .image-${config.componentPrefix}-${config.tagName} {
+    .image-${c => c.componentPrefix}-${c => c.tagName} {
         position: absolute;
         right: 6px;
         top: 6px;
     }
 </style>
-<h1>${config.className}</h1>
+<h1>${c => c.className}</h1>
 <h2>Default</h2>
-<${config.componentPrefix}-${config.tagName}>Accent</${config.componentPrefix}-${config.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName}>Accent</${c => c.componentPrefix}-${c => c.tagName}>
 <h2>Default with color map</h2>
-<${config.componentPrefix}-${config.tagName}
+<${c => c.componentPrefix}-${c => c.tagName}
     fill="primary"
     style="font-size: 10px; line-height: 16px;"
     color="foo"
     id="foo"
 >
     Badge
-</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} fill="secondary" color="foo" id="foo">
+</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} fill="secondary" color="foo" id="foo">
     Badge
-</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName}
+</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName}
     fill="tertiary"
     style="font-size: 14px; line-height: 20px;"
     color="bar"
     id="foo"
 >
     Badge
-</${config.componentPrefix}-${config.tagName}>
+</${c => c.componentPrefix}-${c => c.tagName}>
 <h2>Circular</h2>
-<${config.componentPrefix}-${config.tagName} fill="primary" color="foo" id="foo" circular="true">
+<${c => c.componentPrefix}-${c => c.tagName} fill="primary" color="foo" id="foo" circular="true">
     9
-</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} fill="secondary" color="foo" id="foo" circular="true">
+</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} fill="secondary" color="foo" id="foo" circular="true">
     99
-</${config.componentPrefix}-${config.tagName}>
-<${config.componentPrefix}-${config.tagName} fill="tertiary" color="bar" id="foo" circular="true">
+</${c => c.componentPrefix}-${c => c.tagName}>
+<${c => c.componentPrefix}-${c => c.tagName} fill="tertiary" color="bar" id="foo" circular="true">
     9999999
-</${config.componentPrefix}-${config.tagName}>
+</${c => c.componentPrefix}-${c => c.tagName}>
 <h2>Examples</h2>
 <div>
     <div class="image-container">
         <img src="https://via.placeholder.com/120x140/DFDFDF/171717" />
-        <${config.componentPrefix}-${config.tagName} class="image-${config.componentPrefix}-${config.tagName}" fill="foo" color="foo" id="foo">
+        <${c => c.componentPrefix}-${c => c.tagName} class="image-${c => c.componentPrefix}-${c => c.tagName}" fill="foo" color="foo" id="foo">
             Sale
-        </${config.componentPrefix}-${config.tagName}>
+        </${c => c.componentPrefix}-${c => c.tagName}>
     </div>
     <div class="image-container">
         <img src="https://via.placeholder.com/140x140/DFDFDF/171717" />
-        <${config.componentPrefix}-${config.tagName} class="image-${config.componentPrefix}-${config.tagName}" fill="secondary" color="foo" id="foo">
+        <${c => c.componentPrefix}-${c => c.tagName} class="image-${c => c.componentPrefix}-${c => c.tagName}" fill="secondary" color="foo" id="foo">
             App of the day
-        </${config.componentPrefix}-${config.tagName}>
+        </${c => c.componentPrefix}-${c => c.tagName}>
     </div>
 </div>
 <div>
     <div class="icon">
-        <${config.componentPrefix}-${config.tagName} class="icon-${config.componentPrefix}-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
+        <${c => c.componentPrefix}-${c => c.tagName} class="icon-${c => c.componentPrefix}-${c => c.tagName}" circular="true" fill="bar" color="foo" id="foo">
             3
-        </${config.componentPrefix}-${config.tagName}>
+        </${c => c.componentPrefix}-${c => c.tagName}>
     </div>
     <div class="icon">
-        <${config.componentPrefix}-${config.tagName} class="icon-${config.componentPrefix}-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
+        <${c => c.componentPrefix}-${c => c.tagName} class="icon-${c => c.componentPrefix}-${c => c.tagName}" circular="true" fill="bar" color="foo" id="foo">
             35000
-        </${config.componentPrefix}-${config.tagName}>
+        </${c => c.componentPrefix}-${c => c.tagName}>
     </div>
     <div class="icon">
-        <${config.componentPrefix}-${config.tagName} class="icon-${config.componentPrefix}-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
+        <${c => c.componentPrefix}-${c => c.tagName} class="icon-${c => c.componentPrefix}-${c => c.tagName}" circular="true" fill="bar" color="foo" id="foo">
             999
-        </${config.componentPrefix}-${config.tagName}>
+        </${c => c.componentPrefix}-${c => c.tagName}>
     </div>
     <div class="icon">
-        <${config.componentPrefix}-${config.tagName} class="icon-${config.componentPrefix}-${config.tagName}" circular="true" fill="bar" color="foo" id="foo">
+        <${c => c.componentPrefix}-${c => c.tagName} class="icon-${c => c.componentPrefix}-${c => c.tagName}" circular="true" fill="bar" color="foo" id="foo">
             15
-        </${config.componentPrefix}-${config.tagName}>
+        </${c => c.componentPrefix}-${c => c.tagName}>
     </div>
 </div>`;

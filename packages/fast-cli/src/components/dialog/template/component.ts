@@ -1,8 +1,7 @@
-import type { ComponentTemplateConfig } from "../../../utilities/template";
+import { tsTemplate } from "../../../cli.js";
 
-export default (config: ComponentTemplateConfig): string =>
-`import { Dialog as FoundationDialog } from "@microsoft/fast-foundation";
+export default tsTemplate`import { Dialog as FoundationDialog } from "@microsoft/fast-foundation";
 /**
  * A class derived from the Dialog foundation component
  */
-export class ${config.className} extends FoundationDialog {};` 
+export class ${c => c.className} extends FoundationDialog {};` 
