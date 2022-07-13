@@ -35,7 +35,7 @@ function getPackageScripts(tempComponentDir: string): any {
     }
 }
 
-export function setup(tempDir: string, tempComponentDir: string, uuid: string): void {
+export function setup(tempDir: string, tempComponentDir: string): void {
     fs.ensureDirSync(tempDir);
 
     // Create a temp project
@@ -52,13 +52,6 @@ export function setup(tempDir: string, tempComponentDir: string, uuid: string): 
 
     // Install the FAST CLI
     execSync(`cd ${tempDir} && npm install ${fastCliDir}`);
-}
-
-export function setupComponent(uuid: string, tempDir: string, tempComponentDir: string): void {
-    setup(tempDir, tempComponentDir, uuid);
-    execSync(`cd ${tempDir} && npm run fast:init`);
-    setup(tempDir, tempComponentDir, uuid);
-    execSync(`cd ${tempDir} && npm run fast:add-foundation-component:${uuid}`);
 }
 
 export function teardown(tempDir: string, tempComponentDir: string): void {

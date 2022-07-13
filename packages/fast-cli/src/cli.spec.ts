@@ -73,7 +73,7 @@ function configTests() {
 test.describe("CLI", () => {
     test.describe("init", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:init`);
         });
         test.afterAll(() => {
@@ -134,7 +134,7 @@ test.describe("CLI", () => {
     });
     test.describe("config", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:config`);
         });
         test.afterAll(() => {
@@ -144,7 +144,7 @@ test.describe("CLI", () => {
     });
     test.describe("config with defaults", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:config:default`);
         });
         test.afterAll(() => {
@@ -154,7 +154,7 @@ test.describe("CLI", () => {
     });
     test.describe("add-design-system", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
         });
         test.afterAll(() => {
             teardown(tempDir, tempComponentDir);
@@ -189,7 +189,7 @@ test.describe("CLI", () => {
     });
     test.describe("add-design-system with defaults", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
         });
         test.afterAll(() => {
             teardown(tempDir, tempComponentDir);
@@ -225,9 +225,9 @@ test.describe("CLI", () => {
     test.describe("add-component", () => {
         test.beforeAll(() => {
             setupBlankAsTemplate();
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:init`);
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:add-component:template`);
         });
         test.afterAll(() => {
@@ -267,9 +267,9 @@ test.describe("CLI", () => {
     });
     test.describe("add-foundation-component --all", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:init`);
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:add-foundation-component:all`);
         });
         test.afterAll(() => {
