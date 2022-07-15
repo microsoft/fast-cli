@@ -78,7 +78,7 @@ test.describe("CLI add-foundation-component", () => {
     });
 });
 
-test.describe("CLI add-foundation-component", () => {
+test.describe.skip("CLI add-foundation-component", () => {
     test.beforeAll(() => {
         initializeTestProject(tempDirComponentsAll, tempComponentDir);
         try {
