@@ -32,19 +32,19 @@ const components = fs.readdirSync(
 });
 
 function initializeTestProject(
-    tempDir: string,
-    tempComponentDir: string
+    dir: string,
+    componentDir: string
 ): void {
-    setup(tempDir, tempComponentDir);
-    execSync(`cd ${tempDir} && npm run fast:init && npm i --save-dev ${path.resolve(packagesDir, "fast-cli")}`);
+    setup(dir, componentDir);
+    execSync(`cd ${dir} && npm run fast:init && npm i --save-dev ${path.resolve(packagesDir, "fast-cli")}`);
 }
 
 function execComponentCommand(
-    tempDir: string,
+    dir: string,
     command: string,
 ) {
-    updatePackageJsonScripts(tempDir, tempComponentDir);
-    execSync(`cd ${tempDir} && ${command}`);
+    updatePackageJsonScripts(dir, tempComponentDir);
+    execSync(`cd ${dir} && ${command}`);
 }
 
 test.describe("CLI add-foundation-component", () => {
@@ -78,17 +78,13 @@ test.describe("CLI add-foundation-component", () => {
     });
 });
 
-test.describe.skip("CLI add-foundation-component", () => {
+test.describe.only("CLI add-foundation-component", () => {
     test.beforeAll(() => {
         initializeTestProject(tempDirComponentsAll, tempComponentDir);
-        try {
-            execComponentCommand(
-                tempDirComponentsAll,
-                "npm run fast:add-foundation-component:all"
-            );
-        } catch (e) {
-            console.warn(e);
-        }
+        execComponentCommand(
+            tempDirComponentsAll,
+            "npm run fast:add-foundation-component:all"
+        );
     });
     test.afterAll(() => {
         teardown(tempDirComponentsAll);

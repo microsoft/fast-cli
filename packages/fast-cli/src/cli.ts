@@ -3,7 +3,7 @@
 import path from "path";
 import * as commander from "commander";
 import spawn from "cross-spawn";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, CopyTemplateConfig, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, RequiredComponents, TemplateFileConfig } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, CopyTemplateConfig, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, TemplateFileConfig } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { WriteFileConfig } from "./cli.types.js";
@@ -79,8 +79,8 @@ function copyTemplateToProject(
 export const installDependencies = (
     listOfDependencies: Array<string>,
     modifier?: string
-): Promise<unknown> => {
-    return new Promise((resolve, reject) => {
+): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
         if (listOfDependencies.length === 0) {
             resolve(void 0);
         }
@@ -412,7 +412,7 @@ async function addFoundationComponent(
     messages: AddFoundationComponentOptionMessages,
 ): Promise<void> {
     if (options.all) {
-        suggestedTemplates.forEach(async (template: string) => {
+        for (const template of suggestedTemplates) {
             await addFoundationComponent(
                 {
                     template,
@@ -420,7 +420,7 @@ async function addFoundationComponent(
                 },
                 messages
             )
-        });
+        }
     } else {
         const config = await addFoundationComponentPrompts(options, messages);
 
@@ -454,16 +454,6 @@ async function addFoundationComponent(
             )
         );
 
-        if (Array.isArray(fastAddComponent.requiredComponents)) {
-            fastAddComponent.requiredComponents.forEach(async (requiredComponent: RequiredComponents) => {
-                await addFoundationComponent({
-                    ...options,
-                    name: stringModifier(config.name as string, requiredComponent.nameModifier),
-                    template: requiredComponent.template,
-                }, messages);
-            });
-        }
-
         await installEnumeratedDependencies(
             Object.entries(fastAddComponent?.packageJson?.dependencies || {}).map(([key, value]: [string, string]): string => {
                 return `${key}@${value}`;
@@ -472,6 +462,14 @@ async function addFoundationComponent(
                 return `${key}@${value}`;
             }),
         );
+
+        for (const requiredComponent of (fastAddComponent?.requiredComponents || [])) {
+            await addFoundationComponent({
+                ...options,
+                name: stringModifier(config.name as string, requiredComponent.nameModifier),
+                template: requiredComponent.template,
+            }, messages);
+        }
     }
 }
 
