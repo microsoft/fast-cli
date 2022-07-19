@@ -68,9 +68,7 @@ export const styles: FoundationElementTemplate<ElementStyles> = (
         .label {
             \${typeRampBase}
             color: \${neutralForegroundRest};
-            \${
-                /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ''
-            } padding-inline-start: calc(\${designUnit} * 2px + 2px);
+            padding-inline-start: calc(\${designUnit} * 2px + 2px);
             margin-inline-end: calc(\${designUnit} * 2px + 2px);
             cursor: pointer;
         }

@@ -10,8 +10,8 @@ import {
     neutralFillSecondaryRest,
     neutralForegroundRest,
     strokeWidth,
-    typeRampMinus1LineHeight,
     typeRampMinus1,
+    typeRampMinus1LineHeight,
 } from "@microsoft/adaptive-ui";
 
 /**
