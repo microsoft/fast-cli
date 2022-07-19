@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "remove change to cfp-template tsconfig",
-  "packageName": "@microsoft/cfp-template",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

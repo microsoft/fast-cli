@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Moved the async logic for future testing scenarios",
-  "packageName": "@microsoft/fast-cli",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
