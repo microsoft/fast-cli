@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Use tag template literals instead of returning a function",
-  "packageName": "@microsoft/fast-cli",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

@@ -1,0 +1,94 @@
+{
+  "name": "@microsoft/cfp-template",
+  "entries": [
+    {
+      "date": "Tue, 19 Jul 2022 19:05:33 GMT",
+      "tag": "@microsoft/cfp-template_v1.0.0-alpha.1",
+      "version": "1.0.0-alpha.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "d14f536cfee09a460ce1fceccb71bde76346f238",
+            "comment": "Added missing dependency on foundation"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "add0741cacf84e5c4ac883130de54d5ccad64724",
+            "comment": "Remove local version of adaptive-ui"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "17f21a07871f237c5d445ab562fb5837df088dab",
+            "comment": "Move playwright tests to the projects root"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "a021745d9d35a4086bc41c9cb8b8701aad38d1eb",
+            "comment": "update ts-loader"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "5db0395c9c31ccd919dc79be87f2727f288418f9",
+            "comment": "Attempt to address storybook issues, create storybook project build script"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "ec51d046986afacb30eb2bfeef4ac49831436bad",
+            "comment": "Added define as export, add design-system use of foundation"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "c46ddef09844beaef5c7d62d517573543aee1363",
+            "comment": "Updated the config/init files to the new fast.<command>.json naming convention"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "8648fd6a0b78a93694174344dc28a0d126143058",
+            "comment": "Updated CLI init command to be inline with spec"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "c3d0356e7f8b1aa3901e7ac3353721ebdafb05d0",
+            "comment": "remove change to cfp-template tsconfig"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "e873daacdfef756cc98f96b00a46c2100d199d17",
+            "comment": "Fix high severity package errors, update testing to use playwright"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "f82312328d00c63d39c5a665d2f4a83b47117b0e",
+            "comment": "Extension updates to fix type:module"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "9927144dff64f9dd542061510ddb6569e962cb83",
+            "comment": "Initial package creation"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "27e7f01f69b420ddf233ae780f2bd97eb18ec56d",
+            "comment": "Set the version to alpha for packages and set packages to version together"
+          }
+        ]
+      }
+    }
+  ]
+}

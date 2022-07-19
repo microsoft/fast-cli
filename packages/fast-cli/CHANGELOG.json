@@ -1,0 +1,310 @@
+{
+  "name": "@microsoft/fast-cli",
+  "entries": [
+    {
+      "date": "Tue, 19 Jul 2022 19:05:33 GMT",
+      "tag": "@microsoft/fast-cli_v1.0.0-alpha.1",
+      "version": "1.0.0-alpha.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "d14f536cfee09a460ce1fceccb71bde76346f238",
+            "comment": "Improve build times by constraining the temp build folder to only install once"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "20f1d51c8f62d12d684456eeea1e80706b657316",
+            "comment": "Fixed async issue when installing all components"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "0e16ef6377fabaa96c58d1538d3af1f7dc9cac65",
+            "comment": "Updated function arguments and add code comments"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "f874a1037f5898504acf33bf77ca663bae83a388",
+            "comment": "Use tag template literals instead of returning a function"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "38b9286263ee3be5bea4db1e0ae514ab1360b6db",
+            "comment": "Extract the package name utility"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "e8079cc2279f33e23bb535aa46fc3aedceb012e0",
+            "comment": "Moved the async logic for future testing scenarios"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "add0741cacf84e5c4ac883130de54d5ccad64724",
+            "comment": "Remove local version of adaptive-ui"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "e1b0342591384c4b28f986e8b979059bb84bc091",
+            "comment": "Moved the prefix argument to the config command"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "17f21a07871f237c5d445ab562fb5837df088dab",
+            "comment": "Move playwright tests to the projects root"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "883e17637443a682817b1ff079db9f4c8f7601e9",
+            "comment": "Added some missing class logic to components that have deviated from foundation"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "5db0395c9c31ccd919dc79be87f2727f288418f9",
+            "comment": "Attempt to address storybook issues, create storybook project build script"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "18bf84170f0daf31da465e92cc2d12d7443993ed",
+            "comment": "Added the text-field component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "21ae8e84f728f59aa8995956c395162957ae2a92",
+            "comment": "Added the switch foundation component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "a021745d9d35a4086bc41c9cb8b8701aad38d1eb",
+            "comment": "Added an option to add all foundation components"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "eb5133f91c5bfa71eeaaf7c1c57206562b4254ad",
+            "comment": "Added toolbar component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "274692cb04e0ee7d86d48823b6a635708c87f587",
+            "comment": "Added the text-area component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "c2f5dba85b10565931327fa97ff4f078941a5e60",
+            "comment": "Added accordion and accordion-item components"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "ec51d046986afacb30eb2bfeef4ac49831436bad",
+            "comment": "Added define as export, add design-system use of foundation"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "fb7a8166edb4a31bca92ba9f287e870d69c2f889",
+            "comment": "Added the calendar component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "6fc3603a42fa70e41e609fee855d08e9a6614ead",
+            "comment": "Added default logic"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "d7dc0e3a089ff5c3c213acc559b0a9a50b218089",
+            "comment": "Partially resolves an issue with duplicated dependencies"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "c9d680d1680a1bca5315db978412cc64f34b6859",
+            "comment": "Added the avatar component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "eda847c32c81d981593ead69ac6d768b6c59b066",
+            "comment": "Added the tooltip foundation component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "0bf49844bfa2830fb90f016c592e52d4c3888691",
+            "comment": "Added name checking to ensure name collisions do not happen"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "55431ec3931f58721c94ad45fa516f8f2229221a",
+            "comment": "Added the add-foundation-component command"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "72fedc583bbd375333585148fbb80e50624dc8ab",
+            "comment": "Added a blank component template"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "18657bff91f47694de151f4bb18fdd73723a7dd0",
+            "comment": "Add the checkbox component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "7821e47a4415401eaf6a9f5d8b328d71b88cdb7d",
+            "comment": "Added the search component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "01e3686d4b74237c6e275b6020bc60f7eeab8744",
+            "comment": "Updated the specification around adding foundation components"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "f74b399366560a7b7fa56c94b90ba0999c774d40",
+            "comment": "Added progress-ring component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "6d3446253cd3186e409d0a4ff70cb7f521f1b24d",
+            "comment": "Added the flipper component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "c1fff6b016a2d51d2b7970ba596ff0bd8401d7b5",
+            "comment": "Added the dialog component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "f96a1d2fa070334a37d42aafa25b3cdef719f5e2",
+            "comment": "Added the divider component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "c3d0356e7f8b1aa3901e7ac3353721ebdafb05d0",
+            "comment": "Added add-component command"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "0142cb508da4cfc0e2eaa26c25fffc3525aee606",
+            "comment": "Move the tests into individual files for parallelization"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "5473948f90e2fe78484bf7944e9445e9cc89f219",
+            "comment": "Refactored tests to use helper functions"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "c20b69fd1e68b03c4671d2477cc20b3df4e08249",
+            "comment": "Added the add-design-system command"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "8648fd6a0b78a93694174344dc28a0d126143058",
+            "comment": "Updated CLI init command to be inline with spec"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "986bcadaf6da08d6d6a3a9fa820a50aac10817e9",
+            "comment": "Added progress component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "c46ddef09844beaef5c7d62d517573543aee1363",
+            "comment": "Added badge foundation component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "90bea9ea7dd30d1038abeacc78b463db5312ddc7",
+            "comment": "Added the disclosure component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "f54ceb531ee44af22bcdcb90717eb7a82f39ab78",
+            "comment": "Added configuration command and cleaned up init"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "0535d5785c22987f99ba414ecc40a65275d366a4",
+            "comment": "Added the number-field component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "a6ff04f224bc494c219426a879dda7287657f135",
+            "comment": "Updated playwright to use a statically served version of storybook"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "2b0a0d6f8ed447244b3c2247c73b36810afcf012",
+            "comment": "Added the card component"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "f8e95ba73037ea51c0156ae696fdc04854a55602",
+            "comment": "Fixed the dialog component documentation link"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "e873daacdfef756cc98f96b00a46c2100d199d17",
+            "comment": "Fix high severity package errors, update testing to use playwright"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "f82312328d00c63d39c5a665d2f4a83b47117b0e",
+            "comment": "Added the CLI package"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "27e7f01f69b420ddf233ae780f2bd97eb18ec56d",
+            "comment": "Set the version to alpha for packages and set packages to version together"
+          }
+        ]
+      }
+    }
+  ]
+}
