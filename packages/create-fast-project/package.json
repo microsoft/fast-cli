@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/create-fast-project",
   "type": "module",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "A FAST project creation tool",
   "bin": "./dist/esm/create.js",
   "scripts": {
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/Microsoft/fast-cli#readme",
   "dependencies": {
-    "@microsoft/cfp-template": "^1.0.0-alpha.3",
-    "@microsoft/fast-cli": "^1.0.0-alpha.3",
+    "@microsoft/cfp-template": "^1.0.0-alpha.4",
+    "@microsoft/fast-cli": "^1.0.0-alpha.4",
     "cross-spawn": "^7.0.3"
   },
   "devDependencies": {
