@@ -6,7 +6,7 @@ Contributions are welcome! You can submit a pull request to fix a bug, implement
 
 ### Machine setup
 
-To work with the FAST CLI project [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js@^16.0.0, and npm@^7.0.0 setup on your machine.
+To work with the FAST CLI project [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js@^16.0.0, and npm@^8.0.0 setup on your machine.
 
 FAST CLI project uses Git as its source control system. If you haven't already installed it, you can download it [here](https://git-scm.com/downloads) or if you prefer a GUI-based approach, try [GitHub Desktop](https://desktop.github.com/).
 

@@ -1,0 +1,20 @@
+{
+  "name": "@microsoft/create-fast-project",
+  "entries": [
+    {
+      "date": "Wed, 20 Jul 2022 20:21:01 GMT",
+      "tag": "@microsoft/create-fast-project_v1.0.0-alpha.1",
+      "version": "1.0.0-alpha.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/create-fast-project",
+            "commit": "9c0a01d03e69c92ebc295a15e1db851e9839d08d",
+            "comment": "Added a new create FAST project package"
+          }
+        ]
+      }
+    }
+  ]
+}

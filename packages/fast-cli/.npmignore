@@ -1,0 +1,8 @@
+# Test files
+*.spec.*
+
+# Config files
+tsconfig.json
+
+# Folders
+src
