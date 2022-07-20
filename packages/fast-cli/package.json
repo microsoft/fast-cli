@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/Microsoft/fast-cli.git"
   },
   "author": {
     "name": "Microsoft",
@@ -22,9 +22,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Microsoft/fast/issues"
+    "url": "https://github.com/Microsoft/fast-cli/issues"
   },
-  "homepage": "https://github.com/Microsoft/fast#readme",
+  "homepage": "https://github.com/Microsoft/fast-cli#readme",
   "dependencies": {
     "commander": "^9.0.0",
     "cross-spawn": "^7.0.3",
