@@ -23,7 +23,7 @@
     },
     "homepage": "https://github.com/Microsoft/fast-cli#readme",
     "dependencies": {
-        "@microsoft/fast-cli": "^0.1.0",
+        "@microsoft/fast-cli": "^1.0.0-alpha.1",
         "cross-spawn": "^7.0.3"
     },
     "devDependencies": {
