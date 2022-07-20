@@ -8,8 +8,8 @@ This installation tool will allow you to create and configure your own [FAST](ht
 
 ### npx
 
-`npx create-fast-project`
+`npx @microsoft/create-fast-project`
 
 ### npm
 
-`npm init fast-project`
+`npm init @microsoft/fast-project`
