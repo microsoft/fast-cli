@@ -10,8 +10,9 @@ import {
     teardown,
     fastCliDir,
     packagesDir,
+    updatePackageJsonScripts,
+    installCli,
 } from "./test/helpers.js";
-import { availableTemplates } from "./components/options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 
 const uuid: string = "cli";
@@ -73,11 +74,11 @@ function configTests() {
 test.describe("CLI", () => {
     test.describe("init", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:init`);
         });
         test.afterAll(() => {
-            teardown(tempDir, tempComponentDir);
+            teardown(tempDir);
         });
         test("should create a package.json file with contents from the fast init", () => {
             const packageJsonFile = JSON.parse(
@@ -134,30 +135,30 @@ test.describe("CLI", () => {
     });
     test.describe("config", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:config`);
         });
         test.afterAll(() => {
-            teardown(tempDir, tempComponentDir);
+            teardown(tempDir);
         });
         configTests();
     });
     test.describe("config with defaults", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:config:default`);
         });
         test.afterAll(() => {
-            teardown(tempDir, tempComponentDir);
+            teardown(tempDir);
         });
         configTests();
     });
     test.describe("add-design-system", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
         });
         test.afterAll(() => {
-            teardown(tempDir, tempComponentDir);
+            teardown(tempDir);
         });
         test("should throw if there is no fast.config.json file", () => {
             expect(() => {
@@ -189,10 +190,10 @@ test.describe("CLI", () => {
     });
     test.describe("add-design-system with defaults", () => {
         test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
         });
         test.afterAll(() => {
-            teardown(tempDir, tempComponentDir);
+            teardown(tempDir);
         });
         test("should throw if there is no fast.config.json file", () => {
             expect(() => {
@@ -225,13 +226,15 @@ test.describe("CLI", () => {
     test.describe("add-component", () => {
         test.beforeAll(() => {
             setupBlankAsTemplate();
-            setup(tempDir, tempComponentDir, uuid);
+            setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:init`);
-            setup(tempDir, tempComponentDir, uuid);
+            installCli(tempDir);
+            updatePackageJsonScripts(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:add-component:template`);
         });
         test.afterAll(() => {
-            teardown(tempDir, tempComponentDir);
+            teardown(tempDir);
+            teardown(tempComponentDir);
         });
         test("should copy files from a provided template", () => {
             let files: Array<string> = [];
@@ -256,31 +259,6 @@ test.describe("CLI", () => {
             
             testGeneratedFiles("");
             expect(files.sort()).toEqual(getExpectedGeneratedComponentTemplateFiles("test-component").sort());
-        });
-        test("should be able to run the build", () => {
-            expect(
-                () => {
-                    execSync(`cd ${tempDir} && npm run build`);
-                }
-            ).not.toThrow();
-        });
-    });
-    test.describe("add-foundation-component --all", () => {
-        test.beforeAll(() => {
-            setup(tempDir, tempComponentDir, uuid);
-            execSync(`cd ${tempDir} && npm run fast:init`);
-            setup(tempDir, tempComponentDir, uuid);
-            execSync(`cd ${tempDir} && npm run fast:add-foundation-component:all`);
-        });
-        test.afterAll(() => {
-            teardown(tempDir, tempComponentDir);
-        });
-        test("should have copied all foundation components", () => {
-            const tempDirComponentContents = fs.readdirSync(path.resolve(tempDir, "./src/components"));
-
-            availableTemplates.forEach((template) => {
-                expect(tempDirComponentContents.includes(template)).toBeTruthy();
-            });
         });
         test("should be able to run the build", () => {
             expect(

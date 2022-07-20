@@ -1,10 +1,5 @@
 import { expect, test } from "@playwright/test";
-import fs from "fs-extra";
 import { getPackageName, stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
-import { getTempDir } from "./test/helpers.js";
-
-const uuid: string = "cli-utilities";
-const tempDir: string = getTempDir(uuid);
 
 test.describe("utilities", () => {
     test.describe("toPascalCase", () => {

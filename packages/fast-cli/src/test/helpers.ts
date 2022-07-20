@@ -35,12 +35,10 @@ function getPackageScripts(tempComponentDir: string): any {
     }
 }
 
-export function setup(tempDir: string, tempComponentDir: string, uuid: string): void {
-    fs.ensureDirSync(tempDir);
-
-    // Create a temp project
-    execSync(`cd ${tempDir} && npm init -y`);
-
+export function updatePackageJsonScripts(
+    tempDir: string,
+    tempComponentDir: string
+): void {
     // Update the scripts for testable CLI commands
     const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
     const packageJson = JSON.parse(packageJsonString);
@@ -49,21 +47,26 @@ export function setup(tempDir: string, tempComponentDir: string, uuid: string): 
         ...getPackageScripts(tempComponentDir)
     };
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
+}
 
+export function installCli(tempDir: string): void {
     // Install the FAST CLI
     execSync(`cd ${tempDir} && npm install ${fastCliDir}`);
 }
 
-export function setupComponent(uuid: string, tempDir: string, tempComponentDir: string): void {
-    setup(tempDir, tempComponentDir, uuid);
-    execSync(`cd ${tempDir} && npm run fast:init`);
-    setup(tempDir, tempComponentDir, uuid);
-    execSync(`cd ${tempDir} && npm run fast:add-foundation-component:${uuid}`);
+export function setup(tempDir: string, tempComponentDir: string): void {
+    fs.ensureDirSync(tempDir);
+
+    // Create a temp project
+    execSync(`cd ${tempDir} && npm init -y`);
+
+    updatePackageJsonScripts(tempDir, tempComponentDir);
+
+    installCli(tempDir);
 }
 
-export function teardown(tempDir: string, tempComponentDir: string): void {
+export function teardown(tempDir: string): void {
     fs.removeSync(tempDir);
-    fs.removeSync(tempComponentDir);
 }
 
 export function getGeneratedComponentFiles(tempDir: string, componentName: string): Array<string> {
