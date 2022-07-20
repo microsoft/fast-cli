@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-cli",
   "entries": [
     {
+      "date": "Wed, 20 Jul 2022 20:21:01 GMT",
+      "tag": "@microsoft/fast-cli_v1.0.0-alpha.1",
+      "version": "1.0.0-alpha.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "9c0a01d03e69c92ebc295a15e1db851e9839d08d",
+            "comment": "Corrected the package.json repository links"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "80c07688a5dd1caa0f6f1465c013facb356364d7",
+            "comment": "Added an .npmignore file"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 19 Jul 2022 19:05:33 GMT",
       "tag": "@microsoft/fast-cli_v1.0.0-alpha.1",
       "version": "1.0.0-alpha.1",
