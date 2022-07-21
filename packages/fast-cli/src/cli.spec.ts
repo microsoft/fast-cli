@@ -71,66 +71,86 @@ function configTests() {
     });
 }
 
-test.describe("CLI", () => {
-    test.describe("init", () => {
-        test.beforeAll(() => {
-            setup(tempDir, tempComponentDir);
-            execSync(`cd ${tempDir} && npm run fast:init`);
-        });
-        test.afterAll(() => {
-            teardown(tempDir);
-        });
-        test("should create a package.json file with contents from the fast init", () => {
-            const packageJsonFile = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "package.json"), {
-                    encoding: "utf8",
-                })
-            );
-            const configFilePackageJson = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fast.init.json"), {
-                    encoding: "utf8",
-                })
-            ).packageJson;
-    
-            for (const [key, value] of Object.entries(configFilePackageJson)) {
-                if (key !== "name") {
-                    expect(packageJsonFile[key].toString()).toEqual((value as any).toString());
-                }
+function initTests() {
+    test("should create a package.json file with contents from the fast init", () => {
+        const packageJsonFile = JSON.parse(
+            fs.readFileSync(path.resolve(tempDir, "package.json"), {
+                encoding: "utf8",
+            })
+        );
+        const configFilePackageJson = JSON.parse(
+            fs.readFileSync(path.resolve(tempDir, "fast.init.json"), {
+                encoding: "utf8",
+            })
+        ).packageJson;
+
+        for (const [key, value] of Object.entries(configFilePackageJson)) {
+            if (key !== "name") {
+                expect(packageJsonFile[key].toString()).toEqual((value as any).toString());
             }
-        });
-        test("should create a fast.config file with contents from the fast init", () => {
-            const fastConfigFile = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
-                    encoding: "utf8",
-                })
-            );
-            const configFilePackageJson = JSON.parse(
-                fs.readFileSync(path.resolve(tempDir, "fast.init.json"), {
-                    encoding: "utf8",
-                })
-            ).fastConfig;
-    
-            for (const [key, value] of Object.entries(configFilePackageJson)) {
-                expect(fastConfigFile[key].toString()).toEqual((value as any).toString());
-            }
-        });
-        test("should copy the template folder contents", () =>{
-            const templateDirContents = fs.readdirSync(templateDir);
-            const tempDirContents = fs.readdirSync(tempDir);
-    
-            for (const templateDirItem of templateDirContents) {
+        }
+    });
+    test("should create a fast.config file with contents from the fast init", () => {
+        const fastConfigFile = JSON.parse(
+            fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
+                encoding: "utf8",
+            })
+        );
+        const configFilePackageJson = JSON.parse(
+            fs.readFileSync(path.resolve(tempDir, "fast.init.json"), {
+                encoding: "utf8",
+            })
+        ).fastConfig;
+
+        for (const [key, value] of Object.entries(configFilePackageJson)) {
+            expect(fastConfigFile[key].toString()).toEqual((value as any).toString());
+        }
+    });
+    test("should copy the template folder contents", () =>{
+        const templateDirContents = fs.readdirSync(templateDir);
+        const tempDirContents = fs.readdirSync(tempDir);
+
+        for (const templateDirItem of templateDirContents) {
+            if (templateDirItem !== "dist" && templateDirItem !== "www") {
                 expect(
                     tempDirContents.includes(templateDirItem)
                 ).toEqual(true);
             }
+        }
+    });
+    test("should install the dependencies for the default template", async () => {
+        let hasNodeModules: boolean = false;
+        await fs.pathExists(path.resolve(tempDir, "node_modules")).then((exists) => {
+            hasNodeModules = exists;
         });
-        test("should install the dependencies for the default template", async () => {
-            let hasNodeModules: boolean = false;
-            await fs.pathExists(path.resolve(tempDir, "node_modules")).then((exists) => {
-                hasNodeModules = exists;
+
+        expect(hasNodeModules).toEqual(true);
+    });
+}
+
+test.describe("CLI", () => {
+    test.describe("init", () => {
+        test.describe("local template", () => {
+            test.beforeAll(() => {
+                setup(tempDir, tempComponentDir);
+                execSync(`cd ${tempDir} && npm run fast:init:local`);
             });
-    
-            expect(hasNodeModules).toEqual(true);
+            test.afterAll(() => {
+                teardown(tempDir);
+            });
+            initTests();
+        });
+        // These tests are skipped as npm installing a remote package is
+        // not allowed by the build server, unskip to run them locally.
+        test.describe.skip("remote template", () => {
+            test.beforeAll(() => {
+                setup(tempDir, tempComponentDir);
+                execSync(`cd ${tempDir} && npm run fast:init:remote`);
+            });
+            test.afterAll(() => {
+                teardown(tempDir);
+            });
+            initTests();
         });
     });
     test.describe("config", () => {
@@ -227,7 +247,7 @@ test.describe("CLI", () => {
         test.beforeAll(() => {
             setupBlankAsTemplate();
             setup(tempDir, tempComponentDir);
-            execSync(`cd ${tempDir} && npm run fast:init`);
+            execSync(`cd ${tempDir} && npm run fast:init:local`);
             installCli(tempDir);
             updatePackageJsonScripts(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:add-component:template`);
