@@ -2,6 +2,21 @@
   "name": "@microsoft/cfp-template",
   "entries": [
     {
+      "date": "Wed, 20 Jul 2022 20:21:01 GMT",
+      "tag": "@microsoft/cfp-template_v1.0.0-alpha.1",
+      "version": "1.0.0-alpha.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "9c0a01d03e69c92ebc295a15e1db851e9839d08d",
+            "comment": "Corrected the package.json repository links"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 19 Jul 2022 19:05:33 GMT",
       "tag": "@microsoft/cfp-template_v1.0.0-alpha.1",
       "version": "1.0.0-alpha.1",

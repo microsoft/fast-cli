@@ -1,16 +1,13 @@
 {
-  "name": "@microsoft/fast-cli",
+  "name": "@microsoft/create-fast-project",
   "type": "module",
   "version": "1.0.0-alpha.4",
-  "description": "A FAST command line interface for improving process when working with FAST projects",
-  "main": "./dist/esm/cli.js",
-  "bin": {
-    "fast": "./dist/esm/cli.js"
-  },
+  "description": "A FAST project creation tool",
+  "bin": "./dist/esm/create.js",
   "scripts": {
     "build": "npm run build:tsc",
     "build:tsc": "tsc -p ./tsconfig.json",
-    "dev": "tsc -p ./tsconfig.json -w"
+    "build:tsc:watch": "tsc -p ./tsconfig.json -w"
   },
   "repository": {
     "type": "git",
@@ -26,10 +23,12 @@
   },
   "homepage": "https://github.com/Microsoft/fast-cli#readme",
   "dependencies": {
-    "commander": "^9.0.0",
-    "cross-spawn": "^7.0.3",
-    "fs-extra": "^10.0.1",
-    "prompts": "^2.4.2",
-    "tslib": "^2.4.0"
+    "@microsoft/cfp-template": "^1.0.0-alpha.4",
+    "@microsoft/fast-cli": "^1.0.0-alpha.4",
+    "cross-spawn": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "typescript": "^4.6.3"
   }
 }
