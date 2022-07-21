@@ -1,33 +1,34 @@
 {
-    "name": "@microsoft/create-fast-project",
-    "type": "module",
-    "version": "1.0.0-alpha.1",
-    "description": "A FAST project creation tool",
-    "bin": "./dist/esm/create.js",
-    "scripts": {
-        "build": "npm run build:tsc",
-        "build:tsc": "tsc -p ./tsconfig.json",
-        "build:tsc:watch": "tsc -p ./tsconfig.json -w"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Microsoft/fast-cli.git"
-    },
-    "author": {
-        "name": "Microsoft",
-        "url": "https://discord.gg/FcSNfg4"
-    },
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/Microsoft/fast-cli/issues"
-    },
-    "homepage": "https://github.com/Microsoft/fast-cli#readme",
-    "dependencies": {
-        "@microsoft/fast-cli": "^1.0.0-alpha.1",
-        "cross-spawn": "^7.0.3"
-    },
-    "devDependencies": {
-        "@types/node": "^17.0.21",
-        "typescript": "^4.6.3"
-    }
+  "name": "@microsoft/create-fast-project",
+  "type": "module",
+  "version": "1.0.0-alpha.4",
+  "description": "A FAST project creation tool",
+  "bin": "./dist/esm/create.js",
+  "scripts": {
+    "build": "npm run build:tsc",
+    "build:tsc": "tsc -p ./tsconfig.json",
+    "build:tsc:watch": "tsc -p ./tsconfig.json -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-cli.git"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-cli/issues"
+  },
+  "homepage": "https://github.com/Microsoft/fast-cli#readme",
+  "dependencies": {
+    "@microsoft/cfp-template": "^1.0.0-alpha.4",
+    "@microsoft/fast-cli": "^1.0.0-alpha.4",
+    "cross-spawn": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "typescript": "^4.6.3"
+  }
 }
