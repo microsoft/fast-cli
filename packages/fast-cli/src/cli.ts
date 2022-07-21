@@ -25,12 +25,20 @@ program.name("fast").description(ascii);
 /**
  * Get the fast.init.json file
  */
-function getFastInit(
-    pathToTemplatePackage: string
-): FastInit {
+async function getFastInit(
+    pathToTemplatePackage: string,
+    isLocalFile: boolean,
+): Promise<FastInit> {
+    if (!isLocalFile) {
+        await installDependencies([pathToTemplatePackage]);
+    }
+
     const templateDir = path.resolve(
-        __dirname,
-        "node_modules",
+        ...(
+            !isLocalFile
+                ? [__dirname, "node_modules"]
+                : []
+        ),
         pathToTemplatePackage,
         templateFolderName
     );
@@ -225,10 +233,20 @@ async function getFastConfig(): Promise<FastConfig> {
 /**
  * Get the fast.add-component.json file
  */
-function getFastAddComponent(pathToTemplatePackage: string): FastAddComponent {
+async function getFastAddComponent(
+    pathToTemplatePackage: string,
+    isLocalFile: boolean,
+): Promise<FastAddComponent> {
+    if (!isLocalFile) {
+        await installDependencies([pathToTemplatePackage]);
+    }
+
     const templateDir = path.resolve(
-        __dirname,
-        "node_modules",
+        ...(
+            !isLocalFile
+                ? [__dirname, "node_modules"]
+                : []
+        ),
         pathToTemplatePackage,
         templateFolderName
     );
@@ -378,9 +396,18 @@ async function addComponent(
     // Ensure there is an empty directory with the provided name
     createEmptyDir(path.resolve(rootDir, fastConfig.componentPath, config.name as string));
     writeFiles(files);
-    const fastAddComponent: FastAddComponent = getFastAddComponent(
-        config.template as string
+    const isLocalTemplate = await localPathExists(path.resolve(__dirname, config.template as string));
+
+
+    if (isLocalTemplate) {
+        config.template = path.resolve(__dirname, config.template as string);
+    }
+
+    const fastAddComponent: FastAddComponent = await getFastAddComponent(
+        config.template as string,
+        isLocalTemplate
     );
+
     await installEnumeratedDependencies(
         Object.entries(fastAddComponent?.packageJson?.dependencies || {}).map(([key, value]: [string, string]): string => {
             return `${key}@${value}`;
@@ -444,14 +471,15 @@ async function addFoundationComponent(
         // Ensure there is an empty directory with the provided name
         createEmptyDir(path.resolve(rootDir, fastConfig.componentPath, config.name as string));
         await writeFiles(files);
-        const fastAddComponent: FastAddComponent = getFastAddComponent(
+        const fastAddComponent: FastAddComponent = await getFastAddComponent(
             path.resolve(
                 cliPath,
                 "dist",
                 "esm",
                 "components",
                 config.template as string
-            )
+            ),
+            true
         );
 
         await installEnumeratedDependencies(
@@ -491,12 +519,14 @@ async function init(
     defaults: Partial<InitOptions>
 ): Promise<void> {
     const config = await initPrompts(options, messages, defaults);
+    const isLocalTemplate = await localPathExists(path.resolve(__dirname, config.template));
 
-    if (!await localPathExists(path.resolve(__dirname, config.template))) {
+    if (isLocalTemplate) {
         config.template = path.resolve(__dirname, config.template);
     }
 
-    const initFile: FastInit = getFastInit(config.template);
+    const initFile: FastInit = await getFastInit(config.template, isLocalTemplate);
+
     await installTemplate(config.template);
     createConfigFile(initFile.fastConfig);
     const packageName: string = copyTemplateToProject({
