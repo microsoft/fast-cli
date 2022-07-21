@@ -2,6 +2,21 @@
   "name": "@microsoft/cfp-template",
   "entries": [
     {
+      "date": "Thu, 21 Jul 2022 18:34:30 GMT",
+      "tag": "@microsoft/cfp-template_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "a547e17bcc06fc2a576dc1d2883baf1a6c754f74",
+            "comment": "Remove the playwright browser install"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Jul 2022 20:21:01 GMT",
       "tag": "@microsoft/cfp-template_v1.0.0-alpha.1",
       "version": "1.0.0-alpha.1",

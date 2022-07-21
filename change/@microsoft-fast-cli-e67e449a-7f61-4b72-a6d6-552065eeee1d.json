@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Fixed local vs remote package resolving logic",
-  "packageName": "@microsoft/fast-cli",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}
