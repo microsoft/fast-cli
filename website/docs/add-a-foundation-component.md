@@ -1,4 +1,4 @@
-# Add a foundation comopnent
+# Add a foundation component
 
 Foundation components are similar to adding a component except they are based on the `@microsoft/fast-foundation` templates. These are bundled with flexible styles to provide an easy method for component creation and modification.
 
