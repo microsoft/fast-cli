@@ -4,6 +4,12 @@ Welcome to the default starter template provided by the [FAST CLI](https://micro
 
 This template can be used as a starting point for your project.
 
+## Setup
+
+### Testing
+
+Before tests can be run the playwright browsers will need to be installed, use `npx playwright install`.
+
 ## Available commands
 
 - **Start**: `npm start`
