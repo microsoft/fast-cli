@@ -122,27 +122,6 @@ async function installEnumeratedDependencies(
 }
 
 /**
- * Install playwright browsers
- */
-function installPlaywrightBrowsers(): Promise<unknown> {
-    return new Promise((resolve, reject) => {
-        const args = ["playwright", "install"];
-        const child = spawn("npx", args, { stdio: "inherit" });
-        child.on("close", code => {
-            if (code !== 0) {
-                reject({
-                    command: "npx playwright install",
-                });
-                return;
-            }
-            resolve(void 0);
-        });
-    }).catch((reason) => {
-        throw reason;
-    });
-}
-
-/**
  * Install a package holding a template from npm
  */
 function installTemplate(pathToTemplate: string): Promise<unknown> {
@@ -505,7 +484,6 @@ async function init(
         destDir: path.resolve(__dirname)
     });
     await installDependencies([]);
-    await installPlaywrightBrowsers();
     await uninstallTemplate(packageName);
 }
 
