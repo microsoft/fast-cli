@@ -2,6 +2,27 @@
   "name": "@microsoft/create-fast-project",
   "entries": [
     {
+      "date": "Thu, 21 Jul 2022 18:34:30 GMT",
+      "tag": "@microsoft/create-fast-project_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/create-fast-project",
+            "comment": "Bump @microsoft/cfp-template to v1.0.0-alpha.5",
+            "commit": "a547e17bcc06fc2a576dc1d2883baf1a6c754f74"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/create-fast-project",
+            "comment": "Bump @microsoft/fast-cli to v1.0.0-alpha.5",
+            "commit": "a547e17bcc06fc2a576dc1d2883baf1a6c754f74"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Jul 2022 22:26:12 GMT",
       "tag": "@microsoft/create-fast-project_v1.0.0-alpha.3",
       "version": "1.0.0-alpha.3",
