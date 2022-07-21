@@ -36,7 +36,7 @@ function initializeTestProject(
     componentDir: string
 ): void {
     setup(dir, componentDir);
-    execSync(`cd ${dir} && npm run fast:init && npm i --save-dev ${path.resolve(packagesDir, "fast-cli")}`);
+    execSync(`cd ${dir} && npm run fast:init:local && npm i --save-dev ${path.resolve(packagesDir, "fast-cli")}`);
 }
 
 function execComponentCommand(

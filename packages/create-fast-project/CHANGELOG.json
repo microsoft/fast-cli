@@ -2,6 +2,69 @@
   "name": "@microsoft/create-fast-project",
   "entries": [
     {
+      "date": "Thu, 21 Jul 2022 18:34:30 GMT",
+      "tag": "@microsoft/create-fast-project_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/create-fast-project",
+            "comment": "Bump @microsoft/cfp-template to v1.0.0-alpha.5",
+            "commit": "a547e17bcc06fc2a576dc1d2883baf1a6c754f74"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/create-fast-project",
+            "comment": "Bump @microsoft/fast-cli to v1.0.0-alpha.5",
+            "commit": "a547e17bcc06fc2a576dc1d2883baf1a6c754f74"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Jul 2022 22:26:12 GMT",
+      "tag": "@microsoft/create-fast-project_v1.0.0-alpha.3",
+      "version": "1.0.0-alpha.3",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/create-fast-project",
+            "commit": "9d249c621e0a1b817484e6c2fd175517dcd32cad",
+            "comment": "Added the default template as a dependency"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/create-fast-project",
+            "comment": "Bump @microsoft/cfp-template to v1.0.0-alpha.3",
+            "commit": "9d249c621e0a1b817484e6c2fd175517dcd32cad"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/create-fast-project",
+            "comment": "Bump @microsoft/fast-cli to v1.0.0-alpha.3",
+            "commit": "9d249c621e0a1b817484e6c2fd175517dcd32cad"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Jul 2022 22:02:18 GMT",
+      "tag": "@microsoft/create-fast-project_v1.0.0-alpha.2",
+      "version": "1.0.0-alpha.2",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/create-fast-project",
+            "comment": "Bump @microsoft/fast-cli to v1.0.0-alpha.2",
+            "commit": "8986f2a78f040dcc49b8db203008bed8a91f9f93"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Jul 2022 20:21:01 GMT",
       "tag": "@microsoft/create-fast-project_v1.0.0-alpha.1",
       "version": "1.0.0-alpha.1",

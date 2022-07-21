@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-cli",
   "type": "module",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.5",
   "description": "A FAST command line interface for improving process when working with FAST projects",
   "main": "./dist/esm/cli.js",
   "bin": {
@@ -29,6 +29,7 @@
     "commander": "^9.0.0",
     "cross-spawn": "^7.0.3",
     "fs-extra": "^10.0.1",
-    "prompts": "^2.4.2"
+    "prompts": "^2.4.2",
+    "tslib": "^2.4.0"
   }
 }

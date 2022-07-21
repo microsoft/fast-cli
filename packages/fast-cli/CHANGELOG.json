@@ -2,6 +2,42 @@
   "name": "@microsoft/fast-cli",
   "entries": [
     {
+      "date": "Thu, 21 Jul 2022 18:34:29 GMT",
+      "tag": "@microsoft/fast-cli_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "85033a3a0bc650281d994749fd6fa0ad04c71fd5",
+            "comment": "Fixed local vs remote package resolving logic"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "a547e17bcc06fc2a576dc1d2883baf1a6c754f74",
+            "comment": "Added guidance for testing"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Jul 2022 22:02:17 GMT",
+      "tag": "@microsoft/fast-cli_v1.0.0-alpha.2",
+      "version": "1.0.0-alpha.2",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "8986f2a78f040dcc49b8db203008bed8a91f9f93",
+            "comment": "Added missing tslib dependency to fast-cli package"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Jul 2022 20:21:01 GMT",
       "tag": "@microsoft/fast-cli_v1.0.0-alpha.1",
       "version": "1.0.0-alpha.1",
