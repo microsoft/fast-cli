@@ -515,6 +515,10 @@ async function init(
     });
     await installDependencies([]);
     await uninstallTemplate(packageName);
+
+    if (typeof initFile.template?.afterInstallMessage === "string") {
+        console.log(initFile.template.afterInstallMessage);
+    }
 }
 
 const yesToAllDefaultsMessage: string = "Use all defaults";

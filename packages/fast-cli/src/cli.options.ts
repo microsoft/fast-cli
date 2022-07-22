@@ -1,5 +1,9 @@
 import type { StringModifierConfig, XOR } from "./cli.types";
 
+export interface Template {
+    afterInstallMessage: string;
+}
+
 export interface FastConfig {
     componentPath: string;
     rootDir: string;
@@ -23,8 +27,12 @@ export interface PackageJsonInit {
 }
 
 export interface FastInit {
-    fastConfig: FastConfig,
-    packageJson: PackageJsonInit
+    fastConfig: FastConfig;
+    /**
+     * Additional information provided by the template
+     */
+    template?: Template;
+    packageJson: PackageJsonInit;
 }
 
 export interface PackageJsonAddComponent {
