@@ -4,6 +4,9 @@
         "componentPath": "./components",
         "componentPrefix": "fast"
     },
+    "template": {
+        "afterInstallMessage": "==========================================\n\n Your project has been initialized!\n You have access to the following commands:\n\n Start: npm start\n Test: npm run test\n Build: npm run build\n\n=========================================="
+    },
     "packageJson": {
         "name": "fast-project",
         "description": "A FAST project",

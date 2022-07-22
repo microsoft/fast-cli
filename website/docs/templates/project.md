@@ -11,9 +11,11 @@ template/
 
 ## `fast.init.json`
 
-The contents of the file should contain
+The contents of the file should contain the following properties:
 
 ### `fastConfig`
+
+**required**
 
 The `fastConfig` property should be a subset of the [FAST configuration](https://microsoft.github.io/fast-cli/docs/configure/).
 
@@ -30,4 +32,21 @@ Example:
 
 ### `packageJson`
 
+**required**
+
 The `packageJson` property should contain all of the package information for the initialized property. Refer to [npm documentation](https://docs.npmjs.com/cli/v8/configuring-npm/package-json) for details.
+
+### `template`
+
+**optional**
+
+These are additional hooks the CLI may use in relation to the template.
+
+Example:
+```json
+{
+    "template": {
+        "afterInstallMessage": "Your project has successfully been installed!"
+    }
+}
+```
