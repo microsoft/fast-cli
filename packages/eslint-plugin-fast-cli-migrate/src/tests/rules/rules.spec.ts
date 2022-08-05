@@ -45,6 +45,11 @@ const testItems = [
         errorNumber: 3,
         filePath: "foo.styles.ts",
     },
+    {
+        rule: "1.0.0-alpha.1--template",
+        errorNumber: 4,
+        filePath: "foo.template.ts",
+    }
 ];
 
 function getFixedCode(invalidCode: string, fix) {
