@@ -1,0 +1,23 @@
+{
+  "name": "@microsoft/eslint-plugin-fast-cli-migrate",
+  "version": "1.0.0-alpha.5",
+  "description": "An ESLint plugin with migration rules for FAST CLI",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run build:cjs",
+    "build:cjs": "tsc -p ./tsconfig.cjs.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast-cli.git"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast-cli/issues"
+  },
+  "homepage": "https://github.com/Microsoft/fast-cli#readme"
+}
