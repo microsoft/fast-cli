@@ -15,6 +15,11 @@ const testItems = [
         errorNumber: 2,
         filePath: path.resolve(__dirname, "./src/components/index.ts"),
     },
+    {
+        rule: "1.0.0-alpha.1--define",
+        errorNumber: 1,
+        filePath: "foo",
+    },
 ];
 
 function getFixedCode(invalidCode: string, fix) {
