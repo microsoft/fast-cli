@@ -2,9 +2,9 @@ import { Rule } from "eslint";
 import type {
     Identifier,
     ImportDeclaration,
-    ImportSpecifier,
     ImportDefaultSpecifier,
-    ImportNamespaceSpecifier
+    ImportNamespaceSpecifier,
+    ImportSpecifier
 } from "estree";
 
 export const meta = {
@@ -41,7 +41,7 @@ function importsFoundationElement(node: ImportDeclaration & Rule.Node) {
     return false;
 }
 
-function getFoundationElementImport(node) {
+function getFoundationElementImport(node: ImportDeclaration & Rule.Node) {
     return importsFoundationElement(node);
 }
 
@@ -58,7 +58,7 @@ export function create(context: Rule.RuleContext) {
                 context.report({
                     node,
                     message: "FoundationElement has been removed, import FASTElement instead",
-                    *fix(fixer) {
+                    *fix(fixer: Rule.RuleFixer) {
                         yield fixer.removeRange([
                             foundationElementImport[0].range[0],
                             rangeEnd
