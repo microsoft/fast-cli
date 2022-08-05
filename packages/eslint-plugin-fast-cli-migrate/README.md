@@ -33,6 +33,7 @@ To add this package as a dependency with NPM, run `npm install @microsoft/eslint
 `1.0.0-alpha.1` | <ul><li>`@microsoft/adaptive-ui@1.0.0-alpha.4`</li><li>`@microsoft/fast-foundation@3.0.0-alpha.4`</li> | 
 <ul>
 <li>[class](https://github.com/microsoft/fast-cli/tree/main/packages/eslint-plugin-fast-cli-migrate/src/rules/1.0.0-alpha.1--class.ts)</li>
+<li>[components-index](https://github.com/microsoft/fast-cli/tree/main/packages/eslint-plugin-fast-cli-migrate/src/rules/1.0.0-alpha.1--components-index.ts)</li>
 </ul> |
 
 ## Contributing

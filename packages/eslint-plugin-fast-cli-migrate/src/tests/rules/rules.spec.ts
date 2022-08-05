@@ -10,6 +10,11 @@ const testItems = [
         errorNumber: 2,
         filePath: "foo",
     },
+    {
+        rule: "1.0.0-alpha.1--components-index",
+        errorNumber: 2,
+        filePath: path.resolve(__dirname, "./src/components/index.ts"),
+    },
 ];
 
 function getFixedCode(invalidCode: string, fix) {
