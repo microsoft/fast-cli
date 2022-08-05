@@ -35,6 +35,11 @@ const testItems = [
         errorNumber: 1,
         filePath: "./src/index.ts",
     },
+    {
+        rule: "1.0.0-alpha.1--stories",
+        errorNumber: 4,
+        filePath: "foo.stories.ts"
+    },
 ];
 
 function getFixedCode(invalidCode: string, fix) {
