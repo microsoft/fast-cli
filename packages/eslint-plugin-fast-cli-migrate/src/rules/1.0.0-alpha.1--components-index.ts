@@ -1,8 +1,8 @@
+import path from "path";
 import { Rule } from "eslint";
 import type {
     ImportDeclaration,
 } from "estree";
-import path from "path";
 
 export const meta = {
     type: "problem",
