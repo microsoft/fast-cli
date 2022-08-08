@@ -5,6 +5,7 @@ import type {
     Property,
     SpreadElement
 } from "estree";
+import { spinalCase } from "./utilities/string";
 
 export const meta = {
     type: "problem",
@@ -55,21 +56,23 @@ export function create(context: Rule.RuleContext) {
                     typeof baseName.value.value === "string"
                 ) {
                     const baseClassName = baseName.value.value.charAt(0).toUpperCase() + baseName.value.value.slice(1);
+                    const baseSpinalCaseName = spinalCase(baseName.value.value);
 
                     context.report({
                         node,
                         message: "Update definition export to use FASTElementDefinition and remove deprecated baseName property.",
-                        *fix(fixer) {
+                        *fix(fixer: Rule.RuleFixer) {
                             yield fixer.insertTextBefore(
                                 body,
-                                `import { FASTElementDefinition } from "@microsoft/fast-element";\n` +
+                                `import { template } from "./${baseSpinalCaseName}.template.js";\n` +
+                                `import { styles } from "./${baseSpinalCaseName}.styles.js";\n` +
                                 `import { designSystem } from "../../design-system.js";\n` +
                                 `import { ${baseClassName} } from "./${(baseName.value as Literal).value}.js";\n\n`
                             );
                             yield fixer.replaceText(
                                 objectNode,
-                                `new FASTElementDefinition(${baseClassName}, {\n` +
-                                `    name: \`\${designSystem.prefix}-${(baseName.value as Literal).value}\`,\n` +
+                                `${baseClassName}.compose({\n` +
+                                `    name: \`\${designSystem.prefix}-${baseSpinalCaseName}\`,\n` +
                                 `    template,\n` +
                                 `    styles,\n` +
                                 `    shadowOptions: {\n` +

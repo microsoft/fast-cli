@@ -1,13 +1,10 @@
-import { FASTElementDefinition } from "@microsoft/fast-element";
+import { template } from "./foo.template.js";
+import { styles } from "./foo.styles.js";
 import { designSystem } from "../../design-system.js";
 import { Foo } from "./foo.js";
 
-export const definition = new FASTElementDefinition(Foo, {
+export const definition = Foo.compose({
     name: `${designSystem.prefix}-foo`,
     template,
-    styles,
-    shadowOptions: {
-        mode: designSystem.shadowRootMode,
-        delegatesFocus: true 
-    }
+    styles
 });
