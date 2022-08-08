@@ -64,9 +64,9 @@ export function create(context: Rule.RuleContext) {
                         *fix(fixer: Rule.RuleFixer) {
                             yield fixer.insertTextBefore(
                                 body,
+                                `import { designSystem } from "../../design-system.js";\n` +
                                 `import { template } from "./${baseSpinalCaseName}.template.js";\n` +
                                 `import { styles } from "./${baseSpinalCaseName}.styles.js";\n` +
-                                `import { designSystem } from "../../design-system.js";\n` +
                                 `import { ${baseClassName} } from "./${(baseName.value as Literal).value}.js";\n\n`
                             );
                             yield fixer.replaceText(
