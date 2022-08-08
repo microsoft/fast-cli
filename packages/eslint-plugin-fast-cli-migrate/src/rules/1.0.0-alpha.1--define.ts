@@ -1,7 +1,6 @@
 import { Rule } from "eslint";
 import type {
     ExportNamedDeclaration,
-    Identifier,
     ImportDeclaration,
     MemberExpression,
     Program
@@ -88,7 +87,6 @@ function getFixes(
 
     return fixes;
 }
-
 
 export function create(context: Rule.RuleContext) {
     return {
