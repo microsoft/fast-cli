@@ -1,7 +1,6 @@
 import { Rule } from "eslint";
 import type {
     ExportNamedDeclaration,
-    Literal,
     Property,
     SpreadElement
 } from "estree";
@@ -36,6 +35,13 @@ function isDefinitionFile(context: Rule.RuleContext) {
     return fileLocation.slice(-(fileExtension.length)) === fileExtension;
 }
 
+function getObjectPropertiesAsString(text, baseSpinalCaseName) {
+    return text.replace(
+      /baseName: .+?(?=(\,|\n))/,
+      `name: \`\${designSystem.prefix}-${baseSpinalCaseName}\``
+    );
+}
+
 export function create(context: Rule.RuleContext) {
     return {
         ExportNamedDeclaration(node: ExportNamedDeclaration & Rule.Node) {
@@ -55,6 +61,7 @@ export function create(context: Rule.RuleContext) {
                     baseName.value.type === "Literal" &&
                     typeof baseName.value.value === "string"
                 ) {
+                    const objectAsText = context.getSourceCode().getText(objectNode);
                     const baseClassName = baseName.value.value.charAt(0).toUpperCase() + baseName.value.value.slice(1);
                     const baseSpinalCaseName = spinalCase(baseName.value.value);
 
@@ -64,22 +71,11 @@ export function create(context: Rule.RuleContext) {
                         *fix(fixer: Rule.RuleFixer) {
                             yield fixer.insertTextBefore(
                                 body,
-                                `import { designSystem } from "../../design-system.js";\n` +
-                                `import { template } from "./${baseSpinalCaseName}.template.js";\n` +
-                                `import { styles } from "./${baseSpinalCaseName}.styles.js";\n` +
-                                `import { ${baseClassName} } from "./${(baseName.value as Literal).value}.js";\n\n`
+                                `import { designSystem } from "../../design-system.js";\n`
                             );
                             yield fixer.replaceText(
                                 objectNode,
-                                `${baseClassName}.compose({\n` +
-                                `    name: \`\${designSystem.prefix}-${baseSpinalCaseName}\`,\n` +
-                                `    template,\n` +
-                                `    styles,\n` +
-                                `    shadowOptions: {\n` +
-                                `        mode: designSystem.shadowRootMode,\n` +
-                                `        delegatesFocus: true\n` +
-                                `    }\n` +
-                                `});`
+                                `${baseClassName}.compose(${getObjectPropertiesAsString(objectAsText, baseSpinalCaseName)});`
                             );
                         }
                     });
