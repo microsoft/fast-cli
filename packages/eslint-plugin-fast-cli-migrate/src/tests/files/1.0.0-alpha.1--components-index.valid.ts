@@ -1,0 +1,1 @@
+import "./foo/define.js";
