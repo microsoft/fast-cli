@@ -4,6 +4,7 @@ module.exports = {
         {
             name: "cli",
             include: ["packages/*"],
+            exclude: ["packages/**/*.md", "packages/**/*.spec.ts", "packages/**/README.ts"],
         }
     ]
 };
