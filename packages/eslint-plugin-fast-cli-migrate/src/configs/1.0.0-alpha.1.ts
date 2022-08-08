@@ -3,5 +3,6 @@ export const v100alpha1 = {
         "1.0.0-alpha.1--class": "warn",
         "1.0.0-alpha.1--components-index": "warn",
         "1.0.0-alpha.1--define": "warn",
+        "1.0.0-alpha.1--definition": "warn",
     }
 }

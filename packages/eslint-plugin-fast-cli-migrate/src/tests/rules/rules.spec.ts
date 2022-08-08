@@ -20,6 +20,11 @@ const testItems = [
         errorNumber: 1,
         filePath: "foo",
     },
+    {
+        rule: "1.0.0-alpha.1--definition",
+        errorNumber: 1,
+        filePath: "foo.definition.ts"
+    },
 ];
 
 function getFixedCode(invalidCode: string, fix) {
