@@ -1,6 +1,9 @@
 import { Rule } from "eslint";
 import type {
-    ExportNamedDeclaration
+    ExportNamedDeclaration,
+    Literal,
+    Property,
+    SpreadElement
 } from "estree";
 
 export const meta = {
@@ -15,10 +18,15 @@ export const meta = {
     schema: [],
 };
 
-function getBaseName(properties) {
+function getBaseName(properties: (Property | SpreadElement)[]): Property | void {
     return properties.find((property) => {
-        return property.key.name === "baseName";
-    });
+        if (
+            property.type === "Property" &&
+            property.key.type === "Identifier"
+        ) {
+            return property.key.name === "baseName";
+        }
+    }) as Property;
 }
 
 function isDefinitionFile(context: Rule.RuleContext) {
@@ -40,32 +48,39 @@ export function create(context: Rule.RuleContext) {
                 const objectNode = node.declaration.declarations[0].init;
                 const body = node.parent;
                 const baseName = getBaseName(objectNode.properties);
-                const baseClassName = baseName.value.value.charAt(0).toUpperCase() + baseName.value.value.slice(1);
 
-                context.report({
-                    node,
-                    message: "Update definition export to use FASTElementDefinition and remove deprecated baseName property.",
-                    *fix(fixer) {
-                        yield fixer.insertTextBefore(
-                            body,
-                            `import { FASTElementDefinition } from "@microsoft/fast-element";\n` +
-                            `import { designSystem } from "../../design-system.js";\n` +
-                            `import { ${baseClassName} } from "./${baseName.value.value}.js";\n\n`
-                        );
-                        yield fixer.replaceText(
-                            objectNode,
-                            `new FASTElementDefinition(${baseClassName}, {\n` +
-                            `    name: \`\${designSystem.prefix}-${baseName.value.value}\`,\n` +
-                            `    template,\n` +
-                            `    styles,\n` +
-                            `    shadowOptions: {\n` +
-                            `        mode: designSystem.shadowRootMode,\n` +
-                            `        delegatesFocus: true\n` +
-                            `    }\n` +
-                            `});`
-                        );
-                    }
-                });
+                if (
+                    baseName &&
+                    baseName.value.type === "Literal" &&
+                    typeof baseName.value.value === "string"
+                ) {
+                    const baseClassName = baseName.value.value.charAt(0).toUpperCase() + baseName.value.value.slice(1);
+
+                    context.report({
+                        node,
+                        message: "Update definition export to use FASTElementDefinition and remove deprecated baseName property.",
+                        *fix(fixer) {
+                            yield fixer.insertTextBefore(
+                                body,
+                                `import { FASTElementDefinition } from "@microsoft/fast-element";\n` +
+                                `import { designSystem } from "../../design-system.js";\n` +
+                                `import { ${baseClassName} } from "./${(baseName.value as Literal).value}.js";\n\n`
+                            );
+                            yield fixer.replaceText(
+                                objectNode,
+                                `new FASTElementDefinition(${baseClassName}, {\n` +
+                                `    name: \`\${designSystem.prefix}-${(baseName.value as Literal).value}\`,\n` +
+                                `    template,\n` +
+                                `    styles,\n` +
+                                `    shadowOptions: {\n` +
+                                `        mode: designSystem.shadowRootMode,\n` +
+                                `        delegatesFocus: true\n` +
+                                `    }\n` +
+                                `});`
+                            );
+                        }
+                    });
+                }
             }
         },
     }
