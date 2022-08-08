@@ -35,10 +35,11 @@ function isDefinitionFile(context: Rule.RuleContext) {
     return fileLocation.slice(-(fileExtension.length)) === fileExtension;
 }
 
-function getObjectPropertiesAsString(text, baseSpinalCaseName) {
+function getObjectPropertiesAsString(text: string, baseSpinalCaseName: string): string {
     return text.replace(
-      /baseName: .+?(?=(\,|\n))/,
-      `name: \`\${designSystem.prefix}-${baseSpinalCaseName}\``
+        // eslint-disable-next-line no-useless-escape
+        /baseName: .+?(?=(\,|\n))/,
+        `name: \`\${designSystem.prefix}-${baseSpinalCaseName}\``
     );
 }
 
