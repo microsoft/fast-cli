@@ -1,5 +1,6 @@
 # Test files
 *.spec.*
+!template/*.spec.*
 
 # Config files
 tsconfig.json
