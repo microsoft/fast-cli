@@ -35,7 +35,7 @@ export function create(context: Rule.RuleContext) {
             ) {
                 context.report({
                     node,
-                    message: "foo",
+                    message: "The definitions are now exported from the component index file.",
                     fix: (fixer) => {
                         return fixer.replaceText(
                             node,
