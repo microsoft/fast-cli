@@ -27,6 +27,7 @@ function getPackageScripts(tempComponentDir: string): any {
         "fast:add-design-system:default": `fast add-design-system -y`,
         "fast:add-component:template": `fast add-component -n test-component -t ${tempComponentDir}`,
         "fast:add-foundation-component:all": `fast add-foundation-component -a`,
+        "fast:add-foundation-component:list": "fast add-foundation-component -l",
         ...availableTemplates.reduce((prevValue, currValue: string) => {
             return {
                 ...prevValue,

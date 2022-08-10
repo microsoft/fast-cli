@@ -15,3 +15,9 @@ Argument | Shorthand | Description | Required | Default
 `--template <template>` | `-t <template>` | The name of the foundation element | Yes | "accordion", "anchor", "anchored-region", "avatar", "badge", "blank", "breadcrumb", "button", "calendar", "card", "checkbox", "combobox", "data-grid", "dialog", "disclosure", "divider", "flipper", "horizontal-scroll", "listbox", "menu", "number-field", "picker", "progress", "progress-ring", "radio-group", "search", "select", "skeleton", "slider", "switch", "tabs", "text-area", "text-field", "toolbar", "tooltip", "tree-view" |
 `--name <name>` | `-n <name>` | The name of the component to be added | Yes | The name of the foundation template |
 `--all` | `-a` | Add all available components | No | 
+
+### Listing all components
+
+| Argument | Shorthand | Description | Required |
+|-|-|-|-|
+`--list` | `-l` | List all available components | No | 
