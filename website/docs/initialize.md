@@ -6,11 +6,11 @@ Creating a new FAST project can be done easily, either using the `@microsoft/fas
 
 ### npx
 
-`npx create-fast-project`
+`npx @microsoft/create-fast-project`
 
 ### npm
 
-`npm init fast-project`
+`npm init @microsoft/fast-project`
 
 ## Creating a project using the CLI
 
