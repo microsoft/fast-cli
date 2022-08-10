@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Ensure template spec files are not ignored",
+  "packageName": "@microsoft/fast-cli",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
