@@ -105,10 +105,6 @@ test.describe("CLI add-foundation-component", () => {
             ).not.toThrow();
         });
     });
-});
-
-
-test.describe("CLI add-foundation-component", () => {
     test.describe("--list", () => {
         test("should not throw", () => {
             expect(
