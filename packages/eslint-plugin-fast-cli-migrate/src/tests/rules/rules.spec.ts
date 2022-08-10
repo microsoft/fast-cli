@@ -25,6 +25,11 @@ const testItems = [
         errorNumber: 1,
         filePath: "foo.definition.ts"
     },
+    {
+        rule: "1.0.0-alpha.1--design-system",
+        errorNumber: 2,
+        filePath: "foo",
+    },
 ];
 
 function getFixedCode(invalidCode: string, fix) {
