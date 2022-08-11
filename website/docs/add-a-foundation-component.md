@@ -17,9 +17,14 @@ $ fast add-foundation-component
 `--template <template>` | `-t <template>` | The name of the foundation element | Yes | "accordion", "avatar", "badge", "blank", "calendar", "card", "checkbox", "dialog", "disclosure", "divider", "flipper", "number-field", "progress", "progress-ring", "search", "switch", "text-area", "text-field", "toolbar", "tooltip" | |
 `--name <name>` | `-n <name>` | The name of the component to be added | Yes | `string` | The name of the foundation template |
 
-
 ### Adding all components
 
 | Argument | Shorthand | Description | Required |
 |-|-|-|-|
 `--all` | `-a` | Add all available components | No | 
+
+### Listing all components
+
+| Argument | Shorthand | Description | Required |
+|-|-|-|-|
+`--list` | `-l` | List all available components | No | 

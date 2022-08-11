@@ -8,7 +8,7 @@ import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { WriteFileConfig } from "./cli.types.js";
 import type { ComponentTemplateConfig } from "./utilities/template.js";
-import { disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
+import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 import { copyFiles, createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
 import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
 import { __dirname, ascii, cliPath, defaultTemplatePath, folderMatches, templateFolderName } from "./cli.globals.js";
@@ -417,7 +417,9 @@ async function addFoundationComponent(
     options: AddFoundationComponentOptions,
     messages: AddFoundationComponentOptionMessages,
 ): Promise<void> {
-    if (options.all) {
+    if (options.list) {
+        availableTemplates.forEach((item) => console.log(item));
+    } else if (options.all) {
         for (const template of suggestedTemplates) {
             await addFoundationComponent(
                 {
@@ -613,7 +615,8 @@ program.command("add-component")
 
 const addFoundationComponentTemplateMessage = "The name of the foundation component template";
 const addFoundationComponentNameMessage = "The name of the component";
-const addFoundationComponentAllMessage = "Add all available foundation components"
+const addFoundationComponentAllMessage = "Add all available foundation components";
+const addFoundationComponentListMessage = "List available foundation components";
 
 program.command("add-foundation-component")
     .description("Add a foundation component")
@@ -621,7 +624,8 @@ program.command("add-foundation-component")
     .option("-n, --name <name>", addFoundationComponentNameMessage)
     .option("-a, --all", addFoundationComponentAllMessage)
     .option("-y, --yes-all", yesToAllDefaultsMessage)
-    .action(async (options): Promise<void> => {
+    .option("-l, --list", addFoundationComponentListMessage)
+    .action(async (options: AddFoundationComponentOptions): Promise<void> => {
         await addFoundationComponent(options, {
             template: addFoundationComponentTemplateMessage,
             name: addFoundationComponentNameMessage

@@ -79,6 +79,7 @@ export interface AddFoundationComponentOptions {
     template?: string;
     all?: boolean;
     useDefaults?: boolean;
+    list?: boolean;
 }
 
 export interface AddFoundationComponentOptionMessages {

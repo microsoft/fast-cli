@@ -105,4 +105,13 @@ test.describe("CLI add-foundation-component", () => {
             ).not.toThrow();
         });
     });
+    test.describe("--list", () => {
+        test("should not throw", () => {
+            expect(
+                () => {
+                    execSync(`cd ${tempDirComponentsAll} && npm run fast:add-foundation-component:list`);
+                }
+            ).not.toThrow();
+        });
+    });
 });
