@@ -30,6 +30,11 @@ const testItems = [
         errorNumber: 2,
         filePath: "foo",
     },
+    {
+        rule: "1.0.0-alpha.1--index",
+        errorNumber: 1,
+        filePath: "./src/index.ts",
+    },
 ];
 
 function getFixedCode(invalidCode: string, fix) {

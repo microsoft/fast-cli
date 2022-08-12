@@ -4,6 +4,7 @@ import * as v100alpha1ComponentsIndex from "./rules/1.0.0-alpha.1--components-in
 import * as v100alpha1Define from "./rules/1.0.0-alpha.1--define";
 import * as v100alpha1Definition from "./rules/1.0.0-alpha.1--definition";
 import * as v100alpha1DesignSystem from "./rules/1.0.0-alpha.1--design-system";
+import * as v100alpha1Index from "./rules/1.0.0-alpha.1--index";
 
 export const rules = {
     "1.0.0-alpha.1--class": v100alpha1Class,
@@ -11,6 +12,7 @@ export const rules = {
     "1.0.0-alpha.1--define": v100alpha1Define,
     "1.0.0-alpha.1--definition": v100alpha1Definition,
     "1.0.0-alpha.1--design-system": v100alpha1DesignSystem,
+    "1.0.0-alpha.1--index": v100alpha1Index,
 }
 
 export const configs = {
