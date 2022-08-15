@@ -1,3 +1,3 @@
 import { css } from "@microsoft/fast-element";
 
-export const template = css``;
+export const styles = css``;
