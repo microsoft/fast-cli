@@ -1,10 +1,13 @@
-import { css } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
-import type { Foo } from "./foo.js";
+import { css, ElementStyles } from "@microsoft/fast-element";
+import type { ElementDefinitionContext } from "@microsoft/fast-foundation";
+import type { FooOptions } from "./foo.js";
 
-export const template: FoundationElementTemplate<ViewTemplate<Foo>> = (
-    context,
-    definition
-) =>
-    css`<template></template>`;
+export const styles: (
+    context: ElementDefinitionContext,
+    definition: FooOptions
+) => ElementStyles = (context: ElementDefinitionContext, definition: FooOptions) =>
+    css`
+        :host {
+            background: red;
+        }
+    `;
