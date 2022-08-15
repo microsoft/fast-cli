@@ -42,7 +42,7 @@ const testItems = [
     },
     {
         rule: "1.0.0-alpha.1--styles",
-        errorNumber: 4,
+        errorNumber: 3,
         filePath: "foo.styles.ts",
     },
 ];
