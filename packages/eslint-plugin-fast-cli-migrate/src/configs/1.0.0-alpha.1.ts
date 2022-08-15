@@ -6,5 +6,6 @@ export const v100alpha1 = {
         "1.0.0-alpha.1--definition": "warn",
         "1.0.0-alpha.1--design-system": "warn",
         "1.0.0-alpha.1--index": "warn",
+        "1.0.0-alpha.1--stories": "warn",
     }
 }
