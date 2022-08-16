@@ -40,6 +40,7 @@ To add this package as a dependency with NPM, run `npm install @microsoft/eslint
 <li>[index](https://github.com/microsoft/fast-cli/tree/main/packages/eslint-plugin-fast-cli-migrate/src/rules/1.0.0-alpha.1--index.ts)</li>
 <li>[stories](https://github.com/microsoft/fast-cli/tree/main/packages/eslint-plugin-fast-cli-migrate/src/rules/1.0.0-alpha.1--stories.ts)</li>
 <li>[styles](https://github.com/microsoft/fast-cli/tree/main/packages/eslint-plugin-fast-cli-migrate/src/rules/1.0.0-alpha.1--styles.ts)</li>
+<li>[template](https://github.com/microsoft/fast-cli/tree/main/packages/eslint-plugin-fast-cli-migrate/src/rules/1.0.0-alpha.1--template.ts)</li>
 </ul> |
 
 ## Contributing
