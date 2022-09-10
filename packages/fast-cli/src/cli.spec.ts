@@ -288,4 +288,17 @@ test.describe("CLI", () => {
             ).not.toThrow();
         });
     });
+    test.describe("version", () => {
+        test.beforeAll(() => {
+            setup(tempDir, tempComponentDir);
+        });
+        test.afterAll(() => {
+            teardown(tempDir);
+        });
+        test("should not throw", () => {
+            expect(() => {
+                execSync(`cd ${tempDir} && npm run fast:version`);
+            }).not.toThrow();
+        });
+    });
 });
