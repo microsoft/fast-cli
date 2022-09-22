@@ -523,6 +523,11 @@ async function init(
     }
 }
 
+async function getVersion(): Promise<void> {
+    const cliPackageJson: any = readFile(path.resolve(cliPath, "package.json"), true);
+    console.log(`CLI version: ${cliPackageJson.version}`);
+}
+
 const yesToAllDefaultsMessage: string = "Use all defaults";
 
 const initTemplateMessage: string = "Project template";
@@ -630,6 +635,14 @@ program.command("add-foundation-component")
             template: addFoundationComponentTemplateMessage,
             name: addFoundationComponentNameMessage
         }).catch((reason) => {
+            throw reason;
+        })
+    });
+
+program.command("version")
+    .description("Current version")
+    .action(async (): Promise<void> => {
+        await getVersion().catch((reason) => {
             throw reason;
         })
     });

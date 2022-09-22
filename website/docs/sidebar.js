@@ -70,5 +70,10 @@ export default {
                 }
             ]
         },
+        {
+            type: "doc",
+            label: "Version",
+            path: "version"
+        }
     ],
 };
