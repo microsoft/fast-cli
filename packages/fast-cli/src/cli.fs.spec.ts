@@ -5,9 +5,12 @@ import {
     getTempDir,
 } from "./test/helpers.js";
 import {
+    readAll,
     readFile,
-    writeFiles
+    writeFiles,
+    writeTemplateExportFile
 } from "./cli.fs.js";
+import { execSync } from "child_process";
 
 const uuid: string = "cli-fs";
 const tempDir: string = getTempDir(uuid);
@@ -20,6 +23,10 @@ test.describe("fs", () => {
         fs.removeSync(tempDir)
     });
     test.describe("writeFiles", () => {
+        test.afterAll(() => {
+            fs.removeSync(path.resolve(tempDir, "baz1", "foo1.txt"));
+            fs.removeSync(path.resolve(tempDir, "baz2", "foo2.txt"));
+        });
         test("should write multiple files", () => {
             const name1 = "foo1.txt";
             const directory1 = path.resolve(tempDir, "baz1");
@@ -54,6 +61,10 @@ test.describe("fs", () => {
             fs.writeFileSync(path.resolve(tempDir, "read.txt"), "Hello world");
             fs.writeFileSync(path.resolve(tempDir, "read.json"), `{}`);
         });
+        test.afterAll(() => {
+            fs.removeSync(path.resolve(tempDir, "read.txt"));
+            fs.removeSync(path.resolve(tempDir, "read.json"));
+        });
         test("should read a JSON file", () => {
             const file = readFile(path.resolve(tempDir, "read.json"), true);
             expect(file).toEqual({});
@@ -62,5 +73,45 @@ test.describe("fs", () => {
             const file = readFile(path.resolve(tempDir, "read.txt"), false);
             expect(file).toEqual("Hello world");
         });
-    });    
+    });
+
+    test.describe("readAll", () => {
+        test.beforeAll(() => {
+            fs.writeFileSync(path.resolve(tempDir, "read.txt"), "Hello world");
+            fs.emptydirSync(path.resolve(tempDir, "foo"));
+            fs.writeFileSync(path.resolve(tempDir, "foo", "read.json"), `{}`);
+        });
+        test.afterAll(() => {
+            fs.removeSync(path.resolve(tempDir, "read.txt"));
+            fs.removeSync(path.resolve(tempDir, "foo", "read.json"));
+            fs.removeSync(path.resolve(tempDir, "foo"));
+        });
+        test("should get all file paths", () => {
+            expect(JSON.stringify(readAll(tempDir))).toEqual(JSON.stringify(["foo/read.json", "read.txt"]));
+        });
+    });
+
+    test.describe("writeTemplateExportFile", () => {
+        test.beforeAll(() => {
+            fs.writeFileSync(path.resolve(tempDir, "read.txt"), "Hello world");
+            fs.emptydirSync(path.resolve(tempDir, "foo"));
+            fs.writeFileSync(path.resolve(tempDir, "foo", "read.json"), `{}`);
+        });
+        test.afterAll(() => {
+            fs.removeSync(path.resolve(tempDir, "read.txt"));
+            fs.removeSync(path.resolve(tempDir, "foo", "read.json"));
+            fs.removeSync(path.resolve(tempDir, "foo"));
+        });
+        test("should write an export file", async () => {
+            writeTemplateExportFile({
+                templateDirectory: path.resolve(tempDir),
+                writeFilePath: path.resolve(tempDir, "export.ts")
+            });
+
+            execSync(`tsc ${path.resolve(tempDir, "export.ts")}`);
+            const exportTemplate = await import(path.resolve(tempDir, "export.js"));
+
+            expect(Array.isArray(exportTemplate.default.default)).toBeTruthy();
+        });
+    });
 });
