@@ -67,3 +67,31 @@ export function readAll(currentPath: string, originalPath: string = currentPath)
 
     return allFiles;
 }
+
+export interface InitializeProjectTemplateConfig {
+    templateDirectory: string;
+    writeFilePath: string;
+}
+
+export function writeTemplateExportFile(
+    config: InitializeProjectTemplateConfig
+): void {
+    const templateFiles: Array<WriteFileConfig> = readAll(
+        config.templateDirectory
+    ).map((filePath: string): WriteFileConfig => {
+        const absolutePath = path.join(config.templateDirectory, filePath);
+        return {
+            directory: path.dirname(absolutePath),
+            name: path.basename(absolutePath),
+            contents: readFile(absolutePath, false)
+        };
+    });
+
+    writeFiles([
+        {
+            directory: path.dirname(config.writeFilePath),
+            name: path.basename(config.writeFilePath),
+            contents: `export default ${JSON.stringify(templateFiles, null, 2)}`
+        }
+    ]);
+}
