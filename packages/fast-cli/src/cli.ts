@@ -651,3 +651,4 @@ program.parse(process.argv);
 
 export { ComponentTemplateConfig };
 export { htmlTemplate, mdTemplate, tsTemplate } from "./cli.template.js";
+export { writeTemplateExportFile } from "./cli.fs.js";

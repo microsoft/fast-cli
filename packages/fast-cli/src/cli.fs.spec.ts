@@ -7,8 +7,10 @@ import {
 import {
     readAll,
     readFile,
-    writeFiles
+    writeFiles,
+    writeTemplateExportFile
 } from "./cli.fs.js";
+import { execSync } from "child_process";
 
 const uuid: string = "cli-fs";
 const tempDir: string = getTempDir(uuid);
@@ -86,6 +88,30 @@ test.describe("fs", () => {
         });
         test("should get all file paths", () => {
             expect(JSON.stringify(readAll(tempDir))).toEqual(JSON.stringify(["foo/read.json", "read.txt"]));
+        });
+    });
+
+    test.describe("writeTemplateExportFile", () => {
+        test.beforeAll(() => {
+            fs.writeFileSync(path.resolve(tempDir, "read.txt"), "Hello world");
+            fs.emptydirSync(path.resolve(tempDir, "foo"));
+            fs.writeFileSync(path.resolve(tempDir, "foo", "read.json"), `{}`);
+        });
+        test.afterAll(() => {
+            fs.removeSync(path.resolve(tempDir, "read.txt"));
+            fs.removeSync(path.resolve(tempDir, "foo", "read.json"));
+            fs.removeSync(path.resolve(tempDir, "foo"));
+        });
+        test("should write an export file", async () => {
+            writeTemplateExportFile({
+                templateDirectory: path.resolve(tempDir),
+                writeFilePath: path.resolve(tempDir, "export.ts")
+            });
+
+            execSync(`tsc ${path.resolve(tempDir, "export.ts")}`);
+            const exportTemplate = await import(path.resolve(tempDir, "export.js"));
+
+            expect(Array.isArray(exportTemplate.default.default)).toBeTruthy();
         });
     });
 });
