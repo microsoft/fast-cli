@@ -3,7 +3,7 @@
 import path from "path";
 import * as commander from "commander";
 import spawn from "cross-spawn";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, TemplateFileConfig } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInitOptionMessages, InitOptions, TemplateFileConfig } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { WriteFileConfig } from "./cli.types.js";
@@ -427,7 +427,7 @@ async function init(
     
     const {
         default: exports,
-    } = await import(path.join(config.template, "dist", "esm", "index.js"));
+    } = await import(config.template);
     writeFiles(exports);
     await installDependencies([]);
 
@@ -446,7 +446,7 @@ const yesToAllDefaultsMessage: string = "Use all defaults";
 
 const initTemplateMessage: string = "Project template";
 const initDefaults: Partial<InitOptions> = {
-    template: defaultTemplatePath
+    template: path.join(defaultTemplatePath,  "dist", "esm", "index.js")
 }
 
 program

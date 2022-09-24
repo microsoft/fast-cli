@@ -1,6 +1,6 @@
 /**
  * This file has been automatically generated from the ./build/generate.js scripts,
- * do not attempt to edit it, to re-generate the file run: npm run generate
+ * do not attempt to edit it. To re-generate the file run: npm run generate
  */
 export default [
   {
