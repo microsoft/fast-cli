@@ -1,4 +1,4 @@
-import { mdTemplate } from "../../../cli.js";
+import { mdTemplate } from "../../../cli.template.js";
 
 export default mdTemplate`# ${c => c.className}
 An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/checkbox) as a form-connected web-component.

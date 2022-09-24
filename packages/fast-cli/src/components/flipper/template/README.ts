@@ -1,4 +1,4 @@
-import { mdTemplate } from "../../../cli.js";
+import { mdTemplate } from "../../../cli.template.js";
 
 export default mdTemplate`# ${c => c.className}
 The flipper component is most often used to page through blocks of content or collections of UI elements.

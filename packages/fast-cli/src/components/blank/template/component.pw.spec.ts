@@ -1,4 +1,4 @@
-import { tsTemplate } from "../../../cli.js";
+import { tsTemplate } from "../../../cli.template.js";
 
 export default tsTemplate`import { expect, test } from "@playwright/test";
 import { fixtureURL } from "@microsoft/fast-cli/dist/esm/utilities/playwright.js";

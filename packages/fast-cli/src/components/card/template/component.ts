@@ -1,4 +1,4 @@
-import { tsTemplate } from "../../../cli.js";
+import { tsTemplate } from "../../../cli.template.js";
 
 export default tsTemplate`import { composedParent, Card as FoundationCard } from "@microsoft/fast-foundation";
 import type { Swatch } from "@microsoft/adaptive-ui/dist/dts/color/swatch.d.js"

@@ -32,7 +32,7 @@ function setupBlankAsTemplate() {
     Object.keys(requiredComponentTemplateFiles).forEach((templateFileName) => {
         const filePath = path.resolve(tempComponentDir, "template", templateFileName);
         let fileContents = fs.readFileSync(filePath, { "encoding": "utf8" });
-        fs.writeFileSync(filePath, fileContents.replace("../../../cli.js", "@microsoft/fast-cli"));
+        fs.writeFileSync(filePath, fileContents.replace("../../../cli.template.js", "@microsoft/fast-cli/template"));
     });
 
     const packageJsonString = fs.readFileSync(

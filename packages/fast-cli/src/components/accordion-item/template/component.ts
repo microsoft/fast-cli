@@ -1,4 +1,4 @@
-import { tsTemplate } from "../../../cli.js";
+import { tsTemplate } from "../../../cli.template.js";
 
 export default tsTemplate`import { AccordionItem as FoundationAccordionItem } from "@microsoft/fast-foundation";
 

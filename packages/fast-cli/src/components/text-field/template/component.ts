@@ -1,4 +1,4 @@
-import { tsTemplate } from "../../../cli.js";
+import { tsTemplate } from "../../../cli.template.js";
 
 export default tsTemplate`import { attr } from "@microsoft/fast-element";
 import { TextField as FoundationTextField } from "@microsoft/fast-foundation";

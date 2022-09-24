@@ -1,4 +1,4 @@
-import { tsTemplate } from "../../../cli.js";
+import { tsTemplate } from "../../../cli.template.js";
 
 export default tsTemplate`import { attr } from "@microsoft/fast-element";
 import { TextArea as FoundationTextArea } from "@microsoft/fast-foundation";

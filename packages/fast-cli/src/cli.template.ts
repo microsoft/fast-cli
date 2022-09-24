@@ -48,3 +48,4 @@ function tagTemplate(
 export const tsTemplate = tagTemplate;
 export const htmlTemplate = tagTemplate;
 export const mdTemplate = tagTemplate;
+export { ComponentTemplateConfig };

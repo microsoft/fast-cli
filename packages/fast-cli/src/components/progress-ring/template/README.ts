@@ -1,4 +1,4 @@
-import { mdTemplate } from "../../../cli.js";
+import { mdTemplate } from "../../../cli.template.js";
 
 export default mdTemplate`# ${c => c.className}
 Progress components are used to display the length of time a process will take or to visualize percentage value (referred to as a **determinate** state) and to represent an unspecified wait time (referred to as an **indeterminate** state). This progress component should be used for a circular visual appearance.

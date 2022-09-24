@@ -1,4 +1,4 @@
-import { tsTemplate } from "../../../cli.js";
+import { tsTemplate } from "../../../cli.template.js";
 
 export default tsTemplate`import { template } from "./${c => c.tagName}.template.js";
 import { styles } from "./${c => c.tagName}.styles.js";
