@@ -1,4 +1,4 @@
-import { tsTemplate } from "../../../cli.js";
+import { tsTemplate } from "../../../cli.template.js";
 
 export default tsTemplate`import { Disclosure as FoundationDisclosure } from "@microsoft/fast-foundation";
 import { attr } from "@microsoft/fast-element";

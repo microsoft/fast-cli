@@ -4,6 +4,21 @@
   "version": "1.0.0-alpha.5",
   "description": "A FAST command line interface for improving process when working with FAST projects",
   "main": "./dist/esm/cli.js",
+  "types": "./dist/esm/cli.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/esm/cli.js",
+      "types": "./dist/dts/cli.d.ts"
+    },
+    "./fs": {
+      "default": "./dist/esm/cli.fs.js",
+      "types": "./dist/dts/cli.fs.d.ts"
+    },
+    "./template": {
+      "default": "./dist/esm/cli.template.js",
+      "types": "./dist/dts/cli.template.d.ts"
+    }
+  },
   "bin": {
     "fast": "./dist/esm/cli.js"
   },

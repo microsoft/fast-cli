@@ -1,4 +1,4 @@
-import { htmlTemplate } from "../../../cli.js";
+import { htmlTemplate } from "../../../cli.template.js";
 
 export default htmlTemplate`<button id="button1">
 Show ${c => c.className}

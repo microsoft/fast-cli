@@ -1,4 +1,4 @@
-import { htmlTemplate } from "../../../cli.js";
+import { htmlTemplate } from "../../../cli.template.js";
 
 export default htmlTemplate`<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>

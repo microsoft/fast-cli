@@ -1,4 +1,4 @@
-import { mdTemplate } from "../../../cli.js";
+import { mdTemplate } from "../../../cli.template.js";
 
 export default mdTemplate`# ${c => c.className}
 A web component implementation of a [dialog](https://w3c.github.io/aria-practices/#dialog_modal).

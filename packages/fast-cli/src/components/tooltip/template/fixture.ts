@@ -1,4 +1,4 @@
-import { htmlTemplate } from "../../../cli.js";
+import { htmlTemplate } from "../../../cli.template.js";
 
 export default htmlTemplate`<h1>${c => c.className}</h1>
 

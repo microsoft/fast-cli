@@ -1,4 +1,4 @@
-import { mdTemplate } from "../../../cli.js";
+import { mdTemplate } from "../../../cli.template.js";
 
 export default mdTemplate`# ${c => c.className}
 

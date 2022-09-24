@@ -1,4 +1,4 @@
-import { htmlTemplate } from "../../../cli.js";
+import { htmlTemplate } from "../../../cli.template.js";
 
 export default htmlTemplate`<style>
     ${c => c.tagName}.disabled::part(button) {

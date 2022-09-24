@@ -1,4 +1,4 @@
-import { tsTemplate } from "../../../cli.js";
+import { tsTemplate } from "../../../cli.template.js";
 
 export default tsTemplate`import { Card as FoundationCard, cardTemplate, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import type { ViewTemplate } from "@microsoft/fast-element";

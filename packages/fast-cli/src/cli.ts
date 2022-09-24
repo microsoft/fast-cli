@@ -7,7 +7,6 @@ import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOp
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { WriteFileConfig } from "./cli.types.js";
-import type { ComponentTemplateConfig } from "./utilities/template.js";
 import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 import { copyFiles, createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
 import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
@@ -648,7 +647,3 @@ program.command("version")
     });
 
 program.parse(process.argv);
-
-export { ComponentTemplateConfig };
-export { htmlTemplate, mdTemplate, tsTemplate } from "./cli.template.js";
-export { writeTemplateExportFile } from "./cli.fs.js";
