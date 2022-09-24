@@ -1,6 +1,7 @@
 
 import path from "path";
 import fs from "fs-extra";
+import minimatch from "minimatch";
 import type { WriteFileConfig } from "./cli.types.js";
 
 /**
@@ -71,6 +72,20 @@ export function readAll(currentPath: string, originalPath: string = currentPath)
 export interface InitializeProjectTemplateConfig {
     templateDirectory: string;
     writeFilePath: string;
+    excludedPaths?: string[];
+    prepend?: string;
+}
+
+function containsExcludedPath(filePath: string, excludedPaths: string[]): boolean {
+    let contained: boolean = false;
+
+    excludedPaths.forEach((excludedPath) => {
+        if (minimatch(filePath, excludedPath)) {
+            contained = true;
+        }
+    })
+
+    return contained;
 }
 
 export function writeTemplateExportFile(
@@ -78,20 +93,24 @@ export function writeTemplateExportFile(
 ): void {
     const templateFiles: Array<WriteFileConfig> = readAll(
         config.templateDirectory
-    ).map((filePath: string): WriteFileConfig => {
-        const absolutePath = path.join(config.templateDirectory, filePath);
-        return {
-            directory: path.dirname(absolutePath),
-            name: path.basename(absolutePath),
-            contents: readFile(absolutePath, false)
-        };
-    });
+    ).map((filePath: string): WriteFileConfig | void => {
+        if (!containsExcludedPath(filePath, config.excludedPaths || [])) {
+            const absolutePath = path.join(config.templateDirectory, filePath);
+            return {
+                directory: path.dirname(path.relative(config.templateDirectory, absolutePath)),
+                name: path.basename(absolutePath),
+                contents: readFile(absolutePath, false)
+            };
+        }
+    }).filter((item: WriteFileConfig | void): boolean => {
+        return typeof item !== "undefined";
+    }) as Array<WriteFileConfig>;
 
     writeFiles([
         {
             directory: path.dirname(config.writeFilePath),
             name: path.basename(config.writeFilePath),
-            contents: `export default ${JSON.stringify(templateFiles, null, 2)}`
+            contents: `${config.prepend || ""}export default ${JSON.stringify(templateFiles, null, 2)}`
         }
     ]);
 }
