@@ -427,7 +427,7 @@ async function init(
     
     const {
         default: exports,
-    } = await import(config.template);
+    } = await import(path.join(config.template, config.filePath));
     writeFiles(exports);
     await installDependencies([]);
 
@@ -445,20 +445,24 @@ async function getVersion(): Promise<void> {
 const yesToAllDefaultsMessage: string = "Use all defaults";
 
 const initTemplateMessage: string = "Project template";
+const initFilePathMessage: string = "Export file path";
 const initDefaults: Partial<InitOptions> = {
-    template: path.join(defaultTemplatePath,  "dist", "esm", "index.js")
+    template: defaultTemplatePath,
+    filePath: path.join("dist", "esm", "index.js"),
 }
 
 program
     .command("init")
     .description("Initialize a new project")
     .option("-t, --template <template>", initTemplateMessage, initDefaults.template)
+    .option("-f, --file-path <file-path>", initFilePathMessage, initDefaults.filePath)
     .option("-y, --yes-all", yesToAllDefaultsMessage)
     .action(async (options): Promise<void> => {
         await init(
             options,
             {
-                template: initTemplateMessage
+                template: initTemplateMessage,
+                filePath: initFilePathMessage,
             },
             initDefaults
         ).catch((reason) => {
