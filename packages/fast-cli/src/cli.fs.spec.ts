@@ -105,13 +105,40 @@ test.describe("fs", () => {
         test("should write an export file", async () => {
             writeTemplateExportFile({
                 templateDirectory: path.resolve(tempDir),
-                writeFilePath: path.resolve(tempDir, "export.ts")
+                writeFilePath: path.resolve(tempDir, "export1.ts")
             });
 
-            execSync(`tsc ${path.resolve(tempDir, "export.ts")}`);
-            const exportTemplate = await import(path.resolve(tempDir, "export.js"));
+            execSync(`tsc ${path.resolve(tempDir, "export1.ts")}`);
+            const exportTemplate = await import(path.resolve(tempDir, "export1.js"));
 
             expect(Array.isArray(exportTemplate.default.default)).toBeTruthy();
+        });
+        test("should write an export file and ignore excluded paths", async () => {
+            writeTemplateExportFile({
+                templateDirectory: path.resolve(tempDir),
+                writeFilePath: path.resolve(tempDir, "export2.ts"),
+                excludedPaths: [
+                    "**/foo/*.*",
+                    "**/export1.*"
+                ]
+            });
+
+            execSync(`tsc ${path.resolve(tempDir, "export2.ts")}`);
+            const exportTemplate = await import(path.resolve(tempDir, "export2.js"));
+
+            expect(exportTemplate.default.default).toHaveLength(1);
+        });
+        test("should prepend the excluded file with custom text", async () => {
+            const prependComment = "// hello";
+            writeTemplateExportFile({
+                templateDirectory: path.resolve(tempDir),
+                writeFilePath: path.resolve(tempDir, "export3.ts"),
+                prepend: prependComment
+            });
+
+            const fileContents: string = readFile(path.resolve(tempDir, "export3.ts"), false);
+
+            expect(fileContents.startsWith(prependComment)).toBeTruthy();
         });
     });
 });
