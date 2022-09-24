@@ -15,21 +15,20 @@
   "bugs": {
     "url": "https://github.com/Microsoft/fast-cli/issues"
   },
-  "main": "index.js",
+  "main": "dist/esm/index.js",
+  "types": "dist/dts/index.d.ts",
   "scripts": {
-    "build": "webpack --config=./template/webpack.prod.cjs",
-    "eslint": "eslint . --ext .ts --config ./template/.eslintrc.cjs",
-    "eslint:fix": "eslint . --ext .ts --config ./template/.eslintrc.cjs --fix",
-    "start": "webpack-dev-server --config=./template/webpack.dev.cjs --history-api-fallback --progress",
-    "start:storybook": "start-storybook -c template/.storybook -p 3000 -h localhost",
-    "test": "npm run eslint && npx playwright test --config=./template/playwright.config.ts",
-    "serve": "node ./template/server.cjs"
+    "build": "npm run generate && npm run build:tsc",
+    "build:tsc": "tsc -p ./tsconfig.json",
+    "dev": "tsc -p ./tsconfig.json -w",
+    "generate": "node ./build/generate.js"
   },
   "dependencies": {
     "@microsoft/fast-element": "2.0.0-beta.3",
     "@microsoft/fast-foundation": "3.0.0-alpha.4"
   },
   "devDependencies": {
+    "@microsoft/fast-cli": "^1.0.0-alpha.5",
     "@playwright/test": "^1.21.0",
     "@storybook/builder-webpack5": "6.5.9",
     "@storybook/html": "6.5.9",

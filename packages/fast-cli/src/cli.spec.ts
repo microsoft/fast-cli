@@ -18,7 +18,7 @@ import { requiredComponentTemplateFiles } from "./components/files.js";
 const uuid: string = "cli";
 const tempDir: string = getTempDir(uuid);
 const tempComponentDir: string = getTempComponentDir(uuid);
-const templateDir = path.resolve(packagesDir, "./cfp-template/template");
+const templateDir = path.resolve(packagesDir, "./cfp-template-files");
 
 function setupBlankAsTemplate() {
     fs.ensureDirSync(tempComponentDir);
@@ -72,40 +72,6 @@ function configTests() {
 }
 
 function initTests() {
-    test("should create a package.json file with contents from the fast init", () => {
-        const packageJsonFile = JSON.parse(
-            fs.readFileSync(path.resolve(tempDir, "package.json"), {
-                encoding: "utf8",
-            })
-        );
-        const configFilePackageJson = JSON.parse(
-            fs.readFileSync(path.resolve(tempDir, "fast.init.json"), {
-                encoding: "utf8",
-            })
-        ).packageJson;
-
-        for (const [key, value] of Object.entries(configFilePackageJson)) {
-            if (key !== "name") {
-                expect(packageJsonFile[key].toString()).toEqual((value as any).toString());
-            }
-        }
-    });
-    test("should create a fast.config file with contents from the fast init", () => {
-        const fastConfigFile = JSON.parse(
-            fs.readFileSync(path.resolve(tempDir, "fast.config.json"), {
-                encoding: "utf8",
-            })
-        );
-        const configFilePackageJson = JSON.parse(
-            fs.readFileSync(path.resolve(tempDir, "fast.init.json"), {
-                encoding: "utf8",
-            })
-        ).fastConfig;
-
-        for (const [key, value] of Object.entries(configFilePackageJson)) {
-            expect(fastConfigFile[key].toString()).toEqual((value as any).toString());
-        }
-    });
     test("should copy the template folder contents", () =>{
         const templateDirContents = fs.readdirSync(templateDir);
         const tempDirContents = fs.readdirSync(tempDir);

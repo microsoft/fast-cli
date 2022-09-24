@@ -3,15 +3,15 @@
 import path from "path";
 import * as commander from "commander";
 import spawn from "cross-spawn";
-import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, CopyTemplateConfig, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, TemplateFileConfig } from "./cli.options.js";
+import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInit, FastInitOptionMessages, InitOptions, TemplateFileConfig } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { WriteFileConfig } from "./cli.types.js";
 import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
-import { copyFiles, createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
+import { createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
 import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
-import { __dirname, ascii, cliPath, defaultTemplatePath, folderMatches, templateFolderName } from "./cli.globals.js";
-import { getPackageName, stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
+import { __dirname, ascii, cliPath, defaultTemplatePath, templateFolderName } from "./cli.globals.js";
+import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
 
 const program = new commander.Command();
@@ -21,64 +21,6 @@ const program = new commander.Command();
  */
 program.name("fast").description(ascii);
 
-/**
- * Get the fast.init.json file
- */
-async function getFastInit(
-    pathToTemplatePackage: string,
-    isLocalFile: boolean,
-): Promise<FastInit> {
-    if (!isLocalFile) {
-        await installDependencies([pathToTemplatePackage]);
-    }
-
-    const templateDir = path.resolve(
-        ...(
-            !isLocalFile
-                ? [__dirname, "node_modules"]
-                : []
-        ),
-        pathToTemplatePackage,
-        templateFolderName
-    );
-
-    return readFile(path.resolve(templateDir, "fast.init.json"), true);
-}
-
-/**
- * Copy the template to the project
- */
-function copyTemplateToProject(
-    config: CopyTemplateConfig
-): string {
-    const templateDir = path.resolve(
-        __dirname,
-        "node_modules",
-        config.pathToTemplatePackage,
-        templateFolderName
-    );
-
-    // Copy all files in the template folder
-    copyFiles(templateDir, config.destDir);
-
-    // Update the package.json file
-    const packageName = getPackageName(config.packageJson, folderMatches);
-
-    writeFiles([{
-        name: "package.json",
-        directory: config.destDir,
-        contents: JSON.stringify(
-            {
-                ...config.packageJson,
-                name: packageName
-            },
-            null,
-            2
-        )
-    }]);
-
-    return packageName;
-}
 
 /**
  * Install dependencies
@@ -163,30 +105,6 @@ function createConfigFile(
             contents: JSON.stringify(fastConfig, null, 2)
         }
     ]);
-}
-
-/**
- * Uninstall a package holding a template
- */
-function uninstallTemplate(packageName: string): Promise<unknown> {
-    return new Promise((resolve, reject) => {
-        const args = [
-            "uninstall",
-            packageName,
-        ];
-        const child = spawn("npm", args, { stdio: "inherit" });
-        child.on("close", code => {
-            if (code !== 0) {
-                reject({
-                    command: "npm uninstall",
-                });
-                return;
-            }
-            resolve(void 0);
-        });
-    }).catch((reason) => {
-        throw reason;
-    });
 }
 
 /**
@@ -505,20 +423,17 @@ async function init(
         config.template = path.resolve(__dirname, config.template);
     }
 
-    const initFile: FastInit = await getFastInit(config.template, isLocalTemplate);
-
     await installTemplate(config.template);
-    createConfigFile(initFile.fastConfig);
-    const packageName: string = copyTemplateToProject({
-        pathToTemplatePackage: config.template,
-        packageJson: initFile.packageJson,
-        destDir: path.resolve(__dirname)
-    });
+    
+    const {
+        default: exports,
+    } = await import(path.join(config.template, "dist", "esm", "index.js"));
+    writeFiles(exports);
     await installDependencies([]);
-    await uninstallTemplate(packageName);
 
-    if (typeof initFile.template?.afterInstallMessage === "string") {
-        console.log(initFile.template.afterInstallMessage);
+    const templatePackageJson: any = readFile(path.resolve(".", "package.json"), true);
+    if (typeof templatePackageJson?.afterInstallMessage === "string") {
+        console.log(templatePackageJson.afterInstallMessage);
     }
 }
 
