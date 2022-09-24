@@ -18,7 +18,7 @@
   "main": "dist/esm/index.js",
   "types": "dist/dts/index.d.ts",
   "scripts": {
-    "build": "npm run generate && npm run build:tsc",
+    "build": "npm run build:tsc",
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
     "generate": "node ./build/generate.js"
