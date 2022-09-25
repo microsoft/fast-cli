@@ -10,7 +10,7 @@ import type { WriteFileConfig } from "./cli.types.js";
 import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 import { createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
 import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
-import { __dirname, ascii, cliPath, templateFolderName, initDefaultFilePath, initDefaultExportName, initDefaultTemplate } from "./cli.globals.js";
+import { __dirname, ascii, cliPath, initDefaultExportName, initDefaultFilePath, initDefaultTemplate, templateFolderName } from "./cli.globals.js";
 import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
 
