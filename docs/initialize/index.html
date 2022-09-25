@@ -583,6 +583,10 @@
 <p>Install the <code>@microsoft/fast-cli</code> locally or globally.</p>
 <pre><code class="language-bash">$ fast init
 </code></pre>
+<h2 id="using-a-non-default-template">Using a non-default template</h2>
+<p>In order to use a template other than the default, ensure you include both the template package name or local location if installing locally, as well as the file path to the export script (relative to the template location).</p>
+<pre><code class="language-bash">$ fast init -t ../my-local-template -f dist/index.js
+</code></pre>
 <h2 id="arguments">Arguments</h2>
 <table>
 <thead>
@@ -591,13 +595,22 @@
 <th>Shorthand</th>
 <th>Description</th>
 <th>Required</th>
+<th>Default</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>--template &lt;path/to/template&gt;</code></td>
-<td><code>-t &lt;path/to/template&gt;</code></td>
-<td>Use a local template</td>
+<td><code>--template &lt;path/to/template-package&gt;</code></td>
+<td><code>-t &lt;path/to/template-package&gt;</code></td>
+<td>Use template package</td>
 <td>No</td>
+<td>&quot;@microsoft/cfp-template&quot;</td>
+</tr>
+<tr>
+<td><code>--filePath &lt;path/to/file&gt;</code></td>
+<td><code>-f &lt;path/to/file&gt;</code></td>
+<td>Path to the file</td>
+<td>No</td>
+<td>&quot;dist/esm/index.js&quot;</td>
 </tr>
 </tbody></table>
 </div>
