@@ -53,6 +53,7 @@ export interface FastAddComponent {
 
 export interface FastInitOptionMessages {
     template: string;
+    filePath: string;
 }
 
 export interface AddDesignSystemOptions {
@@ -122,9 +123,14 @@ export interface InitOptions {
     useDefaults: boolean;
 
     /**
-     * Path to template
+     * Path to template package
      */
     template: string;
+
+    /**
+     * Path to export containing template
+     */
+    filePath: string;
 }
 
 export interface TemplateFileConfig {

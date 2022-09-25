@@ -20,8 +20,17 @@ Install the `@microsoft/fast-cli` locally or globally.
 $ fast init
 ```
 
+## Using a non-default template
+
+In order to use a template other than the default, ensure you include both the template package name or local location if installing locally, as well as the file path to the export script (relative to the template location).
+
+```bash
+$ fast init -t ../my-local-template -f dist/index.js
+```
+
 ## Arguments
 
-Argument | Shorthand | Description | Required
----------|-----------|-------------|---------
-`--template <path/to/template>` | `-t <path/to/template>` | Use a local template | No
+Argument | Shorthand | Description | Required | Default
+---------|-----------|-------------|----------|--------
+`--template <path/to/template-package>` | `-t <path/to/template-package>` | Use template package | No | "@microsoft/cfp-template"
+`--filePath <path/to/file>` | `-f <path/to/file>` | Path to the file | No | "dist/esm/index.js"

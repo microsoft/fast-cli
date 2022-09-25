@@ -1,5 +1,4 @@
 import prompts from "prompts";
-import { defaultTemplatePath } from "./cli.globals.js";
 import type {
     AddComponentOptionMessages,
     AddComponentOptions,
@@ -195,10 +194,21 @@ export async function initPrompts(
             {
                 type: "text",
                 name: "template",
-                initial: defaultTemplatePath,
+                initial: defaults.template,
                 message: messages.template,
             }
         ]).template;
+
+        if (!config.filePath) {
+            config.filePath = await prompts([
+                {
+                    type: "text",
+                    name: "filePath",
+                    initial: defaults.filePath,
+                    message: messages.filePath,
+                }
+            ]).filePath;
+        }
     }
 
     return config;

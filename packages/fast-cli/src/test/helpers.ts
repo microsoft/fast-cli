@@ -19,8 +19,8 @@ export const fastCliDir = path.resolve(packagesDir, "fast-cli");
 function getPackageScripts(tempComponentDir: string): any {
     return {
         "fast:version": `fast version`,
-        "fast:init:local": `fast init -t ${path.resolve(packagesDir, "cfp-template")}`,
-        "fast:init:remote": `fast init -t @microsoft/cfp-template`,
+        "fast:init:local": `fast init -t ${path.resolve(packagesDir, "cfp-template")} -f ${path.join("dist", "esm", "index.js")}`,
+        "fast:init:remote": `fast init -t @microsoft/cfp-template -f ${path.join("dist", "esm", "index.js")}`,
         "fast:init:default": `fast init -y`,
         "fast:config": `fast config -p ./components -r ./src -n test`,
         "fast:config:default": `fast config -y`,
