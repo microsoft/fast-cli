@@ -34,3 +34,4 @@ Argument | Shorthand | Description | Required | Default
 ---------|-----------|-------------|----------|--------
 `--template <path/to/template-package>` | `-t <path/to/template-package>` | Use template package | No | "@microsoft/cfp-template"
 `--filePath <path/to/file>` | `-f <path/to/file>` | Path to the file | No | "dist/esm/index.js"
+`--exportName <export-name>` | `-n <export-name>` | Name of the export | No | "default"
