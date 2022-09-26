@@ -8,7 +8,7 @@ import {
     readAll,
     readFile,
     writeFiles,
-    writeTemplateExportFile
+    getTemplateFileConfig
 } from "./cli.fs.js";
 import { execSync } from "child_process";
 
@@ -91,7 +91,7 @@ test.describe("fs", () => {
         });
     });
 
-    test.describe("writeTemplateExportFile", () => {
+    test.describe("getTemplateFileConfig", () => {
         test.beforeAll(() => {
             fs.writeFileSync(path.resolve(tempDir, "read.txt"), "Hello world");
             fs.emptydirSync(path.resolve(tempDir, "foo"));
@@ -102,43 +102,24 @@ test.describe("fs", () => {
             fs.removeSync(path.resolve(tempDir, "foo", "read.json"));
             fs.removeSync(path.resolve(tempDir, "foo"));
         });
-        test("should write an export file", async () => {
-            writeTemplateExportFile({
+        test("should get an project template config array", async () => {
+            const templateFileConfig = getTemplateFileConfig({
                 templateDirectory: path.resolve(tempDir),
-                writeFilePath: path.resolve(tempDir, "export1.ts")
             });
 
-            execSync(`tsc ${path.resolve(tempDir, "export1.ts")}`);
-            const exportTemplate = await import(path.resolve(tempDir, "export1.js"));
-
-            expect(Array.isArray(exportTemplate.default.default)).toBeTruthy();
+            expect(Array.isArray(templateFileConfig)).toBeTruthy();
+            expect(templateFileConfig).toHaveLength(2);
         });
-        test("should write an export file and ignore excluded paths", async () => {
-            writeTemplateExportFile({
+        test("should get an project template config array and ignore excluded paths", async () => {
+            const templateFileConfig = getTemplateFileConfig({
                 templateDirectory: path.resolve(tempDir),
-                writeFilePath: path.resolve(tempDir, "export2.ts"),
                 excludedPaths: [
                     "**/foo/*.*",
                     "**/export1.*"
                 ]
             });
 
-            execSync(`tsc ${path.resolve(tempDir, "export2.ts")}`);
-            const exportTemplate = await import(path.resolve(tempDir, "export2.js"));
-
-            expect(exportTemplate.default.default).toHaveLength(1);
-        });
-        test("should prepend the excluded file with custom text", async () => {
-            const prependComment = "// hello";
-            writeTemplateExportFile({
-                templateDirectory: path.resolve(tempDir),
-                writeFilePath: path.resolve(tempDir, "export3.ts"),
-                prepend: prependComment
-            });
-
-            const fileContents: string = readFile(path.resolve(tempDir, "export3.ts"), false);
-
-            expect(fileContents.startsWith(prependComment)).toBeTruthy();
+            expect(templateFileConfig).toHaveLength(1);
         });
     });
 });
