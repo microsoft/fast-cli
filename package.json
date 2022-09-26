@@ -51,7 +51,7 @@
     ]
   },
   "devDependencies": {
-    "@playwright/test": "^1.21.1",
+    "@playwright/test": "^1.26.0",
     "@storybook/builder-webpack5": "^6.4.22",
     "@storybook/html": "^6.4.22",
     "@storybook/manager-webpack5": "^6.4.22",
