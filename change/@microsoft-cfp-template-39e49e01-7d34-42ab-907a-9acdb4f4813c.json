@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Bump jpeg-js and @playwright/test",
+  "packageName": "@microsoft/cfp-template",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
