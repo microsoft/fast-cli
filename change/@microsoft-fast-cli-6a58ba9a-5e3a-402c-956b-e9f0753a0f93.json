@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "Added minimatch for glob patterns and allowed excluded paths from a template and a prepended string",
+  "comment": "Updated method of generating exports to allow more flexibility and multiple exports",
   "packageName": "@microsoft/fast-cli",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "prerelease"

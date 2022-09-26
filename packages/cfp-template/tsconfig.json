@@ -13,6 +13,7 @@
         "target": "es2015",
         "module": "ESNext",
         "importHelpers": true,
+        "resolveJsonModule": true,
         "types": [
             "node"
         ],

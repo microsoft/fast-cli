@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "Added minimatch for glob patterns and allowed excluded paths from a template and a prepended string",
+  "comment": "Remove redundant template files and create a script to generate the template files into a ts file",
   "packageName": "@microsoft/fast-cli",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "prerelease"
