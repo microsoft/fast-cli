@@ -184,12 +184,7 @@ export async function initPrompts(
 
     if (options.useDefaults) {
         config = { ...defaults, ...options };
-    }
-
-    if (!config.template) {
-        /**
-         * Collect information for the package.json file
-         */
+    } else if (!config.template) {
          config.template = await prompts([
             {
                 type: "text",
@@ -204,7 +199,7 @@ export async function initPrompts(
                 {
                     type: "text",
                     name: "filePath",
-                    initial: defaults.filePath,
+                    initial: "default",
                     message: messages.filePath,
                 }
             ]).filePath;

@@ -426,7 +426,7 @@ async function init(
     await installTemplate(config.template);
     
     const exports = await import(path.join(config.template, config.filePath));
-    writeFiles(exports[config.exportName || "default"]);
+    writeFiles(exports[config.exportName]);
     await installDependencies([]);
 
     const templatePackageJson: any = readFile(path.resolve(".", "package.json"), true);
