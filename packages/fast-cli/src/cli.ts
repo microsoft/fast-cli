@@ -10,7 +10,7 @@ import type { WriteFileConfig } from "./cli.types.js";
 import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
 import { createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
 import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
-import { __dirname, ascii, cliPath, defaultTemplatePath, templateFolderName } from "./cli.globals.js";
+import { __dirname, ascii, cliPath, initDefaultExportName, initDefaultFilePath, initDefaultTemplate, templateFolderName } from "./cli.globals.js";
 import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
 
@@ -425,10 +425,8 @@ async function init(
 
     await installTemplate(config.template);
     
-    const {
-        default: exports,
-    } = await import(path.join(config.template, config.filePath));
-    writeFiles(exports);
+    const exports = await import(path.join(config.template, config.filePath));
+    writeFiles(exports[config.exportName]);
     await installDependencies([]);
 
     const templatePackageJson: any = readFile(path.resolve(".", "package.json"), true);
@@ -446,9 +444,11 @@ const yesToAllDefaultsMessage: string = "Use all defaults";
 
 const initTemplateMessage: string = "Project template";
 const initFilePathMessage: string = "Export file path";
+const initExportNameMessage: string = "Export name";
 const initDefaults: Partial<InitOptions> = {
-    template: defaultTemplatePath,
-    filePath: path.join("dist", "esm", "index.js"),
+    template: initDefaultTemplate,
+    filePath: initDefaultFilePath,
+    exportName: initDefaultExportName
 }
 
 program
@@ -456,6 +456,7 @@ program
     .description("Initialize a new project")
     .option("-t, --template <template>", initTemplateMessage, initDefaults.template)
     .option("-f, --file-path <file-path>", initFilePathMessage, initDefaults.filePath)
+    .option("-n, --export-name <export-name>", initExportNameMessage, initDefaults.exportName)
     .option("-y, --yes-all", yesToAllDefaultsMessage)
     .action(async (options): Promise<void> => {
         await init(
@@ -463,6 +464,7 @@ program
             {
                 template: initTemplateMessage,
                 filePath: initFilePathMessage,
+                exportName: initExportNameMessage,
             },
             initDefaults
         ).catch((reason) => {

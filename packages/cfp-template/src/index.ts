@@ -2,7 +2,7 @@
  * This file has been automatically generated from the ./build/generate.js scripts,
  * do not attempt to edit it. To re-generate the file run: npm run generate
  */
-export default [
+const cfpAppTemplate = [
   {
     "directory": ".",
     "name": ".eslintignore",
@@ -134,3 +134,4 @@ export default [
     "contents": "/* eslint-disable @typescript-eslint/no-var-requires */\n/* eslint-disable no-undef */\nconst merge = require(\"webpack-merge\");\nconst baseConfig = require(\"./webpack.common.cjs\");\n\nmodule.exports = merge(baseConfig, {\n    mode: \"production\",\n    optimization: {\n        splitChunks: {\n            chunks: \"all\",\n            maxInitialRequests: 100,\n            cacheGroups: {\n                vendor: {\n                    test: /[\\\\/]node_modules[\\\\/]/,\n                    name: module => {\n                        const packageName = module.context.match(\n                            /[\\\\/]node_modules[\\\\/](.*?)([\\\\/]|$)/\n                        )[1];\n                        // npm package names are URL-safe, but some servers don't like @ symbols\n                        return `npm.${packageName.replace(\"@\", \"\")}`;\n                    },\n                },\n            },\n        },\n    },\n    output: {\n        filename: \"bundle/[name].[contenthash].js\",\n    },\n});\n"
   }
 ]
+export { cfpAppTemplate };

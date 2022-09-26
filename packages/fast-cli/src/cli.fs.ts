@@ -71,9 +71,7 @@ export function readAll(currentPath: string, originalPath: string = currentPath)
 
 export interface InitializeProjectTemplateConfig {
     templateDirectory: string;
-    writeFilePath: string;
     excludedPaths?: string[];
-    prepend?: string;
 }
 
 function containsExcludedPath(filePath: string, excludedPaths: string[]): boolean {
@@ -88,10 +86,10 @@ function containsExcludedPath(filePath: string, excludedPaths: string[]): boolea
     return contained;
 }
 
-export function writeTemplateExportFile(
+export function getTemplateFileConfig(
     config: InitializeProjectTemplateConfig
-): void {
-    const templateFiles: Array<WriteFileConfig> = readAll(
+): Array<WriteFileConfig> {
+    return readAll(
         config.templateDirectory
     ).map((filePath: string): WriteFileConfig | void => {
         if (!containsExcludedPath(filePath, config.excludedPaths || [])) {
@@ -105,12 +103,4 @@ export function writeTemplateExportFile(
     }).filter((item: WriteFileConfig | void): boolean => {
         return typeof item !== "undefined";
     }) as Array<WriteFileConfig>;
-
-    writeFiles([
-        {
-            directory: path.dirname(config.writeFilePath),
-            name: path.basename(config.writeFilePath),
-            contents: `${config.prepend || ""}export default ${JSON.stringify(templateFiles, null, 2)}`
-        }
-    ]);
 }
