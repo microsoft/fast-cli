@@ -22,7 +22,7 @@
         "@microsoft/fast-foundation": "3.0.0-alpha.4"
         },
     "devDependencies": {
-        "@playwright/test": "^1.21.0",
+        "@playwright/test": "^1.26.0",
         "@storybook/builder-webpack5": "6.5.9",
         "@storybook/html": "6.5.9",
         "@storybook/manager-webpack5": "6.5.9",

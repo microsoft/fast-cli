@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@microsoft/fast-cli": "^1.0.0-alpha.5",
-    "@playwright/test": "^1.21.0",
+    "@playwright/test": "^1.26.0",
     "@storybook/builder-webpack5": "6.5.9",
     "@storybook/html": "6.5.9",
     "@storybook/manager-webpack5": "6.5.9",
