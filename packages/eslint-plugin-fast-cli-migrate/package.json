@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/eslint-plugin-fast-cli-migrate",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "An ESLint plugin with migration rules for FAST CLI",
   "main": "dist/index.js",
   "scripts": {
