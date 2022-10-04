@@ -10,7 +10,6 @@ import {
     writeFiles,
     getTemplateFileConfig
 } from "./cli.fs.js";
-import { execSync } from "child_process";
 
 const uuid: string = "cli-fs";
 const tempDir: string = getTempDir(uuid);
