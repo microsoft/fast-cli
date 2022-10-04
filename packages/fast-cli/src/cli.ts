@@ -5,12 +5,12 @@ import * as commander from "commander";
 import spawn from "cross-spawn";
 import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInitOptionMessages, InitOptions, TemplateFileConfig } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
-import { componentExportFileNotFound, componentTemplateFileNotFoundMessage, componentTemplateFilesNotFoundMessage, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
+import { componentExportFileNotFound, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
 import type { WriteFileConfig } from "./cli.types.js";
 import { availableTemplates, disallowedTemplateNames, suggestedTemplates } from "./components/options.js";
-import { createEmptyDir, localPathExists, readDir, readFile, writeFiles } from "./cli.fs.js";
+import { createEmptyDir, localPathExists, readFile, writeFiles } from "./cli.fs.js";
 import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentPrompts, allowedFoundationComponentNamePrompt, configPrompts, initPrompts } from "./cli.prompt.js";
-import { __dirname, ascii, cliPath, initDefaultExportName, initDefaultFilePath, initDefaultTemplate, templateFolderName } from "./cli.globals.js";
+import { __dirname, ascii, initDefaultExportName, initDefaultFilePath, initDefaultTemplate, templateFolderName } from "./cli.globals.js";
 import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
 
@@ -137,19 +137,14 @@ async function getFastAddComponent(
         await installDependencies([pathToTemplatePackage]);
     }
 
-    const templateDir = path.resolve(
-        ...(
-            !isLocalFile
-                ? [__dirname, "node_modules"]
-                : []
-        ),
-        pathToTemplatePackage,
-        templateFolderName
-    );
+    const templateDir = `${pathToTemplatePackage}/${templateFolderName}/fast.add-component.json`;
 
-    return readFile<FastAddComponent>(path.resolve(templateDir, "fast.add-component.json"), true);
+    const {
+        default: config
+    } = await import(templateDir, { assert: {type: 'json'} })
+
+    return config;
 }
-
 /**
  * Create the design-system.ts file
  */
@@ -213,30 +208,6 @@ async function addDesignSystem(
 }
 
 /**
- * Check the template for files that should exist
- */
-async function checkTemplateForFiles(pathToTemplatePackage: string): Promise<void> {
-    const templateDir = path.resolve(
-        __dirname,
-        "node_modules",
-        pathToTemplatePackage,
-        templateFolderName
-    );
-    const directoryContents = readDir(templateDir);
-
-    if (!Array.isArray(directoryContents)) {
-        throw new Error(componentTemplateFilesNotFoundMessage());
-    }
-
-    // Run through available template files and make sure all required files are accounted for
-    for (const [templateFile,] of Object.entries(requiredComponentTemplateFiles)) {
-        if (!directoryContents.includes(templateFile)) {
-            throw new Error(`${componentTemplateFileNotFoundMessage}: ${templateFile}`);
-        }
-    }
-}
-
-/**
  * Get the template files to be written
  */
 async function getTemplateFiles(
@@ -244,7 +215,7 @@ async function getTemplateFiles(
     ): Promise<Array<WriteFileConfig>> {
     const normalizedPathToTemplatePackage: string = config.cliTemplate
         ? `./components/${config.pathToTemplatePackage}`
-        : path.relative(cliPath, config.pathToTemplatePackage);
+        : config.pathToTemplatePackage;
     const files: Array<WriteFileConfig> = [];
 
     // Create an array of template items based on the files.ts
@@ -279,7 +250,6 @@ async function addComponent(
     const fastConfig: FastConfig = await getFastConfig();
 
     await installTemplate(config.template as string);
-    await checkTemplateForFiles(config.template as string);
 
     const rootDir = fastConfig.rootDir ? fastConfig.rootDir : "";
     const files = await getTemplateFiles({
@@ -370,13 +340,7 @@ async function addFoundationComponent(
         createEmptyDir(path.resolve(rootDir, fastConfig.componentPath, config.name as string));
         await writeFiles(files);
         const fastAddComponent: FastAddComponent = await getFastAddComponent(
-            path.resolve(
-                cliPath,
-                "dist",
-                "esm",
-                "components",
-                config.template as string
-            ),
+           `./components/${config.template as string}`,
             true
         );
 
@@ -436,8 +400,21 @@ async function init(
 }
 
 async function getVersion(): Promise<void> {
-    const cliPackageJson: any = readFile(path.resolve(cliPath, "package.json"), true);
-    console.log(`CLI version: ${cliPackageJson.version}`);
+    console.log(`CLI local version:`);
+    const localArgs = [
+        "ls",
+        "--depth=0",
+        "@microsoft/fast-cli"
+    ]
+    spawn("npm", localArgs, { stdio: "inherit" });
+    console.log(`CLI global version:`);
+    const globalArgs = [
+        "ls",
+        "-g",
+        "--depth=0",
+        "@microsoft/fast-cli"
+    ]
+    spawn("npm", globalArgs, { stdio: "inherit" });
 }
 
 const yesToAllDefaultsMessage: string = "Use all defaults";
