@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Updated method of generating exports to allow more flexibility and multiple exports",
-  "packageName": "@microsoft/cfp-template",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Updated to used dynamic imports for module resolution",
-  "packageName": "@microsoft/fast-cli",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

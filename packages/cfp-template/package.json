@@ -2,7 +2,7 @@
   "name": "@microsoft/cfp-template",
   "description": "The default FAST project template",
   "type": "module",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -28,7 +28,7 @@
     "@microsoft/fast-foundation": "3.0.0-alpha.4"
   },
   "devDependencies": {
-    "@microsoft/fast-cli": "^1.0.0-alpha.5",
+    "@microsoft/fast-cli": "^1.0.0-alpha.6",
     "@playwright/test": "^1.26.0",
     "@storybook/builder-webpack5": "6.5.9",
     "@storybook/html": "6.5.9",

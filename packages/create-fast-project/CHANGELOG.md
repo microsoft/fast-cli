@@ -1,8 +1,17 @@
 # Change Log - @microsoft/create-fast-project
 
-This log was last generated on Thu, 21 Jul 2022 18:34:30 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 16:36:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.6
+
+Tue, 04 Oct 2022 16:36:20 GMT
+
+### Changes
+
+- Bump @microsoft/cfp-template to v1.0.0-alpha.6
+- Bump @microsoft/fast-cli to v1.0.0-alpha.6
 
 ## 1.0.0-alpha.5
 
