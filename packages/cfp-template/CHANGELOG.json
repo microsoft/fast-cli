@@ -2,6 +2,47 @@
   "name": "@microsoft/cfp-template",
   "entries": [
     {
+      "date": "Tue, 04 Oct 2022 16:36:19 GMT",
+      "tag": "@microsoft/cfp-template_v1.0.0-alpha.6",
+      "version": "1.0.0-alpha.6",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "5813b15a31a530e135ffb4ecdc4b063c1e357fc8",
+            "comment": "Bump jpeg-js and @playwright/test"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "57e5ceaf9f2c180326383bf79b7a0d55e5db857c",
+            "comment": "Updated method of generating exports to allow more flexibility and multiple exports"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "648d582b5536c2c5bec98691f4c07f04819eaa65",
+            "comment": "Remove redundant template files and create a script to generate the template files into a ts file"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/cfp-template",
+            "commit": "fda6aba119f5eb42354dc09301462cae95dec2e0",
+            "comment": "Added initialization complete message"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/cfp-template",
+            "comment": "Bump @microsoft/fast-cli to v1.0.0-alpha.6",
+            "commit": "de60dc5b152698b6969ec9cfedebf41f77d68106"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Jul 2022 18:34:30 GMT",
       "tag": "@microsoft/cfp-template_v1.0.0-alpha.5",
       "version": "1.0.0-alpha.5",

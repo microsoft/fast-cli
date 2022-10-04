@@ -2,6 +2,81 @@
   "name": "@microsoft/fast-cli",
   "entries": [
     {
+      "date": "Tue, 04 Oct 2022 16:36:19 GMT",
+      "tag": "@microsoft/fast-cli_v1.0.0-alpha.6",
+      "version": "1.0.0-alpha.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "de60dc5b152698b6969ec9cfedebf41f77d68106",
+            "comment": "Updated to used dynamic imports for module resolution"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "57e5ceaf9f2c180326383bf79b7a0d55e5db857c",
+            "comment": "Updated method of generating exports to allow more flexibility and multiple exports"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "bee279ec8bc644d3d24f14ef4eef1dcf7b7977c6",
+            "comment": "Added minimatch for glob patterns and allowed excluded paths from a template and a prepended string"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "648d582b5536c2c5bec98691f4c07f04819eaa65",
+            "comment": "Remove redundant template files and create a script to generate the template files into a ts file"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "4bd410c8c5d4aa653849f39d9561a4094ac393f0",
+            "comment": "Ensured template spec files are not ignored"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "b16aa0fd25557a0213331e1778afe76ef9a9d763",
+            "comment": "Added a utility to read all file paths"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "a1c0a6754f30f249387b12fc97aa666ce92bb719",
+            "comment": "Updated to use package named exports"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "30d1723390d19bbe14a56698d2028fa0ce5b18e3",
+            "comment": "Added a utility to write template files in a TypeScript file as a default export"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "2ae57663262c62fb955d5853c9a18991b144fd03",
+            "comment": "Added a version command"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "e4621068c6a86b351be319e3dda71124152289a4",
+            "comment": "Added the ability to list all foundation components"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-cli",
+            "commit": "fda6aba119f5eb42354dc09301462cae95dec2e0",
+            "comment": "Added the ability for templates to include an initialization complete message"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Jul 2022 18:34:29 GMT",
       "tag": "@microsoft/fast-cli_v1.0.0-alpha.5",
       "version": "1.0.0-alpha.5",

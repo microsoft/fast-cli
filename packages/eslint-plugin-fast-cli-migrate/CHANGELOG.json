@@ -1,0 +1,68 @@
+{
+  "name": "@microsoft/eslint-plugin-fast-cli-migrate",
+  "entries": [
+    {
+      "date": "Tue, 04 Oct 2022 16:36:19 GMT",
+      "tag": "@microsoft/eslint-plugin-fast-cli-migrate_v1.0.0-alpha.5",
+      "version": "1.0.0-alpha.5",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "28dc975a780944648847acc6c8d91bf89ff30aa6",
+            "comment": "Added template rule"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "8c8d955633c8cd8ea881e47bce1241cb12b85ff6",
+            "comment": "Added styles rule"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "73d40c8fe6834681f6db6b5cfca1b29342fb8574",
+            "comment": "Added stories rule"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "6e7619c273453f9312840e35f182b504da0fd5f7",
+            "comment": "Added the index rule"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "72ffcfc726cd5861769df3c5620daca296c77018",
+            "comment": "Added the design system rule"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "62bb8e9265a84919e6993cad582c7ae49897b343",
+            "comment": "Added the definition rule"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "08c0dce3ce8076c5509678a0934e9f2b33d949b6",
+            "comment": "Added the define rule"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "491a010aacde7f816927bc777ffa17006224e707",
+            "comment": "Added the components index rule"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/eslint-plugin-fast-cli-migrate",
+            "commit": "5224a9e741d3c006d26197cb28cd09e3d244a18a",
+            "comment": "Added migrate package for FAST CLI"
+          }
+        ]
+      }
+    }
+  ]
+}
