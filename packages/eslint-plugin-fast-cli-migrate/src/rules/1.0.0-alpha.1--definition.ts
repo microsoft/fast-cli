@@ -73,10 +73,11 @@ export function create(context: Rule.RuleContext) {
                             yield fixer.insertTextBefore(
                                 body,
                                 `import { designSystem } from "../../design-system.js";\n`
+                                + `import { ${baseClassName} } from "./${baseSpinalCaseName}.js";\n`
                             );
                             yield fixer.replaceText(
                                 objectNode,
-                                `${baseClassName}.compose(${getObjectPropertiesAsString(objectAsText, baseSpinalCaseName)});`
+                                `${baseClassName}.compose(${getObjectPropertiesAsString(objectAsText, baseSpinalCaseName)})`
                             );
                         }
                     });
