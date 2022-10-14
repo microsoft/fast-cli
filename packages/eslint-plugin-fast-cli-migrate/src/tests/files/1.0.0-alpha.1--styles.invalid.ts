@@ -6,8 +6,8 @@ export const styles: (
     context: ElementDefinitionContext,
     definition: FooOptions
 ) => ElementStyles = (context: ElementDefinitionContext, definition: FooOptions) =>
-    css`
-        :host {
-            background: red;
-        }
-    `;
+css`
+    :host {
+        background: red;
+    }
+`;

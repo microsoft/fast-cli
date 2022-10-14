@@ -1,3 +1,4 @@
+import path from "path";
 import { Rule } from "eslint";
 import type {
     ExportNamedDeclaration,
@@ -17,6 +18,12 @@ export const meta = {
     fixable: true,
     schema: [],
 };
+
+function isDefineFile(context: Rule.RuleContext) {
+    const fileLocation = context.getPhysicalFilename();
+    const fileExtension = "define.ts";
+    return fileLocation.slice(-(fileExtension.length)) === fileExtension;
+}
 
 function getExportVariable(node: Rule.Node): ExportNamedDeclaration {
     if (node.parent.type === "ExportNamedDeclaration") {
@@ -67,7 +74,8 @@ function getImportClass(body: Program, id: string): null | ImportDeclaration {
 function getFixes(
     fixer: Rule.RuleFixer,
     exportVariable: ExportNamedDeclaration,
-    importClass: ImportDeclaration
+    importClass: ImportDeclaration,
+    context: Rule.RuleContext,
 ) {
     const fixes = [
         fixer.replaceText(
@@ -77,10 +85,18 @@ function getFixes(
     ];
 
     if (importClass !== null) {
+        const relativeImportPath = path.relative(
+            path.join(
+                context.parserOptions.fastConfig.rootDir,
+                context.parserOptions.fastConfig.componentPath
+            ),
+            "design-system.js"
+        );
+
         fixes.push(
             fixer.replaceText(
                 importClass,
-                "import { designSystem } from \"../design-system.js\""
+                `import { designSystem } from "${relativeImportPath}";`
             )
         )
     }
@@ -91,24 +107,26 @@ function getFixes(
 export function create(context: Rule.RuleContext) {
     return {
         MemberExpression(node: MemberExpression & Rule.Node) {
-            const identifier = node.object.type === "Identifier" ? node.object.name : null;
-            const body = getBody(node);
+            if (isDefineFile(context)) {
+                const identifier = node.object.type === "Identifier" ? node.object.name : null;
+                const body = getBody(node);
 
-            if (
-                identifier !== null &&
-                node.property.type === "Identifier" &&
-                node.property.name === "compose"
-            ) {
-                const exportVariable = getExportVariable(node);
-                const importClass = getImportClass(body, identifier);
+                if (
+                    identifier !== null &&
+                    node.property.type === "Identifier" &&
+                    node.property.name === "compose"
+                ) {
+                    const exportVariable = getExportVariable(node);
+                    const importClass = getImportClass(body, identifier);
 
-                context.report({
-                    node,
-                    message: "Update design system export to include a registry.",
-                    fix: (fixer) => {
-                        return getFixes(fixer, exportVariable, importClass);
-                    }
-                });
+                    context.report({
+                        node,
+                        message: "Update design system export to include a registry.",
+                        fix: (fixer) => {
+                            return getFixes(fixer, exportVariable, importClass, context);
+                        }
+                    });
+                }
             }
         }
     };

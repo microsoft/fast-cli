@@ -1,3 +1,9 @@
-import { css } from "@microsoft/fast-element";
+import { css,  } from "@microsoft/fast-element";
 
-export const styles = css``;
+import type { FooOptions } from "./foo.js";
+
+export const styles = css`
+    :host {
+        background: red;
+    }
+`;

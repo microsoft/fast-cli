@@ -2,10 +2,8 @@ import { Rule } from "eslint";
 import type {
     Identifier,
     ImportDeclaration,
-    ImportDefaultSpecifier,
-    ImportNamespaceSpecifier,
-    ImportSpecifier
 } from "estree";
+import { getRemovableNamedImportRange, removeNamedImport } from "./1.0.0-alpha.1.utilities";
 
 export const meta = {
     type: "problem",
@@ -19,50 +17,23 @@ export const meta = {
     schema: [],
 };
 
-function getFoundateElementImport(
-    specifiers: (ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier)[]
-) {
-    return specifiers.findIndex((specifier) => {
-        if (specifier.type === "ImportSpecifier") {
-            return specifier.imported.name === "FoundationElement";
-        }
-
-        return false;
-    });
-}
-
-function importsFoundationElement(node: ImportDeclaration & Rule.Node) {
-    if (node.source.value === "@microsoft/fast-foundation") {
-        const foundationElementImportIndex = getFoundateElementImport(node.specifiers);
-        const trailingComma = foundationElementImportIndex !== node.specifiers.length - 1;
-
-        return [node.specifiers[foundationElementImportIndex], trailingComma] || false;
-    }
-    return false;
-}
-
-function getFoundationElementImport(node: ImportDeclaration & Rule.Node) {
-    return importsFoundationElement(node);
-}
-
 export function create(context: Rule.RuleContext) {
     return {
         ImportDeclaration(node: ImportDeclaration & Rule.Node) {
-            const foundationElementImport = getFoundationElementImport(node);
+            const foundationElementImport = removeNamedImport(
+                node,
+                "@microsoft/fast-foundation",
+                "FoundationElement"
+            );
 
             if (foundationElementImport[0]) {
-                const rangeEnd = foundationElementImport[1]
-                    ? foundationElementImport[0].range[1] + 1
-                    : foundationElementImport[0].range[1];
+                const removableRange = getRemovableNamedImportRange(foundationElementImport);
 
                 context.report({
                     node,
                     message: "FoundationElement has been removed, import FASTElement instead",
                     *fix(fixer: Rule.RuleFixer) {
-                        yield fixer.removeRange([
-                            foundationElementImport[0].range[0],
-                            rangeEnd
-                        ]);
+                        yield fixer.removeRange(removableRange);
                         yield fixer.insertTextAfter(
                             node,
                             `\nimport { FASTElement } from "@microsoft/fast-element";`

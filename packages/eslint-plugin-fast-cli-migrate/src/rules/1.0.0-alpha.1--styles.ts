@@ -1,6 +1,10 @@
 import type { Rule } from "eslint";
+import type {
+    ImportDeclaration
+} from "estree";
 import {
-    getTaggedTemplateUpdateRules
+    getRemovableNamedImportRange,
+    getTaggedTemplateUpdateRules, removeNamedImport
 } from "./1.0.0-alpha.1.utilities";
 
 export const meta = {
@@ -16,9 +20,44 @@ export const meta = {
 };
 
 export function create(context: Rule.RuleContext) {
-    return getTaggedTemplateUpdateRules(
-        context,
-        "css",
-        ".styles.ts"
-    );
+    return {
+        ...getTaggedTemplateUpdateRules(
+            context,
+            "css",
+            ".styles.ts"
+        ),
+        ImportDeclaration(node: ImportDeclaration & Rule.Node) {
+            const removableRanges = [];
+            const elementStylesImport = removeNamedImport(
+                node,
+                "@microsoft/fast-element",
+                "ElementStyles"
+            );
+            const elementDefinitionContextImport = removeNamedImport(
+                node,
+                "@microsoft/fast-foundation",
+                "ElementDefinitionContext"
+            );
+
+            if (elementStylesImport[0]) {
+                removableRanges.push(getRemovableNamedImportRange(elementStylesImport));
+            }
+
+            if (elementDefinitionContextImport[0]) {
+                removableRanges.push(getRemovableNamedImportRange(elementDefinitionContextImport))
+            }
+
+            if (removableRanges.length > 0) {
+                context.report({
+                    node,
+                    message: "ElementStyles has been removed, this type export is unnecessary",
+                    *fix(fixer: Rule.RuleFixer) {
+                        for (const range of removableRanges) {
+                            yield fixer.removeRange(range);
+                        }
+                    }
+                });
+            }
+        },
+    };
 }
