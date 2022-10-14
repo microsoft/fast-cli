@@ -3,6 +3,8 @@
 import path from "path";
 import * as commander from "commander";
 import spawn from "cross-spawn";
+import { ESLint } from "eslint";
+import eslintPlugin from "@microsoft/eslint-plugin-fast-cli-migrate";
 import type { AddComponentOptionMessages, AddComponentOptions, AddDesignSystemOptionMessages, AddDesignSystemOptions, AddFoundationComponentOptionMessages, AddFoundationComponentOptions, ConfigOptions, FastAddComponent, FastConfig, FastConfigOptionMessages, FastInitOptionMessages, InitOptions, TemplateFileConfig } from "./cli.options.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
 import { componentExportFileNotFound, fastConfigDoesNotContainComponentPathMessage, fastConfigDoesNotExistErrorMessage } from "./cli.errors.js";
@@ -13,6 +15,7 @@ import { addComponentPrompts, addDesignSystemPrompts, addFoundationComponentProm
 import { __dirname, ascii, initDefaultExportName, initDefaultFilePath, initDefaultTemplate, templateFolderName } from "./cli.globals.js";
 import { stringModifier, toCamelCase, toPascalCase } from "./cli.utilities.js";
 import designSystemTemplate from "./templates/design-system.js";
+import { configVersionDictionary, currentConfigVersion, isLatestConfigVersion } from "./cli.migrate.js";
 
 const program = new commander.Command();
 
@@ -102,7 +105,9 @@ function createConfigFile(
         {
             name: "fast.config.json",
             directory: __dirname,
-            contents: JSON.stringify(fastConfig, null, 2)
+            contents: JSON.stringify({
+                ...fastConfig,
+            } as FastConfig, null, 2)
         }
     ]);
 }
@@ -369,7 +374,12 @@ async function addFoundationComponent(
 async function config(options: ConfigOptions, messages: FastConfigOptionMessages, defaults: Partial<ConfigOptions>): Promise<void> {
     const config = await configPrompts(options, messages, defaults);
 
-    createConfigFile(config);
+    createConfigFile({
+        version: currentConfigVersion,
+        rootDir: config.rootDir,
+        componentPath: config.componentPath,
+        componentPrefix: config.componentPrefix
+    });
 }
 
 /**
@@ -415,6 +425,57 @@ async function getVersion(): Promise<void> {
         "@microsoft/fast-cli"
     ]
     spawn("npm", globalArgs, { stdio: "inherit" });
+}
+
+async function migrate(): Promise<void> {
+    const config = await getFastConfig();
+    const currentVersion: string = config.version || "1.0.0-alpha.1";
+
+    if (isLatestConfigVersion(currentVersion)) {
+        console.log("You are on the latest version");
+        return;
+    }
+
+    const nextVersion: string = configVersionDictionary[currentVersion].next as string;
+    const eslint = new ESLint({
+        fix: true,
+        useEslintrc: false,
+        // rulePaths: ["../node_modules/@microsoft/eslint-plugin-fast-cli-migrate/dist/rules"],
+        baseConfig: {
+            plugins: [
+                "@microsoft/eslint-plugin-fast-cli-migrate"
+            ],
+            extends: [
+                `plugin:@microsoft/eslint-plugin-fast-cli-migrate/${currentVersion}`
+            ],
+            parserOptions: {
+                fastConfig: config,
+                ecmaVersion: 2017
+            },
+            parser: "@typescript-eslint/parser",
+            env: {
+                es6: true
+            },
+        },
+        plugins: { "@microsoft/eslint-plugin-fast-cli-migrate": eslintPlugin },
+    });
+    const results = await eslint.lintFiles(["./**/*.ts"]);
+
+    // Update files
+    await ESLint.outputFixes(results);
+
+    // Update dependencies
+    await installDependencies(
+        configVersionDictionary[nextVersion].dependencies.map((dependency) => {
+            return `${dependency.package}@${dependency.version}`;
+        })
+    );
+
+    // Update the config
+    config.version = nextVersion;
+    createConfigFile(config);
+    
+    console.log(`Migration to ${nextVersion} is complete.`)
 }
 
 const yesToAllDefaultsMessage: string = "Use all defaults";
@@ -543,5 +604,13 @@ program.command("version")
             throw reason;
         })
     });
+
+program.command("migrate")
+    .description("Migrate to the next config version")
+    .action(async (): Promise<void> => {
+        await migrate().catch((reason) => {
+            throw reason;
+        })
+    })
 
 program.parse(process.argv);

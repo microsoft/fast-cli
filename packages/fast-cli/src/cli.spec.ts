@@ -11,9 +11,12 @@ import {
     fastCliDir,
     packagesDir,
     updatePackageJsonScripts,
+    getPackageScripts,
     installCli,
+    setupMigrate,
 } from "./test/helpers.js";
 import { requiredComponentTemplateFiles } from "./components/files.js";
+import { configVersionDictionary, currentConfigVersion } from "./cli.migrate.js";
 
 const uuid: string = "cli";
 const tempDir: string = getTempDir(uuid);
@@ -91,6 +94,19 @@ function initTests() {
         });
 
         expect(hasNodeModules).toEqual(true);
+    });
+}
+
+function migrateTests(versionTempDir: string) {
+    test("should be able to run migrate command without throwing", () => {
+        expect(() => {
+            execSync(`cd ${versionTempDir} && npm run migrate`);
+        }).not.toThrow();
+    });
+    test("should be able to build", () => {
+        expect(() => {
+            execSync(`cd ${versionTempDir} && npm run build`);
+        }).not.toThrow();
     });
 }
 
@@ -215,7 +231,7 @@ test.describe("CLI", () => {
             setup(tempDir, tempComponentDir);
             execSync(`cd ${tempDir} && npm run fast:init:local`);
             installCli(tempDir);
-            updatePackageJsonScripts(tempDir, tempComponentDir);
+            updatePackageJsonScripts(tempDir, getPackageScripts(tempComponentDir));
             execSync(`cd ${tempDir} && npm run fast:add-component:template`);
         });
         test.afterAll(() => {
@@ -266,5 +282,23 @@ test.describe("CLI", () => {
                 execSync(`cd ${tempDir} && npm run fast:version`);
             }).not.toThrow();
         });
+    });
+    test.describe("migrate", () => {
+        const dictionaryKeys: Array<string> = Object.keys(configVersionDictionary);
+        const nonCurrentVersions = dictionaryKeys.filter((key) => {
+            return key !== currentConfigVersion;
+        });
+
+        nonCurrentVersions.forEach((version) => {
+            test.describe(version, () => {
+                test.beforeAll(() => {
+                    setupMigrate(`${tempDir}-${version}`, version);
+                });
+                test.afterAll(() => {
+                    teardown(`${tempDir}-${version}`);
+                });
+                migrateTests(`${tempDir}-${version}`);
+            });
+        })
     });
 });

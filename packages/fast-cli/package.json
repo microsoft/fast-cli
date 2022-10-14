@@ -41,8 +41,13 @@
   },
   "homepage": "https://github.com/Microsoft/fast-cli#readme",
   "dependencies": {
+    "@microsoft/eslint-plugin-fast-cli-migrate": "^1.0.0-alpha.6",
     "commander": "^9.0.0",
     "cross-spawn": "^7.0.3",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-plugin-import": "^2.26.0",
     "fs-extra": "^10.0.1",
     "minimatch": "^5.1.0",
     "prompts": "^2.4.2",

@@ -5,6 +5,7 @@ export interface Template {
 }
 
 export interface FastConfig {
+    version: string;
     componentPath: string;
     rootDir: string;
     componentPrefix: string;

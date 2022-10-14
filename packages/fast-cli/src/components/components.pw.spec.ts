@@ -8,6 +8,7 @@ import {
     getTempDir,
     getTempComponentDir,
     updatePackageJsonScripts,
+    getPackageScripts,
 } from "../test/helpers.js";
 import { availableTemplates } from "../components/options.js";
 import fs from "fs-extra";
@@ -43,7 +44,7 @@ function execComponentCommand(
     dir: string,
     command: string,
 ) {
-    updatePackageJsonScripts(dir, tempComponentDir);
+    updatePackageJsonScripts(dir, getPackageScripts(tempComponentDir));
     execSync(`cd ${dir} && ${command}`);
 }
 

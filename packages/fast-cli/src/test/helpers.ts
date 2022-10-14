@@ -16,7 +16,7 @@ export const getTempComponentDir = function(uuid: string): string {
 }
 export const fastCliDir = path.resolve(packagesDir, "fast-cli");
 
-function getPackageScripts(tempComponentDir: string): any {
+export function getPackageScripts(tempComponentDir: string): any {
     return {
         "fast:version": `fast version`,
         "fast:init:local": `fast init -t ${path.resolve(packagesDir, "cfp-template")} -f ${path.join("dist", "esm", "index.js")}`,
@@ -40,14 +40,14 @@ function getPackageScripts(tempComponentDir: string): any {
 
 export function updatePackageJsonScripts(
     tempDir: string,
-    tempComponentDir: string
+    scripts: any
 ): void {
     // Update the scripts for testable CLI commands
     const packageJsonString = fs.readFileSync(path.resolve(tempDir, "package.json"), { "encoding": "utf8" });
     const packageJson = JSON.parse(packageJsonString);
     packageJson.scripts = {
         ...packageJson.scripts,
-        ...getPackageScripts(tempComponentDir)
+        ...scripts,
     };
     fs.writeFileSync(path.resolve(tempDir, "package.json"), JSON.stringify(packageJson, null, 2));
 }
@@ -63,7 +63,7 @@ export function setup(tempDir: string, tempComponentDir: string): void {
     // Create a temp project
     execSync(`cd ${tempDir} && npm init -y`);
 
-    updatePackageJsonScripts(tempDir, tempComponentDir);
+    updatePackageJsonScripts(tempDir, getPackageScripts(tempComponentDir));
 
     installCli(tempDir);
 }
@@ -110,3 +110,19 @@ export const getExpectedGeneratedComponentTemplateFiles = (componentName: string
     "define.ts",
     "fixtures/base.html",
 ];
+
+export function setupMigrate(tempDir: string, version: string): void {
+    fs.ensureDirSync(tempDir);
+
+    // Copy files from the version
+    const versionDirectory = path.resolve(fastCliDir, "test", "version", version);
+    fs.copySync(versionDirectory, tempDir);
+
+    // Add the migrate command as a package.json script
+    updatePackageJsonScripts(tempDir, {
+        "migrate": "fast migrate"
+    });
+
+    // Install the CLI
+    installCli(tempDir);
+}
