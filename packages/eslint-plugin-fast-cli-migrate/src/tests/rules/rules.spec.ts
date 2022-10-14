@@ -18,7 +18,7 @@ const testItems = [
     {
         rule: "1.0.0-alpha.1--define",
         errorNumber: 1,
-        filePath: "foo",
+        filePath: "define.ts",
     },
     {
         rule: "1.0.0-alpha.1--definition",
@@ -100,7 +100,7 @@ test.describe("Rules", () => {
                         }
                     },
                     rules: {
-                        [testItem.rule]: 2,
+                        [testItem.rule]: 2
                     },
                 },
                 cwd: path.dirname(require.resolve("@microsoft/eslint-plugin-fast-cli-migrate/package.json")),
@@ -153,7 +153,7 @@ test.describe("Rules", () => {
                 }
             });
     
-            test("fix should convert invalid format to valid format", async () => {
+            test("fixed code should not have error messages", async () => {
                 // replace using the available fixes
                 const fixedCode = await getFixedCodeFromMultipleFixes(invalidFileContents, invalidMessages, eslint, testItem);
                 let messages: any;
@@ -164,6 +164,13 @@ test.describe("Rules", () => {
                 });
                 
                 expect(messages).toHaveLength(0);
+            });
+
+            test("fix should convert the invalid format to valid format", async () => {
+                // replace using the available fixes
+                const fixedCode = await getFixedCodeFromMultipleFixes(invalidFileContents, invalidMessages, eslint, testItem);
+
+                expect(fixedCode.trim()).toEqual(validFileContents);
             });
         });
     });

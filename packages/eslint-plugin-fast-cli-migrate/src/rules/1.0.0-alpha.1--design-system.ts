@@ -2,11 +2,13 @@ import type { Rule } from "eslint";
 import type {
     ExportNamedDeclaration,
     Identifier,
+    ImportDeclaration,
     Property,
     SpreadElement,
     VariableDeclaration,
     VariableDeclarator
 } from "estree";
+import { getRemovableNamedImportRange, removeNamedImport } from "./1.0.0-alpha.1.utilities";
 
 export const meta = {
     type: "problem",
@@ -21,11 +23,13 @@ export const meta = {
 };
 
 function getExpressionStatement(node: any) {
-    if (node.parent.type === "ExpressionStatement") {
+    if (node?.parent?.type === "ExpressionStatement") {
         return node.parent;
+    } else if (node?.parent) {
+        return getExpressionStatement(node?.parent);
     }
 
-    return getExpressionStatement(node.parent);
+    return null;
 }
 
 function getDesignSystemObject(node: VariableDeclarator): Array<Property | SpreadElement> {
@@ -72,6 +76,15 @@ function getPrefixAndRegistry(
     return prefixAndRegistry;
 }
 
+function isComponentsImport(node: ImportDeclaration & Rule.Node) {
+    return (
+        node.source.type === "Literal" &&
+        node.specifiers.length === 1 &&
+        node.specifiers[0].type === "ImportDefaultSpecifier" &&
+        node.specifiers[0].local.name === "components"
+    );
+}
+
 export function create(context: Rule.RuleContext) {
     return {
         ExportNamedDeclaration(node: ExportNamedDeclaration) {
@@ -110,17 +123,48 @@ export function create(context: Rule.RuleContext) {
             if (node.name === "DesignSystem") {
                 const parentExpressionStatement = getExpressionStatement(node);
 
+                if (parentExpressionStatement) {
+                    context.report({
+                        node,
+                        message: "Remove deprecated registration override API.",
+                        fix: (fixer) => {
+                            return fixer.replaceText(
+                                parentExpressionStatement,
+                                ""
+                            );
+                        }
+                    });
+                }
+            }
+        },
+        ImportDeclaration(node: ImportDeclaration & Rule.Node) {
+            const designSystemImport = removeNamedImport(
+                node,
+                "@microsoft/fast-foundation",
+                "DesignSystem"
+            );
+            
+            if (isComponentsImport(node)) {
                 context.report({
                     node,
-                    message: "Remove deprecated registration override API.",
-                    fix: (fixer) => {
-                        return fixer.replaceText(
-                            parentExpressionStatement,
-                            ""
-                        );
+                    message: "The components export has been removed as the registration API has changed and replaced with a direct import",
+                    *fix(fixer: Rule.RuleFixer) {
+                        yield fixer.replaceText(node, `import "${node.source.value}";`);
                     }
                 });
             }
-        }
+
+            if (designSystemImport[0]) {
+                const removableRange = getRemovableNamedImportRange(designSystemImport);
+
+                context.report({
+                    node,
+                    message: "DesignSystem has been removed, this type export is deprecated",
+                    *fix(fixer: Rule.RuleFixer) {
+                        yield fixer.removeRange(removableRange);
+                    }
+                });
+            }
+        },
     };
 }

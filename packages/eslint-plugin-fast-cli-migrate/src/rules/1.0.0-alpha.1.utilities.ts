@@ -1,6 +1,9 @@
 import type { Rule } from "eslint";
 import type {
     ImportDeclaration,
+    ImportDefaultSpecifier,
+    ImportNamespaceSpecifier,
+    ImportSpecifier,
     TaggedTemplateExpression
 } from "estree";
 
@@ -69,4 +72,41 @@ export function getTaggedTemplateUpdateRules(
             }
         },
     }
+}
+
+function getNamedImport(
+    specifiers: (ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier)[],
+    importName: string
+) {
+    return specifiers.findIndex((specifier) => {
+        if (specifier.type === "ImportSpecifier") {
+            return specifier.imported.name === importName;
+        }
+
+        return false;
+    });
+}
+
+export function removeNamedImport(node: ImportDeclaration & Rule.Node, sourceValue: string, importName: string) {
+    if (node.source.value === sourceValue) {
+        const namedImportIndex = getNamedImport(node.specifiers, importName);
+        const trailingComma = namedImportIndex !== node.specifiers.length - 1;
+
+        return [node.specifiers[namedImportIndex], trailingComma] || false;
+    }
+    return false;
+}
+
+export function getRemovableNamedImportRange(
+    importElement: false | (boolean | ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier)[]
+) {
+    const rangeEnd = importElement[1]
+        ? importElement[0].range[1] + 1
+        : importElement[0].range[1];
+    return importElement[0].parent.specifiers.length === 1
+        ? importElement[0].parent.range
+        : [
+            importElement[0].range[0],
+            rangeEnd
+        ];
 }
