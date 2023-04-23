@@ -24,7 +24,7 @@
     "devDependencies": {
         "@playwright/test": "^1.26.0",
         "@storybook/builder-webpack5": "6.5.9",
-        "@storybook/html": "6.5.9",
+        "@storybook/html": "7.0.6",
         "@storybook/manager-webpack5": "6.5.9",
         "@types/node": "^17.0.21",
         "@typescript-eslint/eslint-plugin": "^5.17.0",
