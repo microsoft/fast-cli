@@ -53,7 +53,7 @@
   "devDependencies": {
     "@playwright/test": "^1.26.0",
     "@storybook/builder-webpack5": "^6.4.22",
-    "@storybook/html": "^6.4.22",
+    "@storybook/html": "^7.0.6",
     "@storybook/manager-webpack5": "^6.4.22",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
